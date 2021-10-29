@@ -21,37 +21,22 @@ namespace Server.ClientConnection
 
         public async Task RunServer()
         {
-            Console.WriteLine("Runs");
-            User user = new User
-            {
-                Street = "kurwapopierdolonychuj2111",
-                City = "gownowdupe",
-                Country = "Jebac",
-                Postcode = "1488",
-                Email = "jebac@jebac123.com",
-                FirstName = "debil",
-                LastName = "jebany",
-                Password = "nigger"
-            };
-
-            string objectAsJson = JsonSerializer.Serialize(user);
-            Console.WriteLine(objectAsJson);
-            await PostUser(objectAsJson);
+            Console.WriteLine("Runs"); 
             
-            // listener.Start();
-            // while (true)
-            // {
-            //     TcpClient tcpClient = listener.AcceptTcpClient();
-            //     new Thread(async () =>
-            //     {
-            //         NetworkStream stream = tcpClient.GetStream();
-            //         //byte[] size = new byte[1024];
-            //         byte[] fromClient = new byte[2000];
-            //         int bytesRead = stream.Read(fromClient, 0, fromClient.Length);
-            //         string objectAsJson = Encoding.ASCII.GetString(fromClient, 0, bytesRead);
-            //         await PostUser(objectAsJson);
-            //     }).Start();
-            // }
+            listener.Start();
+            while (true)
+            {
+                TcpClient tcpClient = listener.AcceptTcpClient();
+                new Thread(async () =>
+                {
+                    NetworkStream stream = tcpClient.GetStream();
+                    //byte[] size = new byte[1024];
+                    byte[] fromClient = new byte[2000];
+                    int bytesRead = stream.Read(fromClient, 0, fromClient.Length);
+                    string objectAsJson = Encoding.ASCII.GetString(fromClient, 0, bytesRead);
+                    await PostUser(objectAsJson);
+                }).Start();
+            }
         }
 
         static async Task PostUser(string user)

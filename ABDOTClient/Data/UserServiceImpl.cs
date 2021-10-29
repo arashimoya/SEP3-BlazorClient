@@ -2,42 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using ABDOTClient.Model;
+using ABDOTClient.Networking;
 using ABDOTClient.Persistence;
 
-namespace ABDOTClient.Data
-{
-    public class UserServiceImpl : IUserService
-    {
-        
+namespace ABDOTClient.Data{
+    public class UserServiceImpl : IUserService{
         private List<User> users;
         private ServerContext ServerContext;
+        private Client client;
 
         public UserServiceImpl()
+            //TODO client not here 
         {
             ServerContext = new ServerContext();
+            client = new Client();
+            client.RunClient();
         }
-        
-        
-        
-        User IUserService.ValidateUser(string email, string password)
-        {
+
+
+        User IUserService.ValidateUser(string email, string password){
             User first = ServerContext.Users.FirstOrDefault(user => user.Email.Equals(email));
-            if (first == null)
-            {
+            if (first == null){
                 throw new Exception("User not found");
             }
 
-            if (!first.Password.Equals(password))
-            {
+            if (!first.Password.Equals(password)){
                 throw new Exception("Incorrect password");
             }
 
             return first;
         }
 
-        public void RegisterUser(string email, string password, string firstName, string lastName, 
-            string street, string city, string postcode, string country)
-        {
+        public void RegisterUser(string email, string password, string firstName, string lastName,
+            string street, string city, string postcode, string country){
             Console.WriteLine("creating...");
             User freshUser = new User();
             freshUser.Email = email;
@@ -48,22 +45,16 @@ namespace ABDOTClient.Data
             freshUser.Country = country;
             freshUser.Postcode = postcode;
             freshUser.Street = street;
-            
-            //THEN add user to database via Server
         }
 
-        public bool IsAlreadyInUse(string email)
-        {
+        public bool IsAlreadyInUse(string email){
             User first = ServerContext.Users.FirstOrDefault(user => user.Email.Equals(email));
-            if (first == null)
-            {
+            if (first == null){
                 return false;
             }
-            else
-            {
+            else{
                 return true;
             }
-            
         }
     }
 }
