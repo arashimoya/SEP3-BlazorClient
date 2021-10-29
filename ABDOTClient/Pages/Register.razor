@@ -1,5 +1,5 @@
 ﻿@page "/register"
-@using Assignment1.Authentication
+@using ABDOTClient.Authentication
 @namespace RegisterComponent
 
 
@@ -48,8 +48,8 @@
         </div>
         <div style="color:red"></div>
         <p class="actions">
-        <button class="btn-outline-dark" type="submit" @onclick="PerformRegister">Register</button>
-        <button class="btn-outline-dark" type="button" @onclick="Cancel">Cancel</button>
+            <button class="btn-outline-dark" @onclick="PerformRegister">Register</button>
+            <button class="btn-outline-dark" type="button" @onclick="Cancel">Cancel</button>
         </p>
     </NotAuthorized>
 </AuthorizeView>
@@ -75,8 +75,11 @@
     public async Task PerformRegister()
     {
         errorMessage = " ";
+        Console.WriteLine("Registering...");
         try
         {
+            Console.WriteLine("Still Registering...");
+            Console.WriteLine(country + city + email + password);
             ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
                 confirmPassword, firstName, lastName, streetAndHouseNumber, city, postcode, country);
             email = "";
@@ -88,8 +91,13 @@
             city = " ";
             postcode = " ";
             country = " ";
-        } catch (Exception e) {
+            Console.WriteLine("Success");
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
             errorMessage = e.Message;
         }
     }
+
 }

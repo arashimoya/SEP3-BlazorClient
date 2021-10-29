@@ -1,6 +1,6 @@
 ﻿using ABDOTClient.Model;
 
-namespace Assignment1.Data
+namespace ABDOTClient.Data
 {
     public interface IUserService
     {
