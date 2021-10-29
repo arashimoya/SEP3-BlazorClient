@@ -1,0 +1,95 @@
+﻿@page "/register"
+@using Assignment1.Authentication
+@namespace RegisterComponent
+
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h3>Register</h3>
+        <div class="form-group">
+
+            <input type="text" placeholder="e-mail" @bind-value="email">
+        </div>
+        <div class="form-group">
+
+            <input type="password" placeholder="password" @bind-value="password"/>
+        </div>
+        <div class="form-group">
+
+            <input type="password" placeholder="confirm password" @bind-value="confirmPassword"/>
+        </div>
+        <div class="form-group">
+
+            <input type="text" placeholder="first name" @bind-value="firstName">
+        </div>
+        <div class="form-group">
+
+            <input type="text" placeholder="last name" @bind-value="lastName">
+        </div>
+        <div class="form-group">
+
+            <input type="text" placeholder="Street name and house number" @bind-value="streetAndHouseNumber">
+        </div>
+        <div class="form-group">
+
+            <input type="text" placeholder="Postcode" @bind-value="postcode">
+        </div>
+        <div class="form-group">
+
+            <input type="text" placeholder="City" @bind-value="city">
+        </div>
+        <div class="form-group">
+
+            <input type="text" placeholder="Country" @bind-value="country">
+        </div>
+        <div style="color:red"></div>
+        <p class="actions">
+        <button class="btn-outline-dark" type="submit" @onclick="PerformRegister">Register</button>
+        <button class="btn-outline-dark" type="button" @onclick="Cancel">Cancel</button>
+        </p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+    private string email;
+    private string password;
+    private string confirmPassword;
+    private string firstName;
+    private string lastName;
+    private string streetAndHouseNumber;
+    private string city;
+    private string postcode;
+    private string country;
+    private string errorMessage;
+
+    public async Task Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    public async Task PerformRegister()
+    {
+        errorMessage = " ";
+        try
+        {
+            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
+                confirmPassword, firstName, lastName, streetAndHouseNumber, city, postcode, country);
+            email = "";
+            password = " ";
+            confirmPassword = "";
+            firstName = "";
+            lastName = "";
+            streetAndHouseNumber = "";
+            city = " ";
+            postcode = " ";
+            country = " ";
+        } catch (Exception e) {
+            errorMessage = e.Message;
+        }
+    }
+}
