@@ -5,7 +5,7 @@ namespace ABDOTClient.Model
     public class Address
     {
         [Required]
-        public string StreetAndHouseNumber { get; set; }
+        public string Street { get; set; }
         [Required]
         public string Postcode { get; set; }
         [Required]

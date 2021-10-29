@@ -38,17 +38,17 @@ namespace ABDOTClient.Data
         }
 
         public void RegisterUser(string email, string password, string firstName, string lastName, 
-            string streetAndHouseNumber, string city, string postcode, string country)
+            string street, string city, string postcode, string country)
         {
             User freshUser = new User();
             freshUser.Email = email;
             freshUser.Password = password;
             freshUser.FirstName = firstName;
             freshUser.LastName = lastName;
-            freshUser.Address.City = city;
-            freshUser.Address.Country = country;
-            freshUser.Address.Postcode = postcode;
-            freshUser.Address.StreetAndHouseNumber = streetAndHouseNumber;
+            freshUser.City = city;
+            freshUser.Country = country;
+            freshUser.Postcode = postcode;
+            freshUser.Street = street;
             
             Console.WriteLine(freshUser.ToString());
             //THEN add user to database via Server

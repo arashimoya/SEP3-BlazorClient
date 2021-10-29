@@ -1,5 +1,7 @@
-﻿namespace Server.ClientConnection{
+﻿using System.Threading.Tasks;
+
+namespace Server.ClientConnection{
     public interface IServer{
-        void RunServer();
+        Task RunServer();
     }
 }
