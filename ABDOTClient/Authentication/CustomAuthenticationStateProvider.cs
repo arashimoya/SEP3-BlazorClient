@@ -4,15 +4,14 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
-using Assignment1.Data;
-using Microsoft.AspNetCore.Components;
+using ABDOTClient.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.JSInterop;
 
 
 
 
-namespace Assignment1.Authentication {
+namespace ABDOTClient.Authentication {
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
     private readonly IJSRuntime jsRuntime;
     private  IUserService userService;
@@ -70,13 +69,15 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
     public void ValidateRegister(string email, string password, string confirmPassword, string firstName, 
         string lastName, string streetAndHouseNumber, string city, string postcode, string country)
     {
-        if (string.IsNullOrEmpty(email)) throw new Exception("Enter your e-mail");
-        if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
-        if (string.IsNullOrEmpty(confirmPassword)) throw new Exception("Confirm password");
-        if (userService.IsAlreadyInUse(email)) throw new Exception("This email is already in use");
-        if (!password.Equals(confirmPassword)) throw new Exception("Passwords do not match!");
+        Console.WriteLine("auth");
+        //if (string.IsNullOrEmpty(email)) throw new Exception("Enter your e-mail");
+        //if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
+        //if (string.IsNullOrEmpty(confirmPassword)) throw new Exception("Confirm password");
+        //if (userService.IsAlreadyInUse(email)) throw new Exception("This email is already in use");
+        //if (!password.Equals(confirmPassword)) throw new Exception("Passwords do not match!");
         
         userService.RegisterUser(email,password, firstName, lastName, streetAndHouseNumber, city, postcode, country);
+        Console.WriteLine("auth2");
     }
 
     private ClaimsIdentity SetupClaimsForUser(User user) {

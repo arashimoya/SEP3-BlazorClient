@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using ABDOTClient.Model;
 using ABDOTClient.Persistence;
-using Assignment1.Data;
-
 
 namespace ABDOTClient.Data
 {
@@ -40,17 +38,21 @@ namespace ABDOTClient.Data
         public void RegisterUser(string email, string password, string firstName, string lastName, 
             string streetAndHouseNumber, string city, string postcode, string country)
         {
+            Console.WriteLine("creating...");
             User freshUser = new User();
             freshUser.Email = email;
             freshUser.Password = password;
             freshUser.FirstName = firstName;
             freshUser.LastName = lastName;
-            freshUser.Address.City = city;
-            freshUser.Address.Country = country;
-            freshUser.Address.Postcode = postcode;
-            freshUser.Address.StreetAndHouseNumber = streetAndHouseNumber;
+            freshUser.City = city;
+            freshUser.Country = country;
+            freshUser.Street = streetAndHouseNumber;
+            freshUser.Postcode = postcode;
             
-            Console.WriteLine(freshUser.ToString());
+            Console.WriteLine("New Client registered:");
+            Console.WriteLine(freshUser.FirstName);
+            ServerContext.Users.Add(freshUser);
+            
             //THEN add user to database via Server
         }
 
