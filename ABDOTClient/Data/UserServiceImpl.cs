@@ -36,7 +36,7 @@ namespace ABDOTClient.Data
         }
 
         public void RegisterUser(string email, string password, string firstName, string lastName, 
-            string streetAndHouseNumber, string city, string postcode, string country)
+            string street, string city, string postcode, string country)
         {
             Console.WriteLine("creating...");
             User freshUser = new User();
@@ -46,12 +46,8 @@ namespace ABDOTClient.Data
             freshUser.LastName = lastName;
             freshUser.City = city;
             freshUser.Country = country;
-            freshUser.Street = streetAndHouseNumber;
             freshUser.Postcode = postcode;
-            
-            Console.WriteLine("New Client registered:");
-            Console.WriteLine(freshUser.FirstName);
-            ServerContext.Users.Add(freshUser);
+            freshUser.Street = street;
             
             //THEN add user to database via Server
         }

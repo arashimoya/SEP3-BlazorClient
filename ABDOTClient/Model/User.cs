@@ -10,6 +10,15 @@ namespace ABDOTClient.Model
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
+
+        [Required] 
+        public string Street { get; set; }
+        [Required] 
+        public string Postcode { get; set; }
+        [Required] 
+        public string City { get; set; }
+        [Required] 
+        public string Country { get; set; }
         [Required]
         public string Password { get; set; }
         [Required]
