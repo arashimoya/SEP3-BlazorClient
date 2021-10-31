@@ -45,6 +45,8 @@ namespace ABDOTClient.Data{
             freshUser.Country = country;
             freshUser.Postcode = postcode;
             freshUser.Street = street;
+            
+            client.RegisterUser(freshUser);
         }
 
         public bool IsAlreadyInUse(string email){

@@ -16,7 +16,7 @@ namespace Server.ClientConnection
     public class Server : IServer
     {
         private static IPAddress ip = IPAddress.Parse("127.0.0.1");
-        private TcpListener listener = new TcpListener(ip, 5000);
+        private TcpListener listener = new (ip, 5000);
         private static readonly HttpClient client = new HttpClient();
 
         public async Task RunServer()
@@ -31,7 +31,7 @@ namespace Server.ClientConnection
                 {
                     NetworkStream stream = tcpClient.GetStream();
                     //byte[] size = new byte[1024];
-                    byte[] fromClient = new byte[2000];
+                    byte[] fromClient = new byte[1000000];
                     int bytesRead = stream.Read(fromClient, 0, fromClient.Length);
                     string objectAsJson = Encoding.ASCII.GetString(fromClient, 0, bytesRead);
                     await PostUser(objectAsJson);
