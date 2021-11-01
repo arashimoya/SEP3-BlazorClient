@@ -11,7 +11,7 @@
     <NotAuthorized>
         <h3>Register</h3>
         <div class="form-group">
-            <p @bind-value="confirmationMessage"></p>
+            <p>@confirmationMessage</p>
             <input type="text" placeholder="e-mail" @bind-value="email">
         </div>
         <div class="form-group">
@@ -85,16 +85,16 @@
             }
 
             email = "";
-            password = " ";
+            password = "";
             confirmPassword = "";
             firstName = "";
             lastName = "";
             streetAndHouseNumber = "";
-            city = " ";
-            postcode = " ";
-            country = " ";
+            city = "";
+            postcode = "";
+            country = "";
             Console.WriteLine("Success");
-            NavigationManager.NavigateTo("/");
+            
         }
         catch (Exception e){
             errorMessage = e.Message;
