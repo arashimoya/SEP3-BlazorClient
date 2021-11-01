@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
@@ -13,6 +14,7 @@ namespace ABDOTClient.Networking{
         public void RunClient(){
             client = new TcpClient("127.0.0.1", 5000);
             stream = client.GetStream();
+            Console.WriteLine("kurwo");
         }
 
         public void RegisterUser(User user){
