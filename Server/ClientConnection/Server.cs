@@ -34,12 +34,15 @@ namespace Server.ClientConnection
                     byte[] fromClient = new byte[1000000];
                     int bytesRead = stream.Read(fromClient, 0, fromClient.Length);
                     string objectAsJson = Encoding.ASCII.GetString(fromClient, 0, bytesRead);
-                    await PostUser(objectAsJson);
+                    if (await PostUser(objectAsJson)){
+                        byte[] toClient = Encoding.ASCII.GetBytes("true");
+                        stream.Write(toClient, 0, toClient.Length);
+                    }
                 }).Start();
             }
         }
 
-        static async Task PostUser(string user)
+        static async Task<bool> PostUser(string user)
         {
             Console.WriteLine("Post method runs");
             StringContent content = new StringContent(
@@ -55,6 +58,7 @@ namespace Server.ClientConnection
             }
 
             Console.WriteLine("success");
+            return true;
         }
     }
 }

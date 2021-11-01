@@ -11,7 +11,7 @@
     <NotAuthorized>
         <h3>Register</h3>
         <div class="form-group">
-
+            <p @bind-value="confirmationMessage"></p>
             <input type="text" placeholder="e-mail" @bind-value="email">
         </div>
         <div class="form-group">
@@ -66,22 +66,24 @@
     private string postcode;
     private string country;
     private string errorMessage;
+    private string confirmationMessage;
 
-    public async Task Cancel()
-    {
+    public async Task Cancel(){
         NavigationManager.NavigateTo("/");
     }
 
-    public async Task PerformRegister()
-    {
+    public async Task PerformRegister(){
         errorMessage = " ";
         Console.WriteLine("Registering...");
-        try
-        {
+        try{
             Console.WriteLine("Still Registering...");
             Console.WriteLine(country + city + email + password);
-            ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
-                confirmPassword, firstName, lastName, streetAndHouseNumber, city, postcode, country);
+
+            if (((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
+                confirmPassword, firstName, lastName, streetAndHouseNumber, city, postcode, country)){
+                confirmationMessage = "user registered";
+            }
+
             email = "";
             password = " ";
             confirmPassword = "";
@@ -94,8 +96,7 @@
             Console.WriteLine("Success");
             NavigationManager.NavigateTo("/");
         }
-        catch (Exception e)
-        {
+        catch (Exception e){
             errorMessage = e.Message;
         }
     }

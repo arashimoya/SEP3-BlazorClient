@@ -33,7 +33,7 @@ namespace ABDOTClient.Data{
             return first;
         }
 
-        public void RegisterUser(string email, string password, string firstName, string lastName,
+        public bool RegisterUser(string email, string password, string firstName, string lastName,
             string street, string city, string postcode, string country){
             Console.WriteLine("creating...");
             User freshUser = new User();
@@ -45,8 +45,12 @@ namespace ABDOTClient.Data{
             freshUser.Country = country;
             freshUser.Postcode = postcode;
             freshUser.Street = street;
-            
-            client.RegisterUser(freshUser);
+
+            if (client.RegisterUser(freshUser)){
+                return true;
+            }
+
+            return false;
         }
 
         public bool IsAlreadyInUse(string email){
