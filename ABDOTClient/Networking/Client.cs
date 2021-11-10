@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using ABDOTClient.Model;
 
 namespace ABDOTClient.Networking{
@@ -54,6 +55,18 @@ namespace ABDOTClient.Networking{
                 return true;
             }
             else return false;
+        }
+
+        public async Task<User> LoginUser(string typeToServer, Object toServer)
+        {
+            ServerRequest(typeToServer, toServer);
+            byte[] fromServer = new byte[1024];
+            int bytesRead = stream.Read(fromServer, 0, fromServer.Length);
+            string response = Encoding.ASCII.GetString(fromServer, 0, bytesRead);
+            stream.Close();
+            client.Close();
+            User user = JsonSerializer.Deserialize<User>(response);
+            return user;
         }
 
 

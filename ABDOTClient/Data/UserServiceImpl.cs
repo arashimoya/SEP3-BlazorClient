@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ABDOTClient.Model;
 using ABDOTClient.Networking;
 using ABDOTClient.Persistence;
@@ -20,17 +21,15 @@ namespace ABDOTClient.Data{
         }
 
 
-        User IUserService.ValidateUser(string email, string password){
-            User first = ServerContext.Users.FirstOrDefault(user => user.Email.Equals(email));
-            if (first == null){
-                throw new Exception("User not found");
-            }
-
-            if (!first.Password.Equals(password)){
-                throw new Exception("Incorrect password");
-            }
-
-            return first;
+        public async Task<User> ValidateUser(string email, string password)
+        {
+            User user = new User();
+            user.Email = email;
+            user.Password = password;
+        
+            
+            User loggedUser = await client.LoginUser("login", user);
+            return loggedUser;
         }
 
         public bool RegisterUser(string email, string password, string firstName, string lastName,
