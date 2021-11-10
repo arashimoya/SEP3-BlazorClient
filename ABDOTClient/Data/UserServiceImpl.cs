@@ -26,8 +26,9 @@ namespace ABDOTClient.Data{
             User user = new User();
             user.Email = email;
             user.Password = password;
-
-            User loggedUser = await client.LoginUser(user);
+        
+            
+            User loggedUser = await client.LoginUser("login", user);
             return loggedUser;
         }
 
