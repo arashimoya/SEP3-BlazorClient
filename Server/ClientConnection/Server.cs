@@ -60,5 +60,26 @@ namespace Server.ClientConnection
             Console.WriteLine("success");
             return true;
         }
+
+        static async Task<string> ValidateUser(string user)
+        {
+            Console.WriteLine("Validating user /server");
+            StringContent content = new StringContent(
+                user,
+                Encoding.UTF8,
+                "application/json"
+                );
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/users/login",content);
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Server error");
+                throw new Exception($"Error: {response.StatusCode}, {response.ReasonPhrase}");
+            }
+
+            Console.WriteLine("success");
+            string userAsJson = await response.Content.ReadAsStringAsync();
+            return userAsJson;
+
+        }
     }
 }
