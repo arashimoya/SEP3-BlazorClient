@@ -1,0 +1,85 @@
+﻿@page "/login"
+@using ABDOTClient.Authentication
+@using ABDOTClient.Model
+@namespace LoginComponent
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+<AuthorizeView>
+    <NotAuthorized>
+        <h3>Login</h3>
+        <div class="form-group">
+            <p>@confirmationMessage</p>
+            <input type="text" placeholder="e-mail" @bind-value="email"/>
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="password" @bind-value="password"/>
+        </div>
+        <div style="color:red">@errorMessage</div>
+        <p class="actions">
+            <button class="btn-outline-dark" @onclick="PerformLogin">Login</button>
+            <button class="btn-outline-dark" @onclick="Cancel">Cancel</button>
+        </p>
+    </NotAuthorized>
+    <Authorized>
+        <div>
+            Hello @name!
+        </div>
+        <p class="actions">
+            <button class="btn-outline-dark" @onclick="PerformLogout">Log out</button>
+        </p>
+    </Authorized>
+</AuthorizeView>
+
+@code {
+    private string email;
+    private string password;
+    private string confirmationMessage;
+    private string errorMessage;
+    private string name;
+    
+
+    public async Task Cancel()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    public async Task PerformLogin()
+    {
+        errorMessage = " ";
+        Console.WriteLine("logging in");
+        try
+        {
+            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(email, password);
+            email = "";
+            password = "";
+            name = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser.FirstName;
+            Console.WriteLine("Success");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+    public async Task PerformLogout()
+    {
+        errorMessage = "";
+        confirmationMessage = "";
+        email = "";
+        try
+        {
+            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+        
+    }
+    
+    
+}

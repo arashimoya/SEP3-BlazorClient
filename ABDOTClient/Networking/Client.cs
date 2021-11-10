@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 using ABDOTClient.Model;
 
 namespace ABDOTClient.Networking{
@@ -31,6 +32,22 @@ namespace ABDOTClient.Networking{
                 return true;
             }
             else return false;
+        }
+
+        public async Task<User> LoginUser(User user)
+        {
+            string userAsJson = JsonSerializer.Serialize(user);
+            byte[] toServer = Encoding.ASCII.GetBytes(userAsJson);
+            stream.Write(toServer,0,toServer.Length);
+
+            byte[] fromServer = new byte[1024];
+            int bytesRead = stream.Read(fromServer, 0, fromServer.Length);
+            string response = Encoding.ASCII.GetString(fromServer, 0, bytesRead);
+            stream.Close();
+            client.Close();
+
+            User validatedUser = JsonSerializer.Deserialize<User>(response);
+            return validatedUser;
         }
     }
 }
