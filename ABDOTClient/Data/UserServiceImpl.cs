@@ -44,7 +44,7 @@ namespace ABDOTClient.Data{
             freshUser.Postcode = postcode;
             freshUser.Street = street;
 
-            if (client.RegisterUser(freshUser)){
+            if (client.RegisterUser("register", freshUser)){
                 return true;
             }
 
