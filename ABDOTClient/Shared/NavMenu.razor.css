@@ -1,5 +1,25 @@
+
+
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+.header-logo {
+    position: relative;
+    width: 220px;
+    display: inline-block;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+}
+.header-selectpicker{
+    background-color: #131313;
+    padding: 3px 2rem 3px 0;
+    float: right;
+    height: 20px;
+    font-size: 14px;
+    background-size: 13px;
+    color: white;
 }
 
 .top-row {
@@ -17,10 +37,17 @@
     vertical-align: text-top;
     top: -2px;
 }
-
+.navbar-custom {
+    background-color: #131313;
+}
 .nav-item {
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding-bottom: 0.5rem;
+}
+.navbar-nav-custom {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    
 }
 
     .nav-item:first-of-type {
@@ -39,11 +66,34 @@
         align-items: center;
         line-height: 3rem;
     }
+    
+.breadcrumbs-separator {
+    font-weight: 700;
+    color: #999;
+    padding: 0 10px;
+    display: inline-block;
+}
+
+.login-box {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: relative;
+    top: 0;
+    right: 0;
+    height: 100%;
+    z-index: 1;
+}
 
 .nav-item ::deep a.active {
     background-color: rgba(255,255,255,0.25);
     color: white;
 }
+
+
 
 .nav-item ::deep a:hover {
     background-color: rgba(255,255,255,0.1);
@@ -55,8 +105,9 @@
         display: none;
     }
 
-    .collapse {
+    .collapse .login-box{
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+    
 }

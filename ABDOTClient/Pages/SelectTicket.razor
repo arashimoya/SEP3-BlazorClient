@@ -1,0 +1,128 @@
+﻿@page "/SelectTicket"
+@namespace SelectTicket
+<section>
+    <div>
+        <p>1. Choose tickets > 2. Payment > 3. Invoice</p>
+    </div>
+</section>
+<div class="position-relative">
+    <section class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="header-title">
+                    MOVIE TITLE
+                </div>
+            </div>
+            <div class="header-text">
+                <div class="header-info">
+                    <div class="header-topic">
+                        Date:
+                    </div>
+                    <div class="header-description">
+                        DATE AND TIME
+                    </div>
+                </div>
+                <div class="header-info">
+                    <div class="header-topic">
+                        Tickets:
+                    </div>
+                    <div class="header-description">
+                        NUMBER OF TICKETS
+                    </div>
+                </div>
+                <div class="header-info">
+                    <div class="header-topic">
+                        Location:
+                    </div>
+                    <div class="header-description">
+                        CINEMA NAME CITY, HALL NO.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="inner-container">
+        <div class="ticket-select">
+            <div class="container">
+                <div class="section-separate">
+                    <div class="row">
+                        <div class="col-md-12 section-title">
+                            How many tickets do you need?
+                        </div>
+                        <div class="col-md-12 ticket-select-content">
+                            <div class="counter-module">
+                                <div class="counter-text">
+                                    <p>Normal ticket</p>
+                                    <p>price idk</p>
+                                </div>
+                                <div class="counter-incrementer">
+                                    <button class="btn btn--black btn--outline-white btn btn--hover"></button>
+                                    <div class="counter-incrementer-amount"> @ticketAmount </div>
+                                    <button class="btn btn--black btn--outline-white btn btn--hover"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="seat-selection">
+            <div class="container">
+                <div class="section-separate">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="section-title">
+                                Where would you like to sit?
+                            </div>
+                            <div class="section-text">
+                                <div class="seat-select-choice">
+                                    <div class="seat-select-choice-key">
+                                        Row
+                                    </div>
+                                    <div class="seat-select-choice-value">
+                                        NUMBER OF THE ROW
+                                    </div>
+                                </div>
+                                <div class="seat-select-choice">
+                                    <div class="seat-select-choice-key">
+                                        Seat
+                                    </div>
+                                    <div class="seat-select-choice-value">
+                                        NUMBER OF SEAT
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="background-color:white; color: black">
+                            this where the seat selection will take place
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ticket-confirmation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 section-title">
+                        buy tickets
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="section-text">
+                            <p>we might want to put some text here, idk depends on the payment gate</p>
+                        </div>
+                        <button class="btn" @onclick="@goSomewhere">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int ticketAmount;
+    
+    public void goSomewhere()
+    {
+        throw new NotImplementedException();
+    }
+}

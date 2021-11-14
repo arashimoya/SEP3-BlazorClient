@@ -13,8 +13,9 @@ namespace ABDOTClient.Networking{
         private NetworkStream stream;
 
         public void RunClient(){
-            stream = client.GetStream();
             client = new TcpClient("127.0.0.1", 5000);
+            stream = client.GetStream();
+            
         }
 
         private void ServerRequest(string typeToServer, Object objectToServer){

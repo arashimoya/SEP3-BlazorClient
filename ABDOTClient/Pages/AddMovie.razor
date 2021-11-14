@@ -1,0 +1,75 @@
+﻿@page "/addmovie"
+@using ABDOTClient.Model
+@namespace AddMovieComponent
+<h3>Add Movie</h3>
+<EditForm Model="@newMovieItem" OnValidSubmit="@AddNewMovie">
+
+
+<div class="form-group">
+    Title:<br/>
+    <InputText @bind-value="newMovieItem"/>
+</div>
+<div class="form-group">
+    Director:<br/>
+    <InputText @bind-value="newMovieItem"/>
+</div>
+<div class="form-group">
+    Description:<br/>
+    <InputTextArea @bind-value="newMovieItem"/>
+</div>
+<div class="form-group">
+    Genre:<br/>
+    <InputText @bind-value="newMovieItem"/>
+</div>
+<div class="form-group">
+    Language:<br/>
+    <InputText @bind-value="newMovieItem"/>
+</div>
+<div class="form-group">
+    Year of release:<br/>
+    
+</div>
+<div class="form-group">
+    Length:<br/>
+    
+</div>
+
+<h4>Cast</h4>
+<button class="btn btn-dark" @onclick="IncrementCount">+</button>
+<button class="btn btn-dark" @onclick="DecrementCount">-</button>
+
+    @for (numberOfActorsToAdd = 1; numberOfActorsToAdd >= 0; numberOfActorsToAdd++)
+    {
+        <div class="form-group">
+            Language:<br/>
+            <InputText @bind-value="Title"/>
+        </div>
+    }
+
+        <p class="actions">
+            <button class="btn btn-dark" type="submit">Submit</button>
+        </p>
+</EditForm>
+@code {
+    private Movie newMovieItem = new Movie();
+    private int numberOfActorsToAdd;
+    private int test;
+    private int test2;
+    private string Title;
+
+    public async Task AddNewMovie()
+    {
+        
+    }
+
+    public void IncrementCount()
+    {
+        numberOfActorsToAdd++;
+    }
+
+    public void DecrementCount()
+    {
+        if(numberOfActorsToAdd>0)
+        numberOfActorsToAdd--;
+    }
+}

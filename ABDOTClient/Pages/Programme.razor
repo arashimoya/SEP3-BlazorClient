@@ -1,0 +1,95 @@
+﻿@page "/"
+@using ABDOTClient.Authentication
+@namespace ProgrammeComponent
+
+<BlazorStrap.BSCarousel NumberOfItems="@items.Count">
+    <div class="carousel-inner">
+        @foreach (var item in items)
+        {
+            <BlazorStrap.BSCarouselItem Src="@item.Source" Alt="@item.Alt" style="width:100%;height: 600px; overflow: hidden">
+                <BlazorStrap.BSCarouselCaption CaptionText="@item.Caption" HeaderText="@item.Header"/>
+            </BlazorStrap.BSCarouselItem>
+        }
+    </div>
+    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Previous" NumberOfItems="@items.Count"/>
+    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Next" NumberOfItems="@items.Count"/>
+</BlazorStrap.BSCarousel>
+
+<div class="section">
+    <div class="container">
+        <h1 id="programme-header-now" class="">playing now</h1>
+        <div class="program row">
+            <div class="date-list col-sm-8 hidden-xs-down">
+                <div class="row"> <!-- basically a week through -->
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Today</a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Monday</a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Tuesday</a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Wednesday</a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Thursday</a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Friday</a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Saturday</a>
+                    </div>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Sunday</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code{
+
+    IList<Item> items = new List<Item>
+    {
+        new Item
+        {
+            Source = "/images/ole.jpg",
+            Alt = "First Slide",
+            Caption = "Recap of what's happening at Manchester United",
+            Header = "Will OGS get sacked?",
+        },
+        new Item
+        {
+            Source = "/images/SIIUUU.jpg",
+            Alt = "Second Slide",
+            Caption = "Cristiano Ronaldo makes a brace!",
+            Header = "SIUUUUUUU",
+        },
+        new Item
+        {
+            Source = "/images/thugger.jpg",
+            Alt = "Third Slide",
+            Caption = "Thugger baby",
+            Header = "Thugger baby",
+        },
+        new Item
+        {
+            Source = "/images/ronaldo2.jpg",
+            Alt = "Third Slide",
+            Caption = "Every SIUUU in one article",
+            Header = "Random urge to shout SIUUUUUU",
+        }
+    };
+    class Item
+    {
+        public string Source { get; set; } = "";
+        public string Alt { get; set; } = "";
+        public string Caption { get; set; } = "";
+        public string Header{ get; set; } = "";
+    }
+
+}
