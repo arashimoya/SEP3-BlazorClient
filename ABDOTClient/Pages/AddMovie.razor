@@ -3,55 +3,45 @@
 @namespace AddMovieComponent
 <h3>Add Movie</h3>
 <EditForm Model="@newMovieItem" OnValidSubmit="@AddNewMovie">
-
-
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
 <div class="form-group">
     Title:<br/>
-    <InputText @bind-value="newMovieItem"/>
+    <InputText @bind-Value="newMovieItem.Title"/>
 </div>
 <div class="form-group">
     Director:<br/>
-    <InputText @bind-value="newMovieItem"/>
+    <InputText @bind-Value="newMovieItem.Director"/>
 </div>
 <div class="form-group">
     Description:<br/>
-    <InputTextArea @bind-value="newMovieItem"/>
+    <InputTextArea @bind-Value="newMovieItem.Description"/>
 </div>
 <div class="form-group">
     Genre:<br/>
-    <InputText @bind-value="newMovieItem"/>
+    <InputText @bind-Value="newMovieItem.Genre"/>
 </div>
 <div class="form-group">
     Language:<br/>
-    <InputText @bind-value="newMovieItem"/>
+    <InputText @bind-Value="newMovieItem.Language"/>
 </div>
 <div class="form-group">
     Year of release:<br/>
-    
+    <InputNumber @bind-Value="newMovieItem.Year"/>
 </div>
 <div class="form-group">
     Length:<br/>
-    
+    <InputNumber @bind-Value="newMovieItem.Length"/>
 </div>
 
-<h4>Cast</h4>
-<button class="btn btn-dark" @onclick="IncrementCount">+</button>
-<button class="btn btn-dark" @onclick="DecrementCount">-</button>
-
-    @for (numberOfActorsToAdd = 1; numberOfActorsToAdd >= 0; numberOfActorsToAdd++)
-    {
-        <div class="form-group">
-            Language:<br/>
-            <InputText @bind-value="Title"/>
-        </div>
-    }
-
-        <p class="actions">
+    <h4>Cast</h4>
+    <p class="actions">
             <button class="btn btn-dark" type="submit">Submit</button>
         </p>
 </EditForm>
 @code {
     private Movie newMovieItem = new Movie();
+    private string[] castArray;
     private int numberOfActorsToAdd;
     private int test;
     private int test2;
@@ -72,4 +62,11 @@
         if(numberOfActorsToAdd>0)
         numberOfActorsToAdd--;
     }
+
+    protected override Task OnInitializedAsync()
+    {
+        numberOfActorsToAdd = 1;
+        return base.OnInitializedAsync();
+    }
+
 }

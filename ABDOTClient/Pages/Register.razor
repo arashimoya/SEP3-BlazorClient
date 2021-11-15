@@ -79,7 +79,7 @@
             Console.WriteLine("Still Registering...");
             Console.WriteLine(country + city + email + password);
 
-           if  (((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
+           if  (await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
                 confirmPassword, firstName, lastName, streetAndHouseNumber, city, postcode, country)){
                 confirmationMessage = "user registered";
             }

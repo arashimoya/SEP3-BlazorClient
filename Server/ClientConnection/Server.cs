@@ -8,8 +8,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using ABDOTClient.Model;
-using LoginComponent;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Server.ClientConnection{
@@ -47,7 +45,7 @@ namespace Server.ClientConnection{
                             await PostUser(objectFromClientRead);
                             break;
                         case ("login"):
-                            await Login();
+                            await ValidateUser(objectFromClientRead);
                             break;
                     }
                 }).Start();

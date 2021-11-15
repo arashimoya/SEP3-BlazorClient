@@ -32,7 +32,7 @@ namespace ABDOTClient.Data{
             return loggedUser;
         }
 
-        public async Task<int> RegisterUser(string email, string password, string firstName, string lastName,
+        public async Task<bool> RegisterUser(string email, string password, string firstName, string lastName,
             string street, string city, string postcode, string country){
             Console.WriteLine("creating...");
             User freshUser = new User();
