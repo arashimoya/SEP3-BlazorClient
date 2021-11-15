@@ -72,7 +72,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
     }
 
-    public bool ValidateRegister(string email, string password, string confirmPassword, string firstName, 
+    public async Task<bool>  ValidateRegister(string email, string password, string confirmPassword, string firstName, 
         string lastName, string streetAndHouseNumber, string city, string postcode, string country)
     {
         Console.WriteLine("auth");
@@ -81,9 +81,13 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         //if (string.IsNullOrEmpty(confirmPassword)) throw new Exception("Confirm password");
         //if (userService.IsAlreadyInUse(email)) throw new Exception("This email is already in use");
         //if (!password.Equals(confirmPassword)) throw new Exception("Passwords do not match!");
-        
-        if(userService.RegisterUser(email,password, firstName, lastName, streetAndHouseNumber, city, postcode, country))
-        return true;
+
+        if (await userService.RegisterUser(email, password, firstName, lastName, streetAndHouseNumber, city, postcode,
+            country))
+        {
+            return true;
+        }
+
         return false;
     }
 

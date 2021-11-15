@@ -1,27 +1,82 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">ABDOTClient</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿@using Microsoft.AspNetCore.Mvc.Filters
+@using ABDOTClient.Model
+@inject NavigationManager NavigationManager
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark navbar-custom  box-shadow mb-3 fixed-top" >
+    <div class="container" style="color:#1e1e1e!important;">
+        <div class="col-icon">
+            <a class="header-logo" href="/"><img src="images/logo.svg"/></a>
+            <div>
+                        <select class="header-selectpicker" @onchange="@((arg) => GoToBranch(arg))" style="width:100px">
+                            @if (!branches.Any())
+                            {
+                                <option>city 1</option>
+                                <option>city 2</option>
+                            }
+                            @foreach (var branch in branches)
+                            {
+                                <option>branch.City</option>
+                            }
+                        </select>
+                        </div>
+        </div>
+        
+        <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="CollapseNavMenu">
+            <ul class="navbar-nav navbar-nav-custom flex-grow-1">
+                <li class="nav-item" style="padding-top: 0">
+                    <a class="nav-link text-light" href="/">Programme</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/premieres">Premieres</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/addmovie">Add Movie</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/movielist">Movies</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="/">Another link</a>
+                </li>
+                
+            </ul>
+        </div>
+        <div class="login-box">
+            <a class="nav-link text-light" href="/login" style="color:orange">Login</a>
+            <span class="breadcrumbs-separator">|</span>
+            <a class="nav-link text-light" href="/register" style="color:orange">Register</a>
+        </div>
+    </div>
+</nav>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-    </ul>
-</div>
 
 @code {
-    private bool collapseNavMenu = true;
+    private IList<Branch> branches;
 
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    protected override void OnInitialized()
+    {
+        branches = new List<Branch>();
+    }
 
-    private void ToggleNavMenu(){
+    void GoToBranch(ChangeEventArgs args)
+    {
+        NavigationManager.NavigateTo("/");
+    }
+    bool collapseNavMenu = true;
+
+    string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    void ToggleNavMenu()
+    {
         collapseNavMenu = !collapseNavMenu;
     }
 
+    void CollapseNavMenu()
+    {
+        collapseNavMenu = true;
+    }
 }

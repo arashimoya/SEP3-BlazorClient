@@ -27,6 +27,7 @@ namespace ABDOTClient{
             services.AddServerSideBlazor();
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+            services.AddScoped<IMovieService, CloudMovieService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

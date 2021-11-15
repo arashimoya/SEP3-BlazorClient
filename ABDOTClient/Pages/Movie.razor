@@ -1,0 +1,68 @@
+﻿@page "/movie" 
+@inject NavigationManager NavigationManager
+
+@namespace MoviePage
+
+<div class="container">
+    <div class="movie">
+        <div class="movie-top">
+            <div class="row">
+                <div class="movie-poster-container">
+                    <div class="movie-list-poster"><img src="images/king_kong.jpg" alt="king kong"/></div>
+                </div>
+                <div class="movie-date-select">
+                    <h1 class="movie-list-title">king kong</h1>
+                    <h3 class="section-label">Choose a day</h3>
+                    <select class="selectpicker">
+                        <option>
+                            Choose a day
+                        </option>
+                    </select>
+                    <h3 class="section-label">Choose time</h3>
+                    <select class="selectpicker" @onchange="@GoToCheckout">
+                        <option>
+                            Choose time
+                        </option>
+                    </select>
+                    <a href="/ticket">(debug) go to ticket</a>
+                </div>
+            </div>
+        </div>
+        <div class="row movie-content">
+            <div class="col-sm-6 col-xl-8 ">
+                <div class="movie-facts">
+                    <div class="movie-fact">
+                        <p class="section-label">Title</p>
+                        <p class="movie-fact-value">King Kong</p>
+                    </div>
+                    <div class="movie-fact">
+                        <p class="section-label">Length</p>
+                        <p class="movie-fact-value">200</p>
+                    </div>
+                    <div class="movie-fact">
+                        <p class="section-label">Premiere</p>
+                        <p class="movie-fact-value">2005</p>
+                    </div>
+                    <div class="movie-fact">
+                        <p class="section-label">Genre</p>
+                        <p class="movie-fact-value">Adventure / Drama / Fantasy</p>
+                    </div>
+                    
+                </div> 
+            </div>
+            <div class="col-sm-6 col-xl-5">
+                <p class="movie-description">
+                    description and shit
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    public void GoToCheckout()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}
