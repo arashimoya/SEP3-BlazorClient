@@ -257,6 +257,15 @@ background-color: #21221f;
 .btn--black {
     background-color: #151515;
 }
+
+.btn--white {
+    background-color: #ffffff;
+    color: black;
+}
+
+.btn--outline-black {
+    border-color: black;
+}
 .btn--outline-white {
     color: #fff;
     border: 2px solid currentColor;
@@ -398,6 +407,16 @@ header.topic{
 }
 .ticket-confirmation {
     
+}
+
+.password {
+    color: dimgray;
+    background-color: dimgray;
+    padding: 3px;
+}
+.password:hover{
+    color: black;
+    background-color: white;
 }
 
 

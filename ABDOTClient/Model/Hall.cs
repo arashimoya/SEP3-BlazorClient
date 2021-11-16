@@ -6,5 +6,6 @@ namespace ABDOTClient.Model
     {
         public int Id { get; set; }
         public IList<Seat> Seats { get; set; }
+        
     }
 }

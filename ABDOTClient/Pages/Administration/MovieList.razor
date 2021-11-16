@@ -1,0 +1,114 @@
+﻿@page "/movielist"
+@namespace ABDOTClient.Pages.Administration
+@inject NavigationManager NavigationManager
+@using ABDOTClient.Model
+@using Data
+
+@inject IMovieService CloudMovieService
+
+
+@if (moviesToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+} else if (!moviesToShow.Any()){
+    <p>
+        <em>No Movie items exist. Please add some</em>
+    </p>
+}
+else
+{
+    <div class="container " style="background-color: white">
+    <h3 style="color:black">MovieList</h3>
+        <p style="color:black">for personel only</p>
+        <div class="row">
+            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addmovie"))"><button>
+                <i class="oi oi-plus"/>
+            </button>
+                </div>
+        </div>
+    <table class="table" style="color:black; border-color: black">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Director</th>
+            <th>Genre</th>
+            <th>Length</th>
+            <th>Year</th>
+            <th>Language</th>
+            <th>Cast</th>
+            
+                <th>Remove</th>
+                <th>Edit</th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in movies)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Director</td>
+                <td>@item.Genre</td>
+                <td>@item.Length</td>
+                <td>@item.Year</td>
+                <td>@item.Language</td>
+                <td>
+                    @foreach (var actor in item.Cast)
+                    {
+                        @actor
+                        <br/>
+                    }
+                </td>
+                
+                    <td>
+                        <button @onclick="@(() => RemoveMovie(item.Id))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => Edit(item.Id))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+}
+@code {
+    private IList<Movie> movies;
+    private IList<Movie> moviesToShow;
+    private IMovieService MovieService = new CloudMovieService();
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        movies = new List<Movie>();
+        if (!movies.Any())
+        {
+            movies = await CloudMovieService.GetAllAsync();
+        }
+        moviesToShow = movies;
+
+
+    }
+
+    private async Task RemoveMovie(int MovieId)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"EditMovie/{id}");
+    }
+
+    
+
+}
