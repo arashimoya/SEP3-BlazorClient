@@ -1,0 +1,138 @@
+﻿@page "/personel"
+@namespace ABDOTClient.Pages.Administration
+@inject NavigationManager NavigationManager
+@using ABDOTClient.Model
+@using Data
+
+@if (personelToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+} else if (!personelToShow.Any()){
+    <p>
+        <em>No Person items exist. Please add some</em>
+    </p>
+}
+else
+{
+    <div class="container" style="background-color: white">
+        <div class="section-separate" style="padding-top:40px">
+            <button style="border-color: transparent; background-color:transparent">
+            <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
+            </button>
+        </div>
+    <h3 style="color:black">Personel</h3>
+        <p style="color:black">for managers only</p>
+        <div class="row">
+            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addpersonel"))"><button>
+                <i class="oi oi-plus"/>
+            </button>
+                </div>
+        </div>
+    <table class="table" style="color:black; border-color: black">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Address</th>
+            <th>Role</th>
+            <th>CPR</th>
+            <th>Birthday</th>
+            <th>Edit</th>
+            <th>Remove</th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in personelToShow)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.FirstName<span> </span> @item.LastName</td>
+                <td>@item.Email</td>
+                <td><span class="password">@item.Password</span></td>
+                <td><p>@item.Street, @item.City, @item.Postcode, @item.Country</p></td>
+                <td>@item.Role</td>
+                <td>@item.CPR</td>
+                <td>@item.Birthday</td>
+                
+                    <td>
+                        <button @onclick="@(() => RemoveEmployee(item.Id))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => Edit(item.Id))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+}
+@code {
+    private IList<Employee> personel;
+    private IList<Employee> personelToShow;
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        personel = new List<Employee>();
+        if (!personel.Any())
+        {
+            Seed();
+        }
+        personelToShow = personel;
+    }
+    private async Task RemoveEmployee(int EmployeeId)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"EditEmployee/{id}");
+    }
+
+    private void Seed()
+    {
+        Employee[] employeesArray =
+        {
+            new Operator
+            {
+                FirstName = "Christian",
+                LastName = "Dam",
+                Email = "ChristianLDam@jourrapide.com",
+                Password = "dam123",
+                Street = "Stationsvej 84",
+                City = "Hvalso",
+                Postcode = "4330",
+                Country = "Denmark",
+                Birthday = new DateTime(1994, 9, 21),
+                CPR = "210994-4869",
+            },
+            new Operator
+            {
+                FirstName = "Mille",
+                LastName = "Bertensen",
+                Email = "MilleABertelsen@dayrep.com",
+                Password = "bertensen123",
+                Birthday = new DateTime(1978, 11, 28),
+                Street = "Sondre Havnevej 34",
+                City = "Bindslev",
+                Postcode = "9881",
+                Country = "Denmark",
+                CPR = "281178-4756"
+            }
+        };
+        personel = employeesArray.ToList();
+
+    }
+
+}

@@ -1,0 +1,131 @@
+﻿@page "/playlist"
+@namespace ABDOTClient.Pages.Administration
+@inject NavigationManager NavigationManager
+@using ABDOTClient.Model
+@using Data
+
+@if (playsToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+} else if (!playsToShow.Any()){
+    <p>
+        <em>No Person items exist. Please add some</em>
+    </p>
+}
+else
+{
+    <div class="container" style="background-color: white">
+        <div class="section-separate" style="padding-top:40px">
+            <button style="border-color: transparent; background-color:transparent">
+            <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
+            </button>
+        </div>
+    <h3 style="color:black">Playlist</h3>
+        <p style="color:black">for operators</p>
+        <div class="row">
+            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addpersonel"))"><button>
+                <i class="oi oi-plus"/>
+            </button>
+                </div>
+        </div>
+    <table class="table" style="color:black; border-color: black">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Movie</th>
+            <th>Date</th>
+            <th>Branch</th>
+            <th>Hall</th>
+            <th>Edit</th>
+            <th>Remove</th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in playsToShow)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Movie.Title</td>
+                <td>@item.DateTime</td>
+                <td>@item.Branch.Id</td>
+                <td>@item.Hall.Id</td>
+                <td>
+                        <button @onclick="@(() => RemovePlay(item.Id))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => Edit(item.Id))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+}
+@code {
+    private IList<Play> plays;
+    private IList<Play> playsToShow;
+    private IMovieService MovieService = new CloudMovieService();
+    private IBranchService BranchService;
+
+    protected override async Task OnInitializedAsync()
+    {
+        BranchService = new BranchCloudService();
+        plays = new List<Play>();
+        if (!plays.Any())
+        {
+            Seed();
+        }
+        playsToShow = plays;
+    }
+    private async Task RemovePlay(int EmployeeId)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"EditPlay/{id}");
+    }
+
+    private async void Seed()
+    {
+        Play[] playArray =
+        {
+            new Play
+            {
+                Id = 1,
+                DateTime = DateTime.Today,
+            },
+            new Play
+            {
+                Id = 2,
+                DateTime = new DateTime(2021,11,17,18,30,00,DateTimeKind.Local)
+            },
+            new Play
+            {
+                Id = 3,
+                DateTime = new DateTime(2021,11,19,14,00,00,DateTimeKind.Local),
+            }
+        };
+        playArray[0].Branch = BranchService.Get(1);
+        playArray[0].Hall = BranchService.GetHall(1);
+        playArray[0].Movie = await MovieService.GetAsync(1);
+        playArray[1].Branch = BranchService.Get(1);
+        playArray[1].Hall = BranchService.GetHall(2);
+        playArray[1].Movie = await MovieService.GetAsync(4);
+        playArray[2].Branch = BranchService.Get(1);
+        playArray[2].Hall = BranchService.GetHall(2);
+        playArray[2].Movie = await MovieService.GetAsync(3);
+        plays = playArray.ToList();
+
+    }
+
+}
