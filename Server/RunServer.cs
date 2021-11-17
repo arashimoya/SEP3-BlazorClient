@@ -6,7 +6,6 @@ namespace Server{
             Console.WriteLine("Start server...");
             ClientConnection.Server server = new ClientConnection.Server();
             server.RunServer();
-
         }
     }
 }
