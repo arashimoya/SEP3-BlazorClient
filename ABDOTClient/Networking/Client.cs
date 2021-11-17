@@ -7,20 +7,18 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 
-namespace ABDOTClient.Networking{
-    public class Client{
+namespace ABDOTClient.Networking {
+    public class Client {
         private TcpClient client;
         private NetworkStream stream;
 
-        public void RunClient(){
+        public void RunClient() {
             client = new TcpClient("127.0.0.1", 5000);
             stream = client.GetStream();
-            
+            Console.WriteLine("client running");
         }
 
-        private void ServerRequest(string typeToServer, Object objectToServer){
-            
-
+        private void ServerRequest(string typeToServer, Object objectToServer) {
             //object
             string objectToServerSerialized = JsonSerializer.Serialize(objectToServer);
             byte[] objectToServerInBytes = Encoding.ASCII.GetBytes(objectToServerSerialized);
@@ -32,47 +30,48 @@ namespace ABDOTClient.Networking{
             //type
             string typeToServerSerialized = JsonSerializer.Serialize(typeToServer);
             byte[] typeToServerInBytes = Encoding.ASCII.GetBytes(typeToServerSerialized);
+            Console.WriteLine(typeToServer);
 
             //send information to server
             stream.Write(sizeToServerInBytes, 0, sizeToServerInBytes.Length);
-            stream.Write(typeToServerInBytes, 0, typeToServerInBytes.Length);
             stream.Write(objectToServerInBytes, 0, objectToServerInBytes.Length);
+            stream.Write(typeToServerInBytes, 0, typeToServerInBytes.Length);
         }
 
+        //Universal method for receiving callback from server always returns 
+        //JSON string with object from the server
+        private string ServerResponse() {
+            var responseFromServerRead = "";
+            try {
+                //size
+                var sizeFromServer = new byte[1024];
+                stream.Read(sizeFromServer, 0, sizeFromServer.Length);
+                var sizeFromServerRead = BitConverter.ToInt32(sizeFromServer);
 
-        private async Task<string> ServerResponse(){
-            
-            //size
-            byte[] sizeFromServer = new byte[1024];
-            await stream.ReadAsync(sizeFromServer, 0, sizeFromServer.Length);
-            int sizeFromServerRead = BitConverter.ToInt32(sizeFromServer);
-            
-            //response
-            byte[] responseFromServer = new byte[sizeFromServerRead];
-            await stream.ReadAsync(responseFromServer, 0, sizeFromServerRead);
-            string responseFromServerRead = Encoding.ASCII.GetString(responseFromServer, 0, sizeFromServerRead);
+                //response
+                var responseFromServer = new byte[sizeFromServerRead];
+                stream.Read(responseFromServer, 0, responseFromServer.Length);
+                responseFromServerRead = Encoding.ASCII.GetString(responseFromServer, 0, responseFromServer.Length);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e.Message);
+            }
+
             client.Close();
+            Console.WriteLine("Client closed");
             return responseFromServerRead;
         }
 
-        public async Task<bool> RegisterUser(string typeToServer, Object toServer){
+        public bool RegisterUser(string typeToServer, Object toServer) {
             ServerRequest(typeToServer, toServer);
-            string response = await ServerResponse();
-            
-            if (response.Equals("true")){
-                return true;
-            }
-            return false;
+            var response = ServerResponse();
+            return JsonSerializer.Deserialize<bool>(response);
         }
 
-        public async Task<User> LoginUser(string typeToServer, Object toServer){
+        public User LoginUser(string typeToServer, Object toServer) {
             ServerRequest(typeToServer, toServer);
-            byte[] fromServer = new byte[1024];
-            int bytesRead = stream.Read(fromServer, 0, fromServer.Length);
-            string response = Encoding.ASCII.GetString(fromServer, 0, bytesRead);
-            stream.Close();
-            client.Close();
-            User user = JsonSerializer.Deserialize<User>(response);
+            var response = ServerResponse();
+            var user = JsonSerializer.Deserialize<User>(response);
             return user;
         }
     }
