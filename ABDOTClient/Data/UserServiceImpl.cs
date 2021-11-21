@@ -23,6 +23,7 @@ namespace ABDOTClient.Data {
             var user = new User();
             user.Email = email;
             user.Password = password;
+            Console.WriteLine(email + password);
             var loggedUser = client.LoginUser("login", user);
             return loggedUser;
         }
