@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ABDOTClient.Factories;
 using ABDOTClient.Model;
 using ABDOTClient.Networking;
 using ABDOTClient.Persistence;
@@ -17,7 +18,6 @@ namespace ABDOTClient.Data
         {
             ServerContext = new ServerContext();
             client = new Client();
-            client.RunClient();
         }
         public async Task<IList<Movie>> GetAllAsync()
         {
@@ -26,7 +26,7 @@ namespace ABDOTClient.Data
 
         public async Task<bool> AddMovieAsync(Movie movie)
         {
-           return client.AddMovie(movie);
+           return ClientFactory.GetClient().AddMovie(movie);
         }
 
         public Task UpdateMovieAsync(Movie movie)
