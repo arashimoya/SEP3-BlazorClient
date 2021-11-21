@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using AddMovieComponent;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Server.ClientConnection {
@@ -52,6 +53,9 @@ namespace Server.ClientConnection {
                     break;
                 case ("login"):
                     await ValidateUser(user, stream);
+                    break;
+                case("addmovie"):
+                    await AddMovie(user, stream);
                     break;
             }
         }
@@ -106,6 +110,24 @@ namespace Server.ClientConnection {
             Console.WriteLine("success");
             string userAsJson = await response.Content.ReadAsStringAsync();
             await ClientCallback(userAsJson, stream);
+        }
+
+        private async Task AddMovie(string movie, NetworkStream stream)
+        {
+            Console.WriteLine("adding movie /server method");
+            StringContent content = new StringContent(
+                movie,
+                Encoding.UTF8,
+                "application/json");
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/movies", content);
+            if (response.StatusCode != HttpStatusCode.Created)
+            {
+                Console.WriteLine("Server error");
+                throw new Exception($"Error: {response.StatusCode}, {response.ReasonPhrase}");
+            }
+
+            Console.WriteLine("success");
+            await ClientCallback(true, stream);
         }
     }
 }

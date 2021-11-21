@@ -1,5 +1,8 @@
 ﻿@page "/addmovie"
 @using ABDOTClient.Model
+@using ABDOTClient.Data
+@using ABDOTClient.Pages.Administration
+@inject NavigationManager NavigationManager
 @namespace AddMovieComponent
 <h3>Add Movie</h3>
 <EditForm Model="@newMovieItem" OnValidSubmit="@AddNewMovie">
@@ -35,37 +38,46 @@
 </div>
 
     <h4>Cast</h4>
+    <button @onclick="AddValue" class="btn btn--black btn--outline-white">Add actor</button>
+    @for (int i = 0; i < newMovieItem.Cast.Count; i++)
+    {
+        int index = i;
+        <div>
+            <InputText @bind-Value="newMovieItem.Cast[index].Name"/>
+            <button @onclick="()=>RemoveValue(index)" class="btn btn--outline-white btn--black">-</button>
+        </div>
+    }
     <p class="actions">
             <button class="btn btn-dark" type="submit">Submit</button>
         </p>
 </EditForm>
 @code {
     private Movie newMovieItem = new Movie();
-    private string[] castArray;
-    private int numberOfActorsToAdd;
-    private int test;
-    private int test2;
-    private string Title;
+    private IMovieService CloudMovieService = new CloudMovieService();
+    private string confirmationMessage = "";
 
-    public async Task AddNewMovie()
+    private void AddValue()
     {
-        
+        newMovieItem.Cast.Add(new Actor(""));
     }
 
-    public void IncrementCount()
+    private void RemoveValue(int i)
     {
-        numberOfActorsToAdd++;
+        newMovieItem.Cast.RemoveAt(i);
     }
 
-    public void DecrementCount()
+    private async Task AddNewMovie()
     {
-        if(numberOfActorsToAdd>0)
-        numberOfActorsToAdd--;
+        if (await CloudMovieService.AddMovieAsync(newMovieItem))
+        {
+            confirmationMessage = "Success";
+            NavigationManager.NavigateTo($"/movielist{confirmationMessage}");
+            
+        }
     }
-
     protected override Task OnInitializedAsync()
     {
-        numberOfActorsToAdd = 1;
+        
         return base.OnInitializedAsync();
     }
 
