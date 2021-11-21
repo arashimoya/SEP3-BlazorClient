@@ -6,60 +6,50 @@ using ABDOTClient.Model;
 using ABDOTClient.Networking;
 using ABDOTClient.Persistence;
 
-namespace ABDOTClient.Data{
-    public class UserServiceImpl : IUserService{
+namespace ABDOTClient.Data {
+    public class UserServiceImpl : IUserService {
         private List<User> users;
         private ServerContext ServerContext;
         private Client client;
 
-        public UserServiceImpl()
-            //TODO client not here 
-        {
+        public UserServiceImpl() {
             ServerContext = new ServerContext();
             client = new Client();
             client.RunClient();
         }
 
 
-        public async Task<User> ValidateUser(string email, string password)
-        {
-            User user = new User();
+        public async Task<User> ValidateUser(string email, string password) {
+            var user = new User();
             user.Email = email;
             user.Password = password;
-        
-            
-            User loggedUser = await client.LoginUser("login", user);
+            var loggedUser = client.LoginUser("login", user);
             return loggedUser;
         }
 
         public async Task<bool> RegisterUser(string email, string password, string firstName, string lastName,
-            string street, string city, string postcode, string country){
+            string street, string city, string postcode, string country) {
             Console.WriteLine("creating...");
-            User freshUser = new User();
-            freshUser.Email = email;
-            freshUser.Password = password;
-            freshUser.FirstName = firstName;
-            freshUser.LastName = lastName;
-            freshUser.City = city;
-            freshUser.Country = country;
-            freshUser.Postcode = postcode;
-            freshUser.Street = street;
-
-            if (await client.RegisterUser("register", freshUser)){
-                return true;
-            }
-
-            return false;
+            var freshUser = new User {
+                Email = email,
+                Password = password,
+                FirstName = firstName,
+                LastName = lastName,
+                City = city,
+                Country = country,
+                Postcode = postcode,
+                Street = street
+            };
+            return client.RegisterUser("register", freshUser);
         }
 
-        public bool IsAlreadyInUse(string email){
+        public bool IsAlreadyInUse(string email) {
             User first = ServerContext.Users.FirstOrDefault(user => user.Email.Equals(email));
-            if (first == null){
+            if (first == null) {
                 return false;
             }
-            else{
-                return true;
-            }
+
+            return true;
         }
     }
 }

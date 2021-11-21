@@ -10,84 +10,102 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Server.ClientConnection{
-    public class Server : IServer{
+namespace Server.ClientConnection {
+    public class Server : IServer {
         private static IPAddress ip = IPAddress.Parse("127.0.0.1");
         private TcpListener listener = new(ip, 5000);
         private static readonly HttpClient client = new HttpClient();
 
-        public async Task RunServer(){
+        public async Task RunServer() {
             Console.WriteLine("Server runs");
 
             listener.Start();
-            while (true){
-                TcpClient tcpClient = listener.AcceptTcpClient();
+            while (true) {
+                var tcpClient = listener.AcceptTcpClient();
                 new Thread(async () => {
-                    NetworkStream stream = tcpClient.GetStream();
+                    await using var stream = tcpClient.GetStream();
                     //size
-                    byte[] sizeFromServer = new byte[1024];
-                    await stream.ReadAsync(sizeFromServer, 0, sizeFromServer.Length);
+                    var sizeFromServer = new byte[1024];
+                    stream.Read(sizeFromServer, 0, sizeFromServer.Length);
                     int sizeFromServerRead = BitConverter.ToInt32(sizeFromServer);
 
-                    //type 
-                    byte[] typeFromServer = new byte[1024];
-                    int bytesRead = await stream.ReadAsync(typeFromServer, 0, typeFromServer.Length);
-                    string typeFromServerRead = Encoding.ASCII.GetString(typeFromServer, 0, bytesRead);
-
-                    //response
-                    byte[] objectFromClient = new byte[sizeFromServerRead];
+                    //readingObject
+                    var objectFromClient = new byte[sizeFromServerRead];
                     await stream.ReadAsync(objectFromClient, 0, sizeFromServerRead);
-                    string objectFromClientRead = Encoding.ASCII.GetString(objectFromClient, 0, sizeFromServerRead);
+                    var objectFromClientRead = Encoding.ASCII.GetString(objectFromClient, 0, sizeFromServerRead);
 
-
-                    switch (typeFromServerRead){
-                        case ("register"):
-                            await PostUser(objectFromClientRead);
-                            break;
-                        case ("login"):
-                            await ValidateUser(objectFromClientRead);
-                            break;
-                    }
+                    //type 
+                    var typeFromServer = new byte[1024];
+                    int bytesRead = stream.Read(typeFromServer, 0, typeFromServer.Length);
+                    var typeFromServerRead = Encoding.ASCII.GetString(typeFromServer, 0, bytesRead);
+                    
+                    await CallCorrectMethod(JsonSerializer.Deserialize<string>(typeFromServerRead),
+                        objectFromClientRead, stream);
                 }).Start();
             }
         }
 
-        static async Task<bool> PostUser(string user){
-            Console.WriteLine("Post method runs");
+        private async Task CallCorrectMethod(string type, string user, NetworkStream stream) {
+            switch (type) {
+                case ("register"):
+                    await PostUser(user, stream);
+                    break;
+                case ("login"):
+                    await ValidateUser(user, stream);
+                    break;
+            }
+        }
+
+        private async Task ClientCallback(Object objectToClient, NetworkStream stream) {
+            var objectToClientSerialized = JsonSerializer.Serialize(objectToClient);
+            var objectToClientInBytes = Encoding.ASCII.GetBytes(objectToClientSerialized);
+
+            //size
+            int size = Encoding.ASCII.GetByteCount(objectToClientSerialized);
+            var sizeToClientInBytes = BitConverter.GetBytes(size);
+
+            try {
+                await stream.WriteAsync(sizeToClientInBytes, 0, sizeToClientInBytes.Length);
+                await stream.WriteAsync(objectToClientInBytes, 0, objectToClientSerialized.Length);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        private async Task PostUser(string user, NetworkStream stream) {
             StringContent content = new StringContent(
                 user,
                 Encoding.UTF8,
                 "application/json"
             );
             HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/users/register", content);
-            if (!response.IsSuccessStatusCode){
+            if (!response.IsSuccessStatusCode) {
                 Console.WriteLine("Error");
                 throw new Exception($"Error: {response.StatusCode}, {response.ReasonPhrase}");
             }
 
-            Console.WriteLine("success");
-            return true;
+            Console.WriteLine($"User {user} registered successfully");
+            await ClientCallback(true, stream);
         }
 
-        static async Task<string> ValidateUser(string user)
-        {
+        private async Task ValidateUser(string user, NetworkStream stream) {
             Console.WriteLine("Validating user /server");
             StringContent content = new StringContent(
                 user,
                 Encoding.UTF8,
                 "application/json"
-                );
-            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/users/login",content);
-            if (!response.IsSuccessStatusCode)
-            {
+            );
+            HttpResponseMessage response = await client.PostAsync("http://localhost:8080/api/users/login", content);
+            if (!response.IsSuccessStatusCode) {
                 Console.WriteLine("Server error");
                 throw new Exception($"Error: {response.StatusCode}, {response.ReasonPhrase}");
             }
 
             Console.WriteLine("success");
             string userAsJson = await response.Content.ReadAsStringAsync();
-            return userAsJson;
-
+            await ClientCallback(userAsJson, stream);
         }
     }
 }
