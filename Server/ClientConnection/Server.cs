@@ -23,7 +23,9 @@ namespace Server.ClientConnection {
             listener.Start();
             while (true) {
                 var tcpClient = listener.AcceptTcpClient();
+                Console.WriteLine("while");
                 new Thread(async () => {
+                    Console.WriteLine("connection accepted");
                     await using var stream = tcpClient.GetStream();
                     //size
                     var sizeFromServer = new byte[1024];
