@@ -1,4 +1,4 @@
-﻿@page "/movielist"
+﻿@page "/movielist/{confirmationMessage}"
 @namespace ABDOTClient.Pages.Administration
 @inject NavigationManager NavigationManager
 @using ABDOTClient.Model
@@ -6,7 +6,7 @@
 
 @inject IMovieService CloudMovieService
 
-
+<p style="color: green;">@confirmationMessage</p>
 @if (moviesToShow == null)
 {
     <p>
@@ -59,7 +59,7 @@ else
                 <td>
                     @foreach (var actor in item.Cast)
                     {
-                        @actor
+                        @actor.Name
                         <br/>
                     }
                 </td>
@@ -85,6 +85,7 @@ else
     private IList<Movie> movies;
     private IList<Movie> moviesToShow;
     private IMovieService MovieService = new CloudMovieService();
+    [Parameter]private  string confirmationMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

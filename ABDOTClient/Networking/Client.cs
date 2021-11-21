@@ -73,5 +73,13 @@ namespace ABDOTClient.Networking {
             var user = JsonSerializer.Deserialize<User>(response);
             return user;
         }
+
+        public bool AddMovie(Movie movie)
+        {
+            ServerRequest("addmovie",movie);
+            var response = ServerResponse();
+            var responseToClient = JsonSerializer.Deserialize<bool>(response);
+            return responseToClient;
+        }
     }
 }

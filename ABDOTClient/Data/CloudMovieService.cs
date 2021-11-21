@@ -1,26 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ABDOTClient.Factories;
 using ABDOTClient.Model;
+using ABDOTClient.Networking;
+using ABDOTClient.Persistence;
 
 namespace ABDOTClient.Data
 {
     public class CloudMovieService : IMovieService
     {
         private IList<Movie> movies;
+        private ServerContext ServerContext;
+        private Client client;
 
         public CloudMovieService()
         {
-            Seed();
+            ServerContext = new ServerContext();
+            client = new Client();
         }
         public async Task<IList<Movie>> GetAllAsync()
         {
             return movies;
         }
 
-        public Task AddMovieAsync(Movie movie)
+        public async Task<bool> AddMovieAsync(Movie movie)
         {
-            throw new System.NotImplementedException();
+           return ClientFactory.GetClient().AddMovie(movie);
         }
 
         public Task UpdateMovieAsync(Movie movie)
@@ -54,7 +60,7 @@ namespace ABDOTClient.Data
                 Year = 2005,
                 Title = "King Kong",
                 PosterSrc = "/images/king_kong.jpg",
-                Cast = new List<string>(),
+                Cast = new List<Actor>(),
 
             },
             new Movie
@@ -64,7 +70,7 @@ namespace ABDOTClient.Data
                 Director = "Robert Zemeckis",
                 Genre = "Drama / Comedy",
                 Year = 2004,
-                Cast = new List<string>(),
+                Cast = new List<Actor>(),
                 Description = "The life story of Forrest, a boy with a low IQ with paralysis, who becomes a billionaire and a hero of the Vietnam War.",
                 Language = "English",
                 Length = 186,
@@ -74,7 +80,7 @@ namespace ABDOTClient.Data
             {
                 Id = 3,
                 Title = "Shawshank Redemption",
-                Cast = new List<string>(),
+                Cast = new List<Actor>(),
                 Description = "Adaptation of a Stephen King short story. A banker who is wrongly sentenced to life imprisonment, tries to survive in a brutal prison world. ",
                 Director = "Frank Darabont",
                 Genre = "Drama",
@@ -87,7 +93,7 @@ namespace ABDOTClient.Data
             {
                 Id = 4,
                 Title = "Leon",
-                Cast = new List<string>(),
+                Cast = new List<Actor>(),
                 Description = "A paid murderer saves a 12-year-old girl whose family has been killed by corrupt policemen. ",
                 Genre = "Drama, Criminal Story",
                 Director = "Luc Besson",
@@ -99,7 +105,7 @@ namespace ABDOTClient.Data
             new Movie
             {
                 Id=5,
-                Cast = new List<string>(),
+                Cast = new List<Actor>(),
                 Description = "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
                 Title = "Shrek",
                 Director = "Andrew Adamson / Vicky Jenson",
@@ -112,7 +118,7 @@ namespace ABDOTClient.Data
             new Movie
             {
                 Id = 6,
-                Cast = new List<string>(),
+                Cast = new List<Actor>(),
                 Description = "Computer hacker Neo learns from mysterious rebels that the world he lives in is just an image sent to his brain by robots.",
                 Director = "Lilly Wachowski, Lana Wachowski",
                 Genre = "Action, Sci-Fi",
@@ -124,21 +130,21 @@ namespace ABDOTClient.Data
             }
         };
         movies = movieArray.ToList();
-        movies[0].Cast.Add("Naomi Watts");
-        movies[0].Cast.Add("Jack Black");
-        movies[0].Cast.Add("Adrien Brody");
-        movies[1].Cast.Add("Tom Hanks");
-        movies[2].Cast.Add("Morgan Freeman");
-        movies[2].Cast.Add("Tim Robbins");
-        movies[3].Cast.Add("Jean Reno");
-        movies[3].Cast.Add("Gary Oldman");
-        movies[3].Cast.Add("Natalie Portman");
-        movies[4].Cast.Add("Mike Myers");
-        movies[4].Cast.Add("Eddie Murphy");
-        movies[4].Cast.Add("Cameron Diaz");
-        movies[5].Cast.Add("Keanu Reeves");
-        movies[5].Cast.Add("Carrie-Anne Moss");
-        movies[5].Cast.Add("Laurence Fishburne");
+        movies[0].Cast.Add(new Actor("Naomi Watts"));
+        movies[0].Cast.Add(new Actor("Jack Black"));
+        movies[0].Cast.Add(new Actor("Adrien Brody"));
+        movies[1].Cast.Add(new Actor("Tom Hanks"));
+        movies[2].Cast.Add(new Actor("Morgan Freeman"));
+        movies[2].Cast.Add(new Actor("Tim Robbins"));
+        movies[3].Cast.Add(new Actor("Jean Reno"));
+        movies[3].Cast.Add(new Actor("Gary Oldman"));
+        movies[3].Cast.Add(new Actor("Natalie Portman"));
+        movies[4].Cast.Add(new Actor("Mike Myers"));
+        movies[4].Cast.Add(new Actor("Eddie Murphy"));
+        movies[4].Cast.Add(new Actor("Cameron Diaz"));
+        movies[5].Cast.Add(new Actor("Keanu Reeves"));
+        movies[5].Cast.Add(new Actor("Carrie-Anne Moss"));
+        movies[5].Cast.Add(new Actor("Laurence Fishburne"));
         
 
     }
