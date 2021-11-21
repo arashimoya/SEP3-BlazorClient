@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ABDOTClient.Factories;
 using ABDOTClient.Model;
 using ABDOTClient.Networking;
 using ABDOTClient.Persistence;
@@ -10,12 +11,10 @@ namespace ABDOTClient.Data {
     public class UserServiceImpl : IUserService {
         private List<User> users;
         private ServerContext ServerContext;
-        private Client client;
 
         public UserServiceImpl() {
             ServerContext = new ServerContext();
-            client = new Client();
-            client.RunClient();
+            Console.WriteLine("getting client");
         }
 
 
@@ -24,7 +23,7 @@ namespace ABDOTClient.Data {
             user.Email = email;
             user.Password = password;
             Console.WriteLine(email + password);
-            var loggedUser = client.LoginUser("login", user);
+            var loggedUser = ClientFactory.GetClient().LoginUser("login", user);
             return loggedUser;
         }
 
@@ -41,7 +40,7 @@ namespace ABDOTClient.Data {
                 Postcode = postcode,
                 Street = street
             };
-            return client.RegisterUser("register", freshUser);
+            return ClientFactory.GetClient().RegisterUser("register", freshUser);
         }
 
         public bool IsAlreadyInUse(string email) {

@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using ABDOTClient.Authentication
+@using ABDOTClient.Factories
 @namespace ProgrammeComponent
 
 <BlazorStrap.BSCarousel NumberOfItems="@items.Count">
@@ -52,6 +53,9 @@
 </div>
 
 @code{
+    protected async override Task OnInitializedAsync(){
+        ClientFactory.GetClient();
+    }
 
     IList<Item> items = new List<Item>
     {

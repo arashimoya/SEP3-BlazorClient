@@ -12,7 +12,7 @@ namespace ABDOTClient.Networking {
         private TcpClient client;
         private NetworkStream stream;
 
-        public void RunClient() {
+        public Client() {
             client = new TcpClient("127.0.0.1", 5000);
             stream = client.GetStream();
             Console.WriteLine("client running");
@@ -57,7 +57,6 @@ namespace ABDOTClient.Networking {
                 Console.WriteLine(e.Message);
             }
 
-            client.Close();
             Console.WriteLine("Client closed");
             return responseFromServerRead;
         }
