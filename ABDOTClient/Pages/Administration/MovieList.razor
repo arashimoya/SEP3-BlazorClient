@@ -85,7 +85,7 @@ else
     private IList<Movie> movies;
     private IList<Movie> moviesToShow;
     private IMovieService MovieService = new CloudMovieService();
-    [Parameter]private  string confirmationMessage { get; set; }
+    [Parameter]public  string confirmationMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

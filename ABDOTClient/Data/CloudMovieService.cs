@@ -26,7 +26,7 @@ namespace ABDOTClient.Data
 
         public async Task<bool> AddMovieAsync(Movie movie)
         {
-           return ClientFactory.GetClient().AddMovie(movie);
+           return ClientFactory.GetClient().AddMovie("addmovie",movie);
         }
 
         public Task UpdateMovieAsync(Movie movie)

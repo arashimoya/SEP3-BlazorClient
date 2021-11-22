@@ -7,18 +7,18 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 
-namespace ABDOTClient.Networking {
-    public class Client {
+namespace ABDOTClient.Networking{
+    public class Client{
         private TcpClient client;
         private NetworkStream stream;
 
-        public Client() {
+        public Client(){
             client = new TcpClient("127.0.0.1", 5000);
             stream = client.GetStream();
             Console.WriteLine("client running");
         }
 
-        private void ServerRequest(string typeToServer, Object objectToServer) {
+        private void ServerRequest(string typeToServer, Object objectToServer){
             //object
             string objectToServerSerialized = JsonSerializer.Serialize(objectToServer);
             byte[] objectToServerInBytes = Encoding.ASCII.GetBytes(objectToServerSerialized);
@@ -40,9 +40,9 @@ namespace ABDOTClient.Networking {
 
         //Universal method for receiving callback from server always returns 
         //JSON string with object from the server
-        private string ServerResponse() {
+        private string ServerResponse(){
             var responseFromServerRead = "";
-            try {
+            try{
                 //size
                 var sizeFromServer = new byte[1024];
                 stream.Read(sizeFromServer, 0, sizeFromServer.Length);
@@ -53,7 +53,7 @@ namespace ABDOTClient.Networking {
                 stream.Read(responseFromServer, 0, responseFromServer.Length);
                 responseFromServerRead = Encoding.ASCII.GetString(responseFromServer, 0, responseFromServer.Length);
             }
-            catch (Exception e) {
+            catch (Exception e){
                 Console.WriteLine(e.Message);
             }
 
@@ -61,22 +61,21 @@ namespace ABDOTClient.Networking {
             return responseFromServerRead;
         }
 
-        public bool RegisterUser(string typeToServer, Object toServer) {
+        public bool RegisterUser(string typeToServer, Object toServer){
             ServerRequest(typeToServer, toServer);
             var response = ServerResponse();
             return JsonSerializer.Deserialize<bool>(response);
         }
 
-        public User LoginUser(string typeToServer, Object toServer) {
+        public User LoginUser(string typeToServer, Object toServer){
             ServerRequest(typeToServer, toServer);
             var response = ServerResponse();
             var user = JsonSerializer.Deserialize<User>(response);
             return user;
         }
 
-        public bool AddMovie(Movie movie)
-        {
-            ServerRequest("addmovie",movie);
+        public bool AddMovie(string typeToServer, Object movie){
+            ServerRequest(typeToServer, movie);
             var response = ServerResponse();
             var responseToClient = JsonSerializer.Deserialize<bool>(response);
             return responseToClient;
