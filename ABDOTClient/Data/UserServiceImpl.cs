@@ -35,7 +35,7 @@ namespace ABDOTClient.Data {
                 Password = password,
                 FirstName = firstName,
                 LastName = lastName,
-                City = city,
+                Settlement = city,
                 Country = country,
                 Postcode = postcode,
                 Street = street
