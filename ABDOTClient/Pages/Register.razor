@@ -68,20 +68,21 @@
     private string errorMessage;
     private string confirmationMessage;
 
-    public async Task Cancel(){
+    public async Task Cancel() {
         NavigationManager.NavigateTo("/");
     }
 
-    public async Task PerformRegister(){
+    public async Task PerformRegister() {
         errorMessage = " ";
         Console.WriteLine("Registering...");
-        try{
+        try {
             Console.WriteLine("Still Registering...");
             Console.WriteLine(country + city + email + password);
 
-           if  (await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
-                confirmPassword, firstName, lastName, streetAndHouseNumber, city, postcode, country)){
-                confirmationMessage = "user registered";
+            if (await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateRegister(email, password,
+                confirmPassword, firstName, lastName, streetAndHouseNumber, city, postcode, country)) {
+                //TODO pop up with confirmation message 
+                NavigationManager.NavigateTo("/");
             }
 
             email = "";
@@ -93,14 +94,12 @@
             city = "";
             postcode = "";
             country = "";
-            Console.WriteLine("Success");
-            
         }
-        catch (Exception e){
+        catch (Exception e) {
             errorMessage = e.Message;
         }
     }
-    
-    
+
+
 
 }
