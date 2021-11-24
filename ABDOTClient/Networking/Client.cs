@@ -10,17 +10,19 @@ using ABDOTClient.Model;
 
 namespace ABDOTClient.Networking {
     public class Client {
-        private UserService userService;
-        private MovieService movieService;
+        private IUserRequest IuserRequest;
+        private IMovieRequest ImovieRequest;
 
         public Client() {
-            userService = new UserService();
-            movieService = new MovieService();
+            IuserRequest = new UserRequestImpl();
+            ImovieRequest = new MovieRequestImpl();
         }
 
+        
+        //please make the methods in order of the classes
         public async Task<bool> RegisterUser(User user) {
             try {
-                return await userService.RegisterUser(user);
+                return await IuserRequest.RegisterUser(user);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -30,7 +32,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<User> LoginUser(User user) {
             try {
-                return await userService.Login(user);
+                return await IuserRequest.Login(user);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -40,7 +42,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<bool> AddMovie(Movie movie) {
             try {
-                return await movieService.AddMovie(movie);
+                return await ImovieRequest.AddMovie(movie);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
