@@ -42,7 +42,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<bool> AddMovie(Movie movie) {
             try {
-                return await ImovieRequest.AddMovie(movie);
+                return await ImovieRequest.CreateMovie(movie);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
