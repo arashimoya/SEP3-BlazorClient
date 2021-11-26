@@ -2,7 +2,7 @@
 
 namespace ABDOTClient.Model
 {
-    public class Employee : Person
+    public class Employee : User
     {
         public int Role { get; set; }
         public string CPR { get; set; }

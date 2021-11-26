@@ -2,25 +2,32 @@
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 
-namespace ABDOTClient.Networking.Requests {
-    public class PersonRequest : IPersonRequest {
-        public Task<bool> CreatePerson(Person person) {
+namespace ABDOTClient.Data
+{
+    public class EmployeeService : IEmployeeService
+    {
+        public Task<bool> CreateEmployee(Employee employee)
+        {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> EditPerson(Person person) {
+        public Task<bool> EditEmployee(Employee employee)
+        {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeletePerson(Person person) {
+        public Task<bool> DeleteEmployee(Employee employee)
+        {
             throw new System.NotImplementedException();
         }
 
-        public Task<Person> GetPerson(int id) {
+        public Task<Employee> GetEmployee(int Employeeid)
+        {
             throw new System.NotImplementedException();
         }
 
-        public Task<List<Person>> GetAllPerson() {
+        public Task<List<Employee>> GetAllEmployees()
+        {
             throw new System.NotImplementedException();
         }
     }
