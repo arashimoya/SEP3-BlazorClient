@@ -7,5 +7,7 @@ namespace ABDOTClient.Model
         public int Id { get; set; }
         public string City { get; set; }
         public IList<Hall> Halls { get; set; }
+        
+        public Program Program { set; get; }
     }
 }
