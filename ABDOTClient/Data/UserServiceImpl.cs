@@ -23,7 +23,7 @@ namespace ABDOTClient.Data {
             user.Email = email;
             user.Password = password;
             Console.WriteLine(email + password);
-            var loggedUser = ClientFactory.GetClient().LoginUser("login", user);
+            var loggedUser = await ClientFactory.GetClient().LoginUser(user);
             return loggedUser;
         }
 
@@ -40,7 +40,7 @@ namespace ABDOTClient.Data {
                 Postcode = postcode,
                 Street = street
             };
-            return ClientFactory.GetClient().RegisterUser("register", freshUser);
+            return await ClientFactory.GetClient().RegisterUser( freshUser);
         }
 
         public bool IsAlreadyInUse(string email) {
