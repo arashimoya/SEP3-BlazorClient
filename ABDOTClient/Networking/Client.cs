@@ -18,7 +18,10 @@ namespace ABDOTClient.Networking {
         private IPlayRequest playRequest;
         private IProgramRequest programRequest;
         private ISeatRequest seatRequest;
-        
+        private ITicketRequest ticketRequest;
+        private IActorRequest actorRequest;
+        private IEmployeeRequest employeeRequest;
+        private IHallRequest hallRequest;
 
         public Client() {
             userRequest = new UserRequestImpl();
@@ -26,6 +29,10 @@ namespace ABDOTClient.Networking {
             playRequest = new PlayRequest();
             programRequest = new ProgramRequest();
             seatRequest = new SeatRequest();
+            ticketRequest = new TicketService();
+            actorRequest = new ActorService();
+            employeeRequest = new EmployeeService();
+            hallRequest = new HallService();
         }
 
 
@@ -285,6 +292,205 @@ namespace ABDOTClient.Networking {
             }
         }
 
-       
+        public async Task<bool> AddTicket(Ticket ticket) {
+            try {
+                return await ticketRequest.Create(ticket);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> EditTicket(Ticket ticket) {
+            try {
+                return await ticketRequest.Edit(ticket);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteTicket(Ticket ticket) {
+            try {
+                return await ticketRequest.Delete(ticket);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<Ticket> GetTicket(int ticketId) {
+            try {
+                return await ticketRequest.GetTicket(ticketId);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<List<Ticket>> GetAllTickets() {
+            try {
+                return await ticketRequest.GetAllTicktets();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        
+        public async Task<bool> AddActor(Actor actor) {
+            try {
+                return await actorRequest.CreateActor(actor);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> EditActor(Actor actor) {
+            try {
+                return await actorRequest.EditActor(actor);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteActor(Actor actor) {
+            try {
+                return await actorRequest.DeleteActor(actor);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<Actor> GetActor(int actorId) {
+            try {
+                return await actorRequest.GetActor(actorId);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<List<Actor>> GetAllActors() {
+            try {
+                return await actorRequest.GetAllActors();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        
+        public async Task<bool> AddHall(Hall hall) {
+            try {
+                return await hallRequest.CreateHall(hall);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> EditHall(Hall hall) {
+            try {
+                return await hallRequest.EditHall(hall);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteHall(Hall hall) {
+            try {
+                return await hallRequest.DeleteHall(hall);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<Hall> GetHall(int hallId) {
+            try {
+                return await hallRequest.GetHall(hallId);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<List<Hall>> GetAllHalls() {
+            try {
+                return await hallRequest.GetAllHalls();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        public async Task<bool> AddEmployee(Employee employee) {
+            try {
+                return await employeeRequest.CreateEmployee(employee);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> EditEmployee(Employee employee) {
+            try {
+                return await employeeRequest.EditEmployee(employee);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteEmployee(Employee employee) {
+            try {
+                return await employeeRequest.DeleteEmployee(employee);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<Employee> GetEmployee(int employeeId) {
+            try {
+                return await employeeRequest.GetEmployee(employeeId);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<List<Employee>> GetAllEmployees() {
+            try {
+                return await employeeRequest.GetAllEmployees();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+        
+        
     }
 }

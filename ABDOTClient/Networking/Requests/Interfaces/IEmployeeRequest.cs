@@ -4,7 +4,7 @@ using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
 {
-    public interface IEmployeeService
+    public interface IEmployeeRequest
     {
         Task<bool> CreateEmployee(Employee employee);
 

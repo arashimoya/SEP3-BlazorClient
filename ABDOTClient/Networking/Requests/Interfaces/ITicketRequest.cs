@@ -4,7 +4,7 @@ using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
 {
-    public interface ITicketService
+    public interface ITicketRequest
     {
         Task<bool> Create(Ticket ticket);
 
