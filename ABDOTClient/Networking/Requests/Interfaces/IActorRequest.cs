@@ -4,7 +4,7 @@ using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
 {
-    public interface IActorService
+    public interface IActorRequest
     {
         Task<bool> CreateActor(Actor actor);
 

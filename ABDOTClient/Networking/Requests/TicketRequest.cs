@@ -4,7 +4,7 @@ using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
 {
-    public class TicketService : ITicketService
+    public class TicketService : ITicketRequest
     {
         public Task<bool> Create(Ticket ticket) {
             throw new System.NotImplementedException();
