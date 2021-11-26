@@ -1,0 +1,107 @@
+﻿@page "/ticketlist"
+@namespace ABDOTClient.Pages.Administration
+@inject NavigationManager NavigationManager
+@using ABDOTClient.Model
+@using Data
+
+@inject IMovieService CloudMovieService
+
+
+@if (ticketsToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+} else if (!ticketsToShow.Any()){
+    <p>
+        <em>No Movie items exist. Please add some</em>
+    </p>
+}
+else
+{
+    <div class="container " style="background-color: white">
+    <h3 style="color:black">TicketList</h3>
+        <p style="color:black">for personel only</p>
+        <div class="row">
+           
+        </div>
+        </div>
+    <table class="table" style="color:black; border-color: black">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Play ID</th>
+            <th>Movie</th>
+            <th>Time</th>
+            <th>Branch</th>
+            <th>Hall</th>
+            <th>Seat</th>
+            <th>Customer's name</th>
+            
+                <th>Remove</th>
+                <th>Edit</th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in ticketsAll)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Play.Id</td>
+                <td>@item.Play.Movie.Title</td>
+                <td>@item.Play.DateTime</td>
+                <td>@item.Branch.City</td>
+                <td>@item.Hall</td>
+                <td>@item.Seat</td>
+                
+                
+                    <td>
+                        <button @onclick="@(() => RemoveTicket(item))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => Edit(item.Id))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+}
+@code {
+    private IList<Ticket> ticketsAll;
+    private IList<Ticket> ticketsToShow;
+    private ITicketService TicketService = new TicketCloudService();
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        ticketsAll = new List<Ticket>();
+        if (!ticketsAll.Any())
+        {
+            ticketsAll = await TicketService.GetAllAsync();
+        }
+        ticketsToShow = ticketsAll;
+
+
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"EditTicket/{id}");
+    }
+
+    private void RemoveTicket(Ticket ticket)
+    {
+        TicketService.RemoveTicketAsync(ticket);
+    }
+
+    
+
+}

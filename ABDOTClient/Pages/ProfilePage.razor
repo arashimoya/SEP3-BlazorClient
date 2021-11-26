@@ -1,4 +1,10 @@
-﻿@page "/profile"
+﻿@page "/profile/"
+@using ABDOTClient.Model
+@using ABDOTClient.Data
+@using ABDOTClient.Authentication
+@inject IUserService UserService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 <style>
     .profile-pic{
     width: 50%;
@@ -57,11 +63,11 @@
             
             <img class="profile-pic" src="images/prof-pic.svg" alt="prof-pic"/>
             <div class="profile-name">
-                Name Surname
+                <text>@user.FirstName @user.LastName</text>
             </div>
-            <a href="/">
+            <button @onclick="@(() => Edit(user.Id))">
                 <i class="oi oi-pencil" style="color:white"/>
-            </a>
+            </button>
             
         </div>
         <div class="col-lg-9 col-md-12 profile-body">
@@ -78,10 +84,10 @@
             </div>
             <div class="row">
                 <div class="col-6 profile-info">
-                    chujciwdupe@gmail.com
+                    @user.Email
                 </div>
                 <div class="col-6 profile-info">
-                    <span class="password"> password123</span>
+                    <span class="password"> @user.Password</span>
                 </div>
             </div>
             <div class="row">
@@ -97,10 +103,10 @@
             </div>
             <div class="row">
                 <div class="col-6 profile-info">
-                    -_____-
+                    @user.Street
                 </div>
                 <div class="col-6 profile-info">
-                    Somewhere in the arctic
+                    @user.Settlement
                 </div>
             </div>
             <div class="row">
@@ -113,10 +119,10 @@
             </div>
             <div class="row">
                 <div class="col-6 profile-info">
-                    69420
+                    @user.Postcode
                 </div>
                 <div class="col-6 profile-info">
-                    Greenland
+                    @user.Country
                 </div>
             </div>
             
@@ -133,5 +139,17 @@
 
 
 @code {
-    
+    private User user;
+    [Parameter] public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        user = await UserService.GetUser(Id);
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"EditUser/{id}");
+    }
+
 }
