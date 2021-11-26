@@ -28,6 +28,8 @@ namespace ABDOTClient.Networking {
             programRequest = new ProgramRequest();
             seatRequest = new SeatRequest();
         }
+        
+        
 
 
         //please make the methods in order of the classes

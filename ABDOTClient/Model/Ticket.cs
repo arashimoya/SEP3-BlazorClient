@@ -4,12 +4,10 @@ namespace ABDOTClient.Model
 {
     public class Ticket
     {
-        public int id { set; get; }
-        public Movie movie { set; get; }
-        public Branch branch { set; get; }
-        public Seat seat { set; get; }
-        public Customer customer { set; get; }
-
-       
+        public int Id { set; get; }
+        public Play Play { set; get; }
+        public Branch Branch { set; get; }
+        public Seat Seat { set; get; }
+        public User User { set; get; }
     }
 }
