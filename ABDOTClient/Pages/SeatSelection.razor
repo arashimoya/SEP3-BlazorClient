@@ -94,115 +94,135 @@
   
   <div class="screen"></div>
 
-  @* <div class="seat-container"> *@
-  @*   <div class="row-container:DDD"> *@
-  @*     <div class="row"> *@
-  @*       <div class="seat "  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[0]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[1]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[2]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[3]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[4]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[5]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[6]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[7]) )"></div> *@
-  @*     </div> *@
-  @*     <div class="row"> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[8]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[9]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[10]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[11]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[12]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[13]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[14]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[15]) )"></div> *@
-  @*     </div> *@
-  @*     <div class="row"> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[16]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[17]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[18]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[19]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[20]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[21]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[22]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[23]) )"></div> *@
-  @*     </div> *@
-  @*     <div class="row"> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[24]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[25]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[26]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[27]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[28]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[29]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[30]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[31]) )"></div> *@
-  @*     </div> *@
-  @*     <div class="row"> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[32]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[33]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[34]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[35]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[36]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[37]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[38]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[39]) )"></div> *@
-  @*     </div> *@
-  @*     <div class="row"> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[40]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[41]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[42]) )"></div> *@
-  @*       <div class="seat"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[43]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[44]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[45]) )"></div> *@
-  @*       <div class="seat occupied"  @onclick="@(() => OnClick.InvokeAsync(hall.Seats[46]) )"></div> *@
-  @*       <div class="seat" @onclick=" @(() => OnClick.InvokeAsync(hall.Seats[47]) ); "></div> *@
-  @*     </div> *@
-  @*   </div> *@
-  @* </div> *@
+  <div class="seat-container">
+    <div class="row-container:DDD">
+      <div class="row">
+        <div class="seat @selectColor[0]"  @onclick="() => SelectSeat(0 )"></div>
+        <div class="seat @selectColor[1]"  @onclick="() => SelectSeat(1 )"></div>
+        <div class="seat @selectColor[2]"  @onclick="() => SelectSeat(2 )"></div>
+        <div class="seat @selectColor[3]"  @onclick="() => SelectSeat(3 )"></div>
+        <div class="seat @selectColor[4]"  @onclick="() => SelectSeat(4 )"></div>
+        <div class="seat @selectColor[5]"  @onclick="() => SelectSeat(5 )"></div>
+        <div class="seat @selectColor[6]"  @onclick="() => SelectSeat(6 )"></div>
+        <div class="seat @selectColor[7]"  @onclick="() => SelectSeat(7 )"></div>
+      </div>
+      <div class="row">
+        <div class="seat @selectColor[8]"  @onclick="() => SelectSeat(8 )"></div>
+        <div class="seat @selectColor[9]"  @onclick="() => SelectSeat(9 )"></div>
+        <div class="seat @selectColor[10]"  @onclick="() => SelectSeat(10)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(11)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(12)"></div>
+        <div class="seat @selectColor[13]"  @onclick="() => SelectSeat(13)"></div>
+        <div class="seat @selectColor[14]"  @onclick="() => SelectSeat(14)"></div>
+        <div class="seat @selectColor[15]"  @onclick="() => SelectSeat(15)"></div>
+      </div>
+      <div class="row">
+        <div class="seat @selectColor[16]"  @onclick="() => SelectSeat(16)"></div>
+        <div class="seat @selectColor[17]"  @onclick="() => SelectSeat(17)"></div>
+        <div class="seat @selectColor[18]"  @onclick="() => SelectSeat(18)"></div>
+        <div class="seat @selectColor[19]"  @onclick="() => SelectSeat(19)"></div>
+        <div class="seat @selectColor[20]"  @onclick="() => SelectSeat(20)"></div>
+        <div class="seat @selectColor[21]"  @onclick="() => SelectSeat(21)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(22)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(23)"></div>
+      </div>
+      <div class="row">
+        <div class="seat @selectColor[24]"  @onclick="() => SelectSeat(24)"></div>
+        <div class="seat @selectColor[25]"  @onclick="() => SelectSeat(25)"></div>
+        <div class="seat @selectColor[26]"  @onclick="() => SelectSeat(26)"></div>
+        <div class="seat @selectColor[27]"  @onclick="() => SelectSeat(27)"></div>
+        <div class="seat @selectColor[28]"  @onclick="() => SelectSeat(28)"></div>
+        <div class="seat @selectColor[29]"  @onclick="() => SelectSeat(29)"></div>
+        <div class="seat @selectColor[30]"  @onclick="() => SelectSeat(30)"></div>
+        <div class="seat @selectColor[31]"  @onclick="() => SelectSeat(31)"></div>
+      </div>
+      <div class="row">
+        <div class="seat @selectColor[32]"  @onclick="() => SelectSeat(32)"></div>
+        <div class="seat @selectColor[33]"  @onclick="() => SelectSeat(33)"></div>
+        <div class="seat @selectColor[34]"  @onclick="() => SelectSeat(34)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(35)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(36)"></div>
+        <div class="seat @selectColor[37]"  @onclick="() => SelectSeat(37)"></div>
+        <div class="seat @selectColor[38]"  @onclick="() => SelectSeat(38)"></div>
+        <div class="seat @selectColor[39]"  @onclick="() => SelectSeat(39)"></div>
+      </div>
+      <div class="row">
+        <div class="seat @selectColor[40]"  @onclick="() => SelectSeat(40)"></div>
+        <div class="seat @selectColor[41]"  @onclick="() => SelectSeat(41)"></div>
+        <div class="seat @selectColor[42]"  @onclick="() => SelectSeat(42)"></div>
+        <div class="seat @selectColor[43]"  @onclick="() => SelectSeat(43)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(44)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(45)"></div>
+        <div class="seat occupied"  @onclick="() => SelectSeat(46)"></div>
+        
+        <div class="seat @selectColor[47]" @onclick="() => SelectSeat(47)"></div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
 @code {
   private Hall hall;
-  // [Parameter] public EventCallback<Seat> OnClick { get; set; }
+  [Parameter] public EventCallback<Seat> OnClick { get; set; }
 
   private bool IsSelected { get; set; } = false;
+  private IList<string> selectColor;
 
 
 
   protected override async Task OnInitializedAsync()
     {
-        // hall = new Hall();
-        // hall.Seats = new List<Seat>();
+      selectColor = new List<string>();
+        hall = new Hall();
+        hall.Seats = new List<Seat>();
         hall.Id = 1;
         if (!hall.Seats.Any())
         {
             Seed();
         }
-        
-        
+    
+
     }
     
   
     private void Seed()
     {
-        // int rows = 6;
-        // int columns = 8;
-        // for (int i = 1; i <= rows; i++)
-        // {
-        //     for (int j = 1; j <= columns; j++)
-        //     {
-        //         Seat seat = new Seat();
-        //         seat.Column = j;
-        //         seat.Row = i;
-        //         seat.Id = i * 10 + j;
-        //         hall.Seats.Add(seat);
-        //     }
-        // }
+        int rows = 6;
+        int columns = 8;
+        for (int i = 1; i <= rows; i++)
+        {
+            for (int j = 1; j <= columns; j++)
+            {
+                Seat seat = new Seat();
+                seat.Column = j;
+                seat.Row = i;
+                seat.Id = i * 10 + j;
+                hall.Seats.Add(seat);
+            }
+        }
+      for (int i = 0; i < hall.Seats.Count; i++)
+      {
+        selectColor.Add("");
+      }
     }
 
-  void SelectSeat()
+  private void ChangeColor(int index)
   {
-    
+    if (selectColor[index] == "")
+    {
+      selectColor[index] = "selected";
+    }
+    else
+    {
+      selectColor[index] = "";
+    }
+  }
+
+  void SelectSeat(int index)
+  {
+    OnClick.InvokeAsync(hall.Seats[index]);
+    ChangeColor(index);
   }
 
     
