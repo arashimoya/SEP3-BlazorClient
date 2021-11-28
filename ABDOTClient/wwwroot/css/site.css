@@ -1,7 +1,8 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&display=swap');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Be Vietnam Pro', sans-serif;
     background-color: #1e1e1e;
     border-color: #1e1e1e;
     color: white;
@@ -308,6 +309,8 @@ img {
 .header-top{
     position:relative;
     margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
 }
 .header-title {
     font-size: 3.5em;
@@ -321,13 +324,17 @@ img {
     font-size: 1.25em;
     line-height: 24px;
     margin-top: -2px;
+    text-align: center;
+    display: flex; 
+    justify-content: center
 }
 .header-info{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     font-weight: 400;
     margin-bottom: 30px;
+    text-align: center;
 }
 header.topic{
     color: #999;

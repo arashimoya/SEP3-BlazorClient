@@ -144,7 +144,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        user = await UserService.GetUser(Id);
+        user = new User();
     }
 
     private void Edit(int id)

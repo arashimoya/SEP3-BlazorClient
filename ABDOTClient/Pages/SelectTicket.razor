@@ -1,41 +1,50 @@
 ﻿@page "/SelectTicket"
 @namespace SelectTicket
+
+@using SeatSelectionComponent
+@using ABDOTClient.Model
+@using Program = ABDOTClient.Model.Program
+<style>
+    .c--background {
+        background: #000 center/cover url(@backgroundSrc) no-repeat;
+    }
+</style>
 <section>
-    <div>
+    <div style="margin-left:100px">
         <p>1. Choose tickets > 2. Payment > 3. Invoice</p>
     </div>
 </section>
 <div class="position-relative">
-    <section class="header">
-        <div class="container">
+    <section class="header" >
+        <div class=" c--background" style="">
             <div class="header-top">
                 <div class="header-title">
-                    MOVIE TITLE
+                    @play.Movie.Title
                 </div>
             </div>
-            <div class="header-text">
-                <div class="header-info">
+            <div class="header-text row">
+                <div class="header-info col-12">
                     <div class="header-topic">
-                        Date:
+                        Date: 
                     </div>
                     <div class="header-description">
-                        DATE AND TIME
+                        @play.DateTime
                     </div>
                 </div>
-                <div class="header-info">
+                <div class="header-info col-12">
                     <div class="header-topic">
                         Tickets:
                     </div>
                     <div class="header-description">
-                        NUMBER OF TICKETS
+                        @ticketAmount
                     </div>
                 </div>
-                <div class="header-info">
+                <div class="header-info col-12">
                     <div class="header-topic">
                         Location:
                     </div>
                     <div class="header-description">
-                        CINEMA NAME CITY, HALL NO.
+                        @play.Branch.City HorizonXX, @play.Hall.Id
                     </div>
                 </div>
             </div>
@@ -72,29 +81,29 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="section-title">
-                                Where would you like to sit?
+                                Selected seats:
                             </div>
                             <div class="section-text">
                                 <div class="seat-select-choice">
                                     <div class="seat-select-choice-key">
-                                        Row
+                                        Seat 1:
                                     </div>
                                     <div class="seat-select-choice-value">
-                                        NUMBER OF THE ROW
+                                        Row: @selectedSeat.Row Column: @selectedSeat.Column
                                     </div>
                                 </div>
                                 <div class="seat-select-choice">
                                     <div class="seat-select-choice-key">
-                                        Seat
+                                        Seat 2:
                                     </div>
                                     <div class="seat-select-choice-value">
-                                        NUMBER OF SEAT
+                                        data
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6" style="background-color:white; color: black">
-                            this where the seat selection will take place
+                        <div class="col-md-6">
+                            <SeatSelection OnClick="ClickHandler"/>
                         </div>
                     </div>
                 </div>
@@ -120,9 +129,82 @@
 
 @code {
     private int ticketAmount;
-    
-    public void goSomewhere()
+    private Play play { get; set; }
+    private string backgroundSrc = "/images/ticket-background.gif";
+    private Seat selectedSeat;
+
+    protected override async Task OnInitializedAsync()
+    {
+        selectedSeat = new Seat();
+        Seed();
+
+    }
+
+    private void ClickHandler(Seat newSeat)
+    {
+        selectedSeat = newSeat;
+    }
+
+    private void goSomewhere()
     {
         throw new NotImplementedException();
+    }
+
+    private void Seed()
+    {
+        play = new Play()
+        {
+            Branch = new Branch()
+            {
+                City = "Aarhus",
+                Halls = new List<Hall>()
+                {
+                    new Hall()
+                    {
+                        Id = 1,
+                        Seats = new List<Seat>()
+                        {
+                            new Seat()
+                            {
+                                Column = 1,
+                                Id = 1,
+                                Row = 1,
+                            }
+                        }
+
+                    },
+
+                },
+                Id = 1,
+                Program = new Program()
+                {
+                    Id = 1,
+                    Plays = new List<Play>(),
+                }
+
+            },
+            DateTime = DateTime.Now,
+            Hall = new Hall()
+            {
+                Id=1,
+                Seats = new List<Seat>(),
+            },
+            Id = 1,
+            Movie = new Movie()
+            {
+                Id = 1,
+                Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
+                Director = "Peter Jackson",
+                Genre = "Adventure, Melodrama, Fantasy",
+                Language = "English",
+                Length = 200,
+                Year = 2005,
+                Title = "King Kong",
+                PosterSrc = "/images/king_kong.jpg",
+                Cast = new List<Actor>(),
+
+            },
+            
+        };
     }
 }
