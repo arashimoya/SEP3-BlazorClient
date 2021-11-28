@@ -47,5 +47,10 @@ namespace ABDOTClient.Data {
 
             return true;
         }
+
+        public async Task<User> GetUser(int id)
+        {
+            return await ClientFactory.GetClient().GetUser(id);
+        }
     }
 }

@@ -28,8 +28,12 @@
             Hello @name!
         </div>
         <p class="actions">
+        <button class="btn-outline-dark" @onclick="GoToProfilePage">My Profile</button>
+        </p>
+        <p class="actions">
             <button class="btn-outline-dark" @onclick="PerformLogout">Log out</button>
         </p>
+        
     </Authorized>
 </AuthorizeView>
 
@@ -39,6 +43,7 @@
     private string confirmationMessage;
     private string errorMessage;
     private string name;
+    private int Id;
     
 
     public async Task Cancel()
@@ -56,6 +61,8 @@
             email = "";
             password = "";
             name = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser.FirstName;
+            Id = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser.Id;
+            
             Console.WriteLine("Success");
         }
         catch (Exception e)
@@ -79,6 +86,11 @@
             errorMessage = e.Message;
         }
         
+    }
+
+    public void GoToProfilePage()
+    {
+        NavigationManager.NavigateTo($"/profile/{Id}");
     }
     
     
