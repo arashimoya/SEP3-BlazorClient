@@ -3,7 +3,7 @@
 
 @using SeatSelectionComponent
 @using ABDOTClient.Model
-@using Program = ABDOTClient.Model.Program
+
 <style>
     .c--background {
         background: #000 center/cover url(@backgroundSrc) no-repeat;
@@ -28,7 +28,7 @@
                         Date: 
                     </div>
                     <div class="header-description">
-                        @play.DateTime
+                        @* @play.DateTime *@
                     </div>
                 </div>
                 <div class="header-info col-12">
@@ -44,7 +44,7 @@
                         Location:
                     </div>
                     <div class="header-description">
-                        @play.Branch.City HorizonXX, @play.Hall.Id
+                        @* @play.Branch.City HorizonXX, @play.Hall.Id *@
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                                         Seat 1:
                                     </div>
                                     <div class="seat-select-choice-value">
-                                        Row: @selectedSeat.Row Column: @selectedSeat.Column
+                                        @* Row: @selectedSeat.Row Column: @selectedSeat.Column *@
                                     </div>
                                 </div>
                                 <div class="seat-select-choice">
@@ -131,19 +131,19 @@
     private int ticketAmount;
     private Play play { get; set; }
     private string backgroundSrc = "/images/ticket-background.gif";
-    private Seat selectedSeat;
+    // private Seat selectedSeat;
 
     protected override async Task OnInitializedAsync()
     {
-        selectedSeat = new Seat();
+        // selectedSeat = new Seat();
         Seed();
 
     }
 
-    private void ClickHandler(Seat newSeat)
-    {
-        selectedSeat = newSeat;
-    }
+    // private void ClickHandler(Seat newSeat)
+    // {
+    //     // selectedSeat = newSeat;
+    // }
 
     private void goSomewhere()
     {
@@ -152,59 +152,59 @@
 
     private void Seed()
     {
-        play = new Play()
-        {
-            Branch = new Branch()
-            {
-                City = "Aarhus",
-                Halls = new List<Hall>()
-                {
-                    new Hall()
-                    {
-                        Id = 1,
-                        Seats = new List<Seat>()
-                        {
-                            new Seat()
-                            {
-                                Column = 1,
-                                Id = 1,
-                                Row = 1,
-                            }
-                        }
-
-                    },
-
-                },
-                Id = 1,
-                Program = new Program()
-                {
-                    Id = 1,
-                    Plays = new List<Play>(),
-                }
-
-            },
-            DateTime = DateTime.Now,
-            Hall = new Hall()
-            {
-                Id=1,
-                Seats = new List<Seat>(),
-            },
-            Id = 1,
-            Movie = new Movie()
-            {
-                Id = 1,
-                Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
-                Director = "Peter Jackson",
-                Genre = "Adventure, Melodrama, Fantasy",
-                Language = "English",
-                Length = 200,
-                Year = 2005,
-                Title = "King Kong",
-                PosterSrc = "/images/king_kong.jpg",
-                Cast = new List<Actor>(),
-
-            },
+        // play = new Play()
+        // {
+        //     Branch = new Branch()
+        //     {
+        //         City = "Aarhus",
+        //         Halls = new List<Hall>()
+        //         {
+        //             new Hall()
+        //             {
+        //                 Id = 1,
+        //                 Seats = new List<Seat>()
+        //                 {
+        //                     new Seat()
+        //                     {
+        //                         Column = 1,
+        //                         Id = 1,
+        //                         Row = 1,
+        //                     }
+        //                 }
+        //
+        //             },
+        //
+        //         },
+        //         Id = 1,
+        //         Program = new Program()
+        //         {
+        //             Id = 1,
+        //             Plays = new List<Play>(),
+        //         }
+        //
+        //     },
+        //     DateTime = DateTime.Now,
+        //     Hall = new Hall()
+        //     {
+        //         Id=1,
+        //         Seats = new List<Seat>(),
+        //     },
+        //     Id = 1,
+        //     Movie = new Movie()
+        //     {
+        //         Id = 1,
+        //         Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
+        //         Director = "Peter Jackson",
+        //         Genre = "Adventure, Melodrama, Fantasy",
+        //         Language = "English",
+        //         Length = 200,
+        //         Year = 2005,
+        //         Title = "King Kong",
+        //         PosterSrc = "/images/king_kong.jpg",
+        //         Cast = new List<Actor>(),
+        //
+        //     },
             
-        };
+        }
     }
 }
