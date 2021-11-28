@@ -1,11 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ABDOTClient.Model
 {
     public class Branch
     {
-        public int Id { get; set; }
+        
+      
+        public int Id { get; private set; }
+        
+        [Required]
         public string City { get; set; }
+        
         public IList<Hall> Halls { get; set; }
 
         public IList<Employee> Employees { get; set; }

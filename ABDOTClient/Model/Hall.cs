@@ -1,18 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ABDOTClient.Model
 {
     public class Hall
     {
-        public int Id { get; set; }
+        
+    
+        public int Id { get; private set; }
 
+        [Required]
         public int HallSize { get; set; }
 
+        [Required]
         public Branch Branch { get; set; }
         public List<Play> Programme { get; set; }
+        
+        
+        //generated in the constructor
         public List<Tuple<int, int>> Seats { get; set; }
+        
         public Hall(int hallSize)
         {
 
@@ -42,7 +51,7 @@ namespace ABDOTClient.Model
                 throw new Exception("Invalid hall size");
             }
         }
-
+        
         private void CreateSeats(int rows, int columns)
         {
             for (int i = 1; i <= rows; i++)

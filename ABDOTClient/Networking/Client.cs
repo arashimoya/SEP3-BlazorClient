@@ -37,6 +37,32 @@ namespace ABDOTClient.Networking {
             //TESTS
             //***********
             
+            //role 1 = employee
+            //role 2 = manager
+            //role 3 = owner
+            
+            // this is from form
+            // String role = "employee";
+            //
+            // switch (role)
+            // {
+            //     case "employee" :
+            //         int role_id = 1;
+            //         break;
+            //     case "manager" :
+            //         int role_id = 2;
+            //         break;
+            //     case "owner" :
+            //         int role_id = 3;
+            //         break;
+            //     default:
+            //         throw new Exception("Invalid role id");
+            // }
+            // Employee employee = new Employee()
+            // {
+            //     Role = role_id;
+            // }
+            
             // Hall testHall = new Hall(1);
             // Hall testHall1 = new Hall(2);
             // Hall testHall2 = new Hall(3);
