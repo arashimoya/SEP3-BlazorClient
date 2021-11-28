@@ -36,7 +36,7 @@
                         Tickets:
                     </div>
                     <div class="header-description">
-                        @ticketAmount
+                        @selectedSeats.Count
                     </div>
                 </div>
                 <div class="header-info col-12">
@@ -84,22 +84,17 @@
                                 Selected seats:
                             </div>
                             <div class="section-text">
-                                <div class="seat-select-choice">
-                                    <div class="seat-select-choice-key">
-                                        Seat 1:
+                                @foreach (var item in selectedSeats)
+                                {
+                                    <div class="seat-select-choice">
+                                        <div class="seat-select-choice-key">
+                                            Seat:
+                                        </div>
+                                        <div class="seat-select-choice-value">
+                                            Row: @item.Row Column: @item.Column
+                                        </div>
                                     </div>
-                                    <div class="seat-select-choice-value">
-                                        Row: @selectedSeat.Row Column: @selectedSeat.Column
-                                    </div>
-                                </div>
-                                <div class="seat-select-choice">
-                                    <div class="seat-select-choice-key">
-                                        Seat 2:
-                                    </div>
-                                    <div class="seat-select-choice-value">
-                                        data
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -131,18 +126,25 @@
     private int ticketAmount;
     private Play play { get; set; }
     private string backgroundSrc = "/images/ticket-background.gif";
-    private Seat selectedSeat;
+    private IList<Seat> selectedSeats;
 
     protected override async Task OnInitializedAsync()
     {
-        selectedSeat = new Seat();
+        selectedSeats = new List<Seat>(); 
         Seed();
 
     }
 
     private void ClickHandler(Seat newSeat)
     {
-        selectedSeat = newSeat;
+        if (selectedSeats.Contains(newSeat))
+        {
+            selectedSeats.Remove(newSeat);
+        }
+        else
+        {
+            selectedSeats.Add(newSeat);
+        }
     }
 
     private void goSomewhere()
