@@ -53,16 +53,16 @@ else
                 <td>@item.Title</td>
                 <td>@item.Director</td>
                 <td>@item.Genre</td>
-                <td>@item.Length</td>
+                <td>@item.LengthInMinutes</td>
                 <td>@item.Year</td>
                 <td>@item.Language</td>
-                <td>
-                    @foreach (var actor in item.Cast)
-                    {
-                        @actor.Name
-                        <br/>
-                    }
-                </td>
+                @* <td> *@
+                @*     @foreach (var actor in item.Cast) *@
+                @*     { *@
+                @*         @actor.Name *@
+                @*         <br/> *@
+                @*     } *@
+                @* </td> *@
                 
                     <td>
                         <button @onclick="@(() => RemoveMovie(item.Id))">

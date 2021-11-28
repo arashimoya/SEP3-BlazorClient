@@ -8,13 +8,10 @@ using System.Threading.Tasks;
 using ABDOTClient.Model;
 
 namespace ABDOTClient.Networking {
-    public class MovieRequestImpl : IMovieRequest {
+    public class MovieRequest : IMovieRequest {
 
         private static readonly HttpClient httpClient = new HttpClient();
         
-        public MovieRequestImpl() {
-             
-        }
 
         public async Task<bool> CreateMovie(Movie movie) {
             throw new NotImplementedException();

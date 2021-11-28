@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using System;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ABDOTClient.Model
 {
@@ -6,8 +7,8 @@ namespace ABDOTClient.Model
     {
         public int Id { set; get; }
         public Play Play { set; get; }
-        public Branch Branch { set; get; }
-        public Seat Seat { set; get; }
         public User User { set; get; }
+        public Employee Employee { set; get; }
+        public Tuple<int, int> seat { get; set; }
     }
 }

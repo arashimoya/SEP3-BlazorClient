@@ -12,27 +12,38 @@ using ABDOTClient.Model;
 using ABDOTClient.Networking.Requests;
 
 namespace ABDOTClient.Networking {
-    public class Client {
+    public class Client
+    {
         private IUserRequest userRequest;
         private IMovieRequest movieRequest;
         private IPlayRequest playRequest;
         private IProgramRequest programRequest;
-        private ISeatRequest seatRequest;
         private ITicketRequest ticketRequest;
-        private IActorRequest actorRequest;
         private IEmployeeRequest employeeRequest;
         private IHallRequest hallRequest;
 
-        public Client() {
-            userRequest = new UserRequestImpl();
-            movieRequest = new MovieRequestImpl();
+        public Client()
+        {
+            userRequest = new UserRequest();
+            movieRequest = new MovieRequest();
             playRequest = new PlayRequest();
             programRequest = new ProgramRequest();
-            seatRequest = new SeatRequest();
-            ticketRequest = new TicketService();
-            actorRequest = new ActorService();
-            employeeRequest = new EmployeeService();
-            hallRequest = new HallService();
+            ticketRequest = new TicketRequest();
+            employeeRequest = new EmployeeRequest();
+            hallRequest = new HallRequest();
+
+            
+            //***********
+            //TESTS
+            //***********
+            
+            // Hall testHall = new Hall(1);
+            // Hall testHall1 = new Hall(2);
+            // Hall testHall2 = new Hall(3);
+            // testHall.PrintArray();
+            // testHall1.PrintArray();
+            // testHall2.PrintArray();
+
         }
 
 
@@ -241,57 +252,7 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-
-        public async Task<bool> AddSeat(Seat seat) {
-            try {
-                return await seatRequest.CreateSeat(seat);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async Task<bool> EditSeat(Seat seat) {
-            try {
-                return await seatRequest.EditSeat(seat);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async Task<bool> DeleteSeat(Seat seat) {
-            try {
-                return await seatRequest.DeleteSeat(seat);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async Task<Seat> GetSeat(int id) {
-            try {
-                return await seatRequest.GetSeat(id);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async Task<List<Seat>> GetAllSeats() {
-            try {
-                return await seatRequest.GetAllSeats();
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
+        
         public async Task<bool> AddTicket(Ticket ticket) {
             try {
                 return await ticketRequest.Create(ticket);
@@ -341,57 +302,7 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-        
-        public async Task<bool> AddActor(Actor actor) {
-            try {
-                return await actorRequest.CreateActor(actor);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
 
-        public async Task<bool> EditActor(Actor actor) {
-            try {
-                return await actorRequest.EditActor(actor);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async Task<bool> DeleteActor(Actor actor) {
-            try {
-                return await actorRequest.DeleteActor(actor);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async Task<Actor> GetActor(int actorId) {
-            try {
-                return await actorRequest.GetActor(actorId);
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-
-        public async Task<List<Actor>> GetAllActors() {
-            try {
-                return await actorRequest.GetAllActors();
-            }
-            catch (Exception e) {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
-        
         public async Task<bool> AddHall(Hall hall) {
             try {
                 return await hallRequest.CreateHall(hall);

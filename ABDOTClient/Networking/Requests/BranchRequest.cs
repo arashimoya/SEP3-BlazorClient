@@ -1,32 +1,33 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
+using ABDOTClient.Networking.Requests.Interfaces;
 
-namespace ABDOTClient.Data
+namespace ABDOTClient.Networking.Requests
 {
-    public class ActorService : IActorRequest
+    public class BranchRequest : IBranchRequest
     {
-        public Task<bool> CreateActor(Actor actor)
+        public Task<bool> CreateBranch(Branch branch)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> EditActor(Actor actor)
+        public Task<bool> EditBranch(Branch branch)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteActor(Actor actor)
+        public Task<bool> DeleteBranch(Branch branch)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Actor> GetActor(int Actorid)
+        public Task<Branch> GetBranch(int BranchId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<List<Actor>> GetAllActors()
+        public Task<List<Branch>> GetAllBranches()
         {
             throw new System.NotImplementedException();
         }

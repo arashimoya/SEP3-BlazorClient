@@ -6,17 +6,19 @@ namespace ABDOTClient.Model
     {
         public Movie()
         {
-            Cast = new List<Actor>();
         }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Genre { get; set; }
         public string Director { get; set; }
-        public List<Actor> Cast { get; set; }
         public string Language { get; set; }
+
+        public string SubtitleLanguage { get; set; }
         public int Year { get; set; }
-        public int Length { get; set; }
+        
+        public int LengthInMinutes { get; set; } //always in minutes
         public string PosterSrc { get; set; }
+        
     }
 }

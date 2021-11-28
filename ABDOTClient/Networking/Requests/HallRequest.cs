@@ -4,7 +4,7 @@ using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
 {
-    public class HallService : IHallRequest
+    public class HallRequest : IHallRequest
 
     {
     public Task<bool> CreateHall(Hall hall) {

@@ -34,11 +34,7 @@ namespace ABDOTClient.Data {
                 Email = email,
                 Password = password,
                 FirstName = firstName,
-                LastName = lastName,
-                Settlement = city,
-                Country = country,
-                Postcode = postcode,
-                Street = street
+                LastName = lastName
             };
             return await ClientFactory.GetClient().RegisterUser( freshUser);
         }

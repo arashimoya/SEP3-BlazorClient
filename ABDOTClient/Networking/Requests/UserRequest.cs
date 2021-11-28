@@ -8,10 +8,10 @@ using System.Transactions;
 using ABDOTClient.Model;
 
 namespace ABDOTClient.Networking {
-    public class UserRequestImpl : IUserRequest {
+    public class UserRequest : IUserRequest {
         private static readonly HttpClient httpClient = new HttpClient();
         
-        public UserRequestImpl() {
+        public UserRequest() {
             
         }
         

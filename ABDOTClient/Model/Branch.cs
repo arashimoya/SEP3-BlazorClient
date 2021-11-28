@@ -7,7 +7,13 @@ namespace ABDOTClient.Model
         public int Id { get; set; }
         public string City { get; set; }
         public IList<Hall> Halls { get; set; }
-        
-        public Program Program { set; get; }
+
+        public IList<Employee> Employees { get; set; }
+
+        public Branch()
+        {
+            Halls = new List<Hall>();
+            Employees = new List<Employee>();
+        }
     }
 }

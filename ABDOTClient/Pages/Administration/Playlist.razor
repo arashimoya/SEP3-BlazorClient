@@ -49,8 +49,6 @@ else
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Movie.Title</td>
-                <td>@item.DateTime</td>
-                <td>@item.Branch.Id</td>
                 <td>@item.Hall.Id</td>
                 <td>
                         <button @onclick="@(() => RemovePlay(item.Id))">
@@ -102,26 +100,22 @@ else
             new Play
             {
                 Id = 1,
-                DateTime = DateTime.Today,
+                
             },
             new Play
             {
                 Id = 2,
-                DateTime = new DateTime(2021,11,17,18,30,00,DateTimeKind.Local)
             },
             new Play
             {
                 Id = 3,
-                DateTime = new DateTime(2021,11,19,14,00,00,DateTimeKind.Local),
+          
             }
         };
-        playArray[0].Branch = BranchService.Get(1);
         playArray[0].Hall = BranchService.GetHall(1);
         playArray[0].Movie = await MovieService.GetAsync(1);
-        playArray[1].Branch = BranchService.Get(1);
         playArray[1].Hall = BranchService.GetHall(2);
         playArray[1].Movie = await MovieService.GetAsync(4);
-        playArray[2].Branch = BranchService.Get(1);
         playArray[2].Hall = BranchService.GetHall(2);
         playArray[2].Movie = await MovieService.GetAsync(3);
         plays = playArray.ToList();
