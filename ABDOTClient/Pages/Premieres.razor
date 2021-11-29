@@ -1,6 +1,19 @@
 ﻿@page "/premieres"
 @using ABDOTClient.Model
 @namespace PremieresComponent
+
+<style>
+    .movie-list-item{
+        transition: all 0.2s ease;
+    }
+    .movie-list-item:hover{
+        transform: scale(1.02);
+    }
+    
+    .movie-list-bottom-content, .movie-list-top-content{
+        padding: 10px;
+    }
+</style>
 <div>
     <h1 class="section-premieres-title">Premieres</h1>
     <p></p>
@@ -21,13 +34,6 @@
                             <div>
                                 <h5 class="section-label">Director</h5>
                                 <p>@movie.Director</p>
-                                <h5 class="section-label">Cast</h5>
-                                @* <p> *@
-                                @* @foreach (var actor in @movie.Cast) *@
-                                @* { *@
-                                @*     @actor <text>&#44;&nbsp;</text> *@
-                                @* } *@
-                                @* </p> *@
                                 <h5 class="section-label">Genre</h5>
                                 <p>@movie.Genre</p>
                             </div>
