@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using ABDOTClient.Factories;
 using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
@@ -18,7 +20,22 @@ namespace ABDOTClient.Data
         {
             return Branches;
         }
-        
+
+        public Task<bool> CreateBranch(Branch branch)
+        {
+            return ClientFactory.GetClient().CreateBranch(branch);
+        }
+
+        public Task<bool> EditBranch(Branch branch)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> DeleteBranch(int branchId)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Branch Get(int branchId)
         {
             Branch toReturn = Branches.FirstOrDefault(b => b.Id == branchId);

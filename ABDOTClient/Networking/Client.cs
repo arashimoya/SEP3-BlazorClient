@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ABDOTClient.Data;
 using ABDOTClient.Model;
 using ABDOTClient.Networking.Requests;
+using ABDOTClient.Networking.Requests.Interfaces;
 
 namespace ABDOTClient.Networking {
     public class Client
@@ -21,6 +22,7 @@ namespace ABDOTClient.Networking {
         private ITicketRequest ticketRequest;
         private IEmployeeRequest employeeRequest;
         private IHallRequest hallRequest;
+        private IBranchRequest branchRequest;
 
         public Client()
         {
@@ -31,16 +33,17 @@ namespace ABDOTClient.Networking {
             ticketRequest = new TicketRequest();
             employeeRequest = new EmployeeRequest();
             hallRequest = new HallRequest();
+            branchRequest = new BranchRequest();
 
-            
+
             //***********
             //TESTS
             //***********
-            
+
             //role 1 = employee
             //role 2 = manager
             //role 3 = owner
-            
+
             // this is from form
             // String role = "employee";
             //
@@ -62,7 +65,7 @@ namespace ABDOTClient.Networking {
             // {
             //     Role = role_id;
             // }
-            
+
             // Hall testHall = new Hall(1);
             // Hall testHall1 = new Hall(2);
             // Hall testHall2 = new Hall(3);
@@ -428,6 +431,60 @@ namespace ABDOTClient.Networking {
             }
         }
         
+        public async Task<bool> CreateBranch(Branch branch)
+        {
+            try {
+                return await branchRequest.CreateBranch(branch);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
         
+        }
+
+        public async Task<bool> EditBranch(Branch branch)
+        {
+            try {
+                return await branchRequest.EditBranch(branch);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteBranch(Branch branch)
+        {
+            try {
+                return await branchRequest.DeleteBranch(branch);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<Branch> GetBranch(int branchId)
+        {
+            try {
+                return await branchRequest.GetBranch(branchId);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task<List<Branch>> GetAllBranches()
+        {
+            try {
+                return await branchRequest.GetAllBranches();
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace ABDOTClient.Networking.Requests
             throw new System.NotImplementedException();
         }
 
-        public Task<Branch> GetBranch(int BranchId)
+        public Task<Branch> GetBranch(int branchId)
         {
             throw new System.NotImplementedException();
         }
