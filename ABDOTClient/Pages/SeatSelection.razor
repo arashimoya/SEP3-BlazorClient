@@ -164,43 +164,25 @@
 
 @code {
   private Hall hall;
-  [Parameter] public EventCallback<Seat> OnClick { get; set; }
+  [Parameter] public EventCallback<Tuple<int, int>> OnClick { get; set; }
 
   private bool IsSelected { get; set; } = false;
   private IList<string> selectColor;
 
 
 
-  protected override async Task OnInitializedAsync()
-    {
+  protected override async Task OnInitializedAsync() 
+  {
       selectColor = new List<string>();
-        hall = new Hall();
-        hall.Seats = new List<Seat>();
-        hall.Id = 1;
-        if (!hall.Seats.Any())
-        {
-            Seed();
-        }
+      Seed();
     
 
-    }
+  }
     
   
     private void Seed()
     {
-        int rows = 6;
-        int columns = 8;
-        for (int i = 1; i <= rows; i++)
-        {
-            for (int j = 1; j <= columns; j++)
-            {
-                Seat seat = new Seat();
-                seat.Column = j;
-                seat.Row = i;
-                seat.Id = i * 10 + j;
-                hall.Seats.Add(seat);
-            }
-        }
+      hall = new Hall(1);
       for (int i = 0; i < hall.Seats.Count; i++)
       {
         selectColor.Add("");

@@ -4,6 +4,12 @@
 @using ABDOTClient.Model
 @using Data
 
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
 @if (playsToShow == null)
 {
     <p>
@@ -99,25 +105,62 @@ else
         {
             new Play
             {
-                Id = 1,
-                
+                Movie = new Movie
+                {
+                    Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
+                    Director = "Peter Jackson",
+                    Genre = "Adventure, Melodrama, Fantasy",
+                    Language = "English",
+                    LengthInMinutes = 200,
+                    Year = 2005,
+                    Title = "King Kong",
+                    PosterSrc = "/images/king_kong.jpg",
+                },
+                Date = DateTime.Now,
+                Hall = new Hall(1),
+                Tickets = new List<Ticket>
+                {
+                    
+                },
+                TimeInMinutes = 200,
             },
             new Play
             {
-                Id = 2,
+                Date = DateTime.Now,
+                Hall = new Hall(2),
+                Movie = new Movie
+                {
+                    Title = "Forrest Gump",
+                    Director = "Robert Zemeckis",
+                    Genre = "Drama / Comedy",
+                    Year = 2004,
+                    Description = "The life story of Forrest, a boy with a low IQ with paralysis, who becomes a billionaire and a hero of the Vietnam War.",
+                    Language = "English",
+                    LengthInMinutes = 186,
+                    PosterSrc = "/images/forrest_gump.jpg",
+                },
+                Tickets = new List<Ticket>(),
+                TimeInMinutes = 186,
             },
             new Play
             {
-                Id = 3,
-          
+                Date = DateTime.Now,
+                Hall = new Hall(3),
+                Movie = new Movie
+                {
+                    Description = "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
+                    Title = "Shrek",
+                    Director = "Andrew Adamson / Vicky Jenson",
+                    Genre = "Comedy, Animation, Family",
+                    Language = "English, Danish",
+                    LengthInMinutes = 90,
+                    Year = 2001,
+                    PosterSrc = "/images/shrek.jpg",
+                },
+                Tickets = new List<Ticket>(),
+                TimeInMinutes = 90,
             }
         };
-        playArray[0].Hall = BranchService.GetHall(1);
-        playArray[0].Movie = await MovieService.GetAsync(1);
-        playArray[1].Hall = BranchService.GetHall(2);
-        playArray[1].Movie = await MovieService.GetAsync(4);
-        playArray[2].Hall = BranchService.GetHall(2);
-        playArray[2].Movie = await MovieService.GetAsync(3);
         plays = playArray.ToList();
 
     }
