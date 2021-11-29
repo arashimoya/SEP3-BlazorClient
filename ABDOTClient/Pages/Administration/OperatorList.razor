@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @using ABDOTClient.Model
 @using Data
+@using ABDOTClient.Factories
 
 @if (personelToShow == null)
 {
@@ -78,6 +79,7 @@ else
 @code {
     private IList<Employee> personel;
     private IList<Employee> personelToShow;
+    private IEmployeeService employeeService = new EmployeeCloudService();
     
 
     protected override async Task OnInitializedAsync()
@@ -89,9 +91,9 @@ else
         }
         personelToShow = personel;
     }
-    private async Task RemoveEmployee(int EmployeeId)
+    private Task<bool> RemoveEmployee(int employeeId)
     {
-        throw new NotImplementedException();
+        return employeeService.DeleteEmployee(employeeId);
     }
 
     private void Edit(int id)
