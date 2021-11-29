@@ -2,14 +2,45 @@
 @using ABDOTClient.Authentication
 @using ABDOTClient.Factories
 @namespace ProgrammeComponent
-
-<BlazorStrap.BSCarousel NumberOfItems="@items.Count">
+<style>
+    body {
+        padding-top: 40px;
+    }
+    .carousel-slide-custom{
+        background-size: contain;
+        position: relative;
+    }
+    .carousel-inner{
+        
+    }
+    .carousel-caption-custom{
+        position: absolute;
+        right:15%;
+        bottom:20px;
+        left:15%;
+        z-index:10;
+        padding-top:20px;
+        padding-bottom:20px;
+        color:#fff;
+        text-align:center;
+    }
+    .carousel-img{
+        width: 100%;
+        height: auto;
+        overflow: hidden;
+        object-fit: cover;
+        max-height: 600px;
+    }
+   
+    
+</style>
+<BlazorStrap.BSCarousel NumberOfItems="@items.Count" class="carousel-slide-custom">
     <div class="carousel-inner">
         @foreach (var item in items)
-        {
-            <BlazorStrap.BSCarouselItem Src="@item.Source" Alt="@item.Alt" style="width:100%;height: 600px; overflow: hidden">
-                <BlazorStrap.BSCarouselCaption CaptionText="@item.Caption" HeaderText="@item.Header"/>
-            </BlazorStrap.BSCarouselItem>
+        {   
+                <BlazorStrap.BSCarouselItem Src="@item.Source" Alt="@item.Alt" class="carousel-img">
+                    <BlazorStrap.BSCarouselCaption CaptionText="@item.Caption" HeaderText="@item.Header" class="carousel-caption-custom"/>
+                </BlazorStrap.BSCarouselItem>
         }
     </div>
     <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Previous" NumberOfItems="@items.Count"/>
@@ -61,31 +92,31 @@
     {
         new Item
         {
-            Source = "/images/ole.jpg",
+            Source = "/images/ralf-rangnick.png",
             Alt = "First Slide",
-            Caption = "Recap of what's happening at Manchester United",
-            Header = "Will OGS get sacked?",
+            Caption = "Ralf Rangnick appointed as Manchester United Manager",
+            Header = "Welcome Ralf!",
         },
         new Item
         {
-            Source = "/images/SIIUUU.jpg",
+            Source = "/images/ole_sacked.png",
             Alt = "Second Slide",
-            Caption = "Cristiano Ronaldo makes a brace!",
-            Header = "SIUUUUUUU",
+            Caption = "Bye Ole!",
+            Header = "He got the sack",
         },
         new Item
         {
-            Source = "/images/thugger.jpg",
-            Alt = "Third Slide",
-            Caption = "Thugger baby",
-            Header = "Thugger baby",
-        },
-        new Item
-        {
-            Source = "/images/ronaldo2.jpg",
+            Source = "/images/siu_manu.png",
             Alt = "Third Slide",
             Caption = "Every SIUUU in one article",
             Header = "Random urge to shout SIUUUUUU",
+        },
+        new Item
+        {
+            Source = "/images/ballon-dor.png",
+            Alt = "Third Slide",
+            Caption = "This year's ballon d'or ceremony",
+            Header = "Will Lewangoalski finally get it?",
         }
     };
     class Item

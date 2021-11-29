@@ -3,6 +3,12 @@
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
 
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
 
 @if (branchesToShow == null)
 {
@@ -85,7 +91,7 @@ else
         }
         branchesToShow = branches;
     }
-    private async Task RemoveBranch(int BranchId)
+    private async Task RemoveBranch(int branchId)
     {
         throw new NotImplementedException();
     }

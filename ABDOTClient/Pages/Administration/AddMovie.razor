@@ -4,6 +4,12 @@
 @using ABDOTClient.Pages.Administration
 @inject NavigationManager NavigationManager
 @namespace AddMovieComponent
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
 <h3>Add Movie</h3>
 <EditForm Model="@newMovieItem" OnValidSubmit="@AddNewMovie">
     <DataAnnotationsValidator/>

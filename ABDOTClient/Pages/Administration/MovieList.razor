@@ -5,6 +5,11 @@
 @using Data
 
 @inject IMovieService CloudMovieService
+<style>
+    html, body {
+        background-color: white;
+    }
+</style>
 
 <p style="color: green;">@confirmationMessage</p>
 @if (moviesToShow == null)
@@ -38,9 +43,8 @@ else
             <th>Length</th>
             <th>Year</th>
             <th>Language</th>
-            <th>Cast</th>
-            
-                <th>Remove</th>
+
+            <th>Remove</th>
                 <th>Edit</th>
             
         </tr>
