@@ -1,16 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using ABDOTClient.Data;
 using ABDOTClient.Factories;
 using ABDOTClient.Model;
 
-namespace ABDOTClient.Networking.Requests
+namespace ABDOTClient.Data
 {
-    public class EmployeeRequest : IEmployeeRequest
+    public class EmployeeCloudService : IEmployeeService
     {
         public Task<bool> CreateEmployee(Employee employee)
         {
-            throw new System.NotImplementedException();
+            return ClientFactory.GetClient().AddEmployee(employee);
         }
 
         public Task<bool> EditEmployee(Employee employee)
@@ -18,12 +17,12 @@ namespace ABDOTClient.Networking.Requests
             throw new System.NotImplementedException();
         }
 
-        public Task<bool> DeleteEmployee(Employee employee)
+        public Task<bool> DeleteEmployee(int employeeId)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<Employee> GetEmployee(int Employeeid)
+        public Task<Employee> GetEmployee(int employeeId)
         {
             throw new System.NotImplementedException();
         }

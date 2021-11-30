@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 
-namespace ABDOTClient.Data
+namespace ABDOTClient.Networking.Requests
 {
     public class HallRequest : IHallRequest
 

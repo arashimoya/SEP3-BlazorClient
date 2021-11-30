@@ -6,8 +6,8 @@ namespace ABDOTClient.Model
 {
     public class Employee : User
     {
-        
-        public int Role { get; private set; }
+
+        public int Role { get; set; }
         
         [Required] public string CPR { get; set; }
 
@@ -28,5 +28,7 @@ namespace ABDOTClient.Model
         {
             TicketsSold = new List<Ticket>();
         }
+        
+        
     }
 }
