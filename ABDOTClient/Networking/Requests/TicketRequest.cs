@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 
@@ -6,24 +7,44 @@ namespace ABDOTClient.Networking.Requests
 {
     public class TicketRequest : ITicketRequest
     {
-        public Task<bool> Create(Ticket ticket) {
-            throw new System.NotImplementedException();
+        private IList<Ticket> Tickets;
+
+        public TicketRequest()
+        {
+            Tickets = new List<Ticket>();
+        }
+        public async Task<bool> Create(Ticket ticket) {
+            Tickets.Add(ticket);
+            return true;
         }
 
-        public Task<bool> Edit(Ticket ticket) {
-            throw new System.NotImplementedException();
+        public async Task<bool> Edit(Ticket ticket)
+        {
+            Ticket toUpdate = Tickets.FirstOrDefault(t => t.Id == ticket.Id);
+            if (toUpdate == null) return false;
+            toUpdate.seat = ticket.seat;
+            toUpdate.Employee = ticket.Employee;
+            toUpdate.Play = ticket.Play;
+            toUpdate.User = ticket.User;
+            return true;
         }
 
-        public Task<bool> Delete(Ticket ticket) {
-            throw new System.NotImplementedException();
+        public async Task<bool> Delete(Ticket ticket)
+        {
+            Ticket toRemove = Tickets.FirstOrDefault(t => t.Id == ticket.Id);
+            if (toRemove == null) return false;
+            Tickets.Remove(ticket);
+            return true;
         }
 
-        public Task<Ticket> GetTicket(int Ticketid) {
-            throw new System.NotImplementedException();
+        public async Task<Ticket> GetTicket(int Ticketid)
+        {
+            return Tickets.FirstOrDefault(t => t.Id == Ticketid);
         }
 
-        public Task<List<Ticket>> GetAllTicktets() {
-            throw new System.NotImplementedException();
+        public async Task<IList<Ticket>> GetAllTickets()
+        {
+            return Tickets;
         }
     }
 }

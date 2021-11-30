@@ -69,7 +69,7 @@ else
                 @* </td> *@
                 
                     <td>
-                        <button @onclick="@(() => RemoveMovie(item.Id))">
+                        <button @onclick="@(() => RemoveMovie(item))">
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
                     </td>
@@ -88,25 +88,27 @@ else
 @code {
     private IList<Movie> movies;
     private IList<Movie> moviesToShow;
-    private IMovieService MovieService = new CloudMovieService();
-    [Parameter]public  string confirmationMessage { get; set; }
+    [Parameter]public string confirmationMessage { get; set; }
+    private string success;
+    
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        
+
         movies = new List<Movie>();
         if (!movies.Any())
         {
             movies = await CloudMovieService.GetAllAsync();
         }
         moviesToShow = movies;
-
-
     }
 
-    private async Task RemoveMovie(int MovieId)
+    
+
+    private async Task RemoveMovie(Movie movie)
     {
-        throw new NotImplementedException();
+        if (await CloudMovieService.RemoveMovieAsync(movie))
+            confirmationMessage = "Movie deleted successfully";
     }
 
     private void Edit(int id)

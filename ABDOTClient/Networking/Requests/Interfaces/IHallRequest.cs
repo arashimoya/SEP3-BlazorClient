@@ -12,8 +12,8 @@ namespace ABDOTClient.Networking.Requests
 
         Task<bool> DeleteHall(Hall hall);
 
-        Task<Hall> GetHall(int Hallid);
+        Task<Hall> GetHall(int hallId);
 
-        Task<List<Hall>> GetAllHalls();
+        Task<IList<Hall>> GetAllHalls();
     }
 }

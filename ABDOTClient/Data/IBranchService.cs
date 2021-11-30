@@ -1,13 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
 {
     public interface IBranchService
     {
-        Branch Get(int branchId);
-        Hall GetHall(int hallId);
+        Task<bool> CreateBranch(Branch branch);
 
-        IList<Branch> GetAll();
+        Task<bool> EditBranch(Branch branch);
+
+        Task<bool> DeleteBranch(Branch branch);
+
+        Task<Branch> GetBranch(int BranchId);
+
+        Task<IList<Branch>> GetAllBranches();
     }
+    
 }
