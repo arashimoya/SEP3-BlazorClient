@@ -4,25 +4,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 using ABDOTClient.Networking.Requests.Interfaces;
+using GraphQL;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 
 namespace ABDOTClient.Networking.Requests
 {
     public class BranchRequest : IBranchRequest
     {
         private IList<Branch> Branches;
-
+        private GraphQLHttpClient graphQlClient;
         public BranchRequest()
         {
+            graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
             Branches = new List<Branch>();
-            if (!Branches.Any()) Seed();
+            // if (!Branches.Any()) Seed();
         }
         //these are for testing the site --Adam
         public async Task<bool> CreateBranch(Branch branch)
         {
-            int max = Branches.Max(b => b.Id);
-            //branch.Id = (++max);
-            Branches.Add(branch);
-            return true;
+            
+            // int max = Branches.Max(b => b.Id);
+            // //branch.Id = (++max);
+            // Branches.Add(branch);
+            // return true;
+            throw new NotImplementedException();
         }
 
         public async Task<bool> EditBranch(Branch branch)
@@ -52,7 +58,38 @@ namespace ABDOTClient.Networking.Requests
 
         public async Task<IList<Branch>> GetAllBranches()
         {
-            return Branches;
+            var getAllbranches = new GraphQLRequest
+            {
+                Query = @"
+                   Branches{
+                        id,
+                        street,
+                        city,
+                        postcode,
+                        country,
+                        halls{{
+                         id
+                        }},
+                        employees{
+                        id}
+                   }                    
+                        "
+            };
+            var graphQlResponse = new GraphQLResponse<List<Branch>>();
+            try
+            {
+                graphQlResponse = await graphQlClient.SendQueryAsync<List<Branch>>(getAllbranches);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            foreach (Branch branch in graphQlResponse.Data)
+            {
+                Console.WriteLine(branch.ToString());
+            }
+            return graphQlResponse.Data;
         }
 
         private void Seed()

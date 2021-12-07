@@ -22,7 +22,6 @@ namespace ABDOTClient.Networking.Requests
         {
             Ticket toUpdate = Tickets.FirstOrDefault(t => t.Id == ticket.Id);
             if (toUpdate == null) return false;
-            toUpdate.seat = ticket.seat;
             toUpdate.Employee = ticket.Employee;
             toUpdate.Play = ticket.Play;
             toUpdate.User = ticket.User;

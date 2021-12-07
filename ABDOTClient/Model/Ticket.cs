@@ -13,8 +13,8 @@ namespace ABDOTClient.Model
         public Play Play { set; get; }
         public User User { set; get; }
         public Employee Employee { set; get; }
-        
-        [Required]
-        public Tuple<int, int> seat { get; set; }
+        // public Tuple<int, int> seat { get; set; }
+        [Required] public int row { get; set; }
+        [Required] public int column { get; set; }
     }
 }
