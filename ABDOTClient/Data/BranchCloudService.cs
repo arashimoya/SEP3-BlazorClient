@@ -20,9 +20,9 @@ namespace ABDOTClient.Data
         }
 
 
-        public Task<bool> DeleteBranch(Branch branch)
+        public async Task<bool> DeleteBranch(Branch branch)
         {
-            return ClientFactory.GetClient().DeleteBranch(branch);
+            return await ClientFactory.GetClient().DeleteBranch(branch);
         }
 
         public Task<Branch> GetBranch(int BranchId)
