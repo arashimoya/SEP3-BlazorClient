@@ -12,7 +12,7 @@ namespace ABDOTClient.Networking.Requests.Interfaces
 
         Task<bool> DeleteBranch(Branch branch);
 
-        Task<Branch> GetBranch(int BranchId);
+        Task<Branch> GetBranch(int branchId);
 
         Task<IList<Branch>> GetAllBranches();
     }

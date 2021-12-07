@@ -19,6 +19,7 @@ namespace ABDOTClient.Data
             return ClientFactory.GetClient().EditBranch(branch);
         }
 
+
         public Task<bool> DeleteBranch(Branch branch)
         {
             return ClientFactory.GetClient().DeleteBranch(branch);

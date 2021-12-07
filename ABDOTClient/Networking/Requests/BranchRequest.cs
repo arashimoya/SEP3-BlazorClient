@@ -49,6 +49,7 @@ namespace ABDOTClient.Networking.Requests
             return Branches.FirstOrDefault(b => b.Id == BranchId);
         }
 
+
         public async Task<IList<Branch>> GetAllBranches()
         {
             return Branches;

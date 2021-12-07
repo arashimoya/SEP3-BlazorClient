@@ -22,6 +22,10 @@
     <p>
         <em>No Branch items exist. Please add some</em>
     </p>
+    <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/Addbranch"))"><button>
+            <i class="oi oi-plus"/>
+        </button>
+    </div>
 }
 else
 {
@@ -95,10 +99,12 @@ else
         }
         branchesToShow = branches;
     }
+
     private async Task RemoveBranch(Branch branch)
     {
         if (await BranchService.DeleteBranch(branch))
             confirmationMessage = "Branch deleted successfully";
+
     }
 
     private void Edit(int id)
