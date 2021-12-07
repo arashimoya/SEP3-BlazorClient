@@ -15,7 +15,7 @@ namespace ABDOTClient.Networking
 
         Task<Movie> GetMovie(int id);
 
-        Task<List<Movie>> GetAllMovies();
+        Task<IList<Movie>> GetAllMovies();
 
     }
 }

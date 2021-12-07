@@ -14,6 +14,6 @@ namespace ABDOTClient.Networking.Requests.Interfaces
 
         Task<Branch> GetBranch(int branchId);
 
-        Task<List<Branch>> GetAllBranches();
+        Task<IList<Branch>> GetAllBranches();
     }
 }

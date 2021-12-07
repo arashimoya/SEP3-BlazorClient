@@ -14,6 +14,6 @@ namespace ABDOTClient.Networking.Requests
 
         Task<Ticket> GetTicket(int Ticketid);
 
-        Task<List<Ticket>> GetAllTicktets();
+        Task<IList<Ticket>> GetAllTickets();
     }
 }

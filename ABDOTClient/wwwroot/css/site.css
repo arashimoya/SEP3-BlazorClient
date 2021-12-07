@@ -68,7 +68,7 @@ body {
     cursor: pointer;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 992px) {
 
     .navbar-toggler {
         display: none;

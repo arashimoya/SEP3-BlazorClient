@@ -1,23 +1,24 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Filters
 @using ABDOTClient.Model
 @inject NavigationManager NavigationManager
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark navbar-custom  box-shadow mb-3 fixed-top" >
+<nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark navbar-custom  box-shadow mb-3 fixed-top" >
     <div class="container" style="color:#1e1e1e!important;">
         <div class="col-icon">
             <a class="header-logo" href="/"><img src="images/logo.svg"/></a>
             <div>
-                        <select class="header-selectpicker" @onchange="@((arg) => GoToBranch(arg))" style="width:100px">
-                            @if (!branches.Any())
-                            {
-                                <option>city 1</option>
-                                <option>city 2</option>
-                            }
-                            @foreach (var branch in branches)
-                            {
-                                <option>branch.City</option>
-                            }
-                        </select>
-                        </div>
+                <select class="header-selectpicker" @onchange="@((arg) => GoToBranch(arg))" style="width:100px">
+                    @if (!branches.Any())
+                    {
+                        <option>city 1</option>
+                        <option>city 2</option>
+                    }
+                    @foreach (var branch in branches)
+                    {
+                        <option>branch.City</option>
+                    }
+                </select>
+            </div>
+            
         </div>
         
         <button class="navbar-toggler" @onclick="ToggleNavMenu" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,7 +26,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         
-        <div class="@NavMenuCssClass navbar-collapse d-sm-inline-flex flex-sm-row-reverse" @onclick="CollapseNavMenu">
+        <div class="@NavMenuCssClass navbar-collapse d-lg-inline-flex flex-lg-row" @onclick="CollapseNavMenu">
             <ul class="navbar-nav navbar-nav-custom flex-grow-1">
                 <li class="nav-item" style="padding-top: 0">
                     <a class="nav-link text-light" href="/">Programme</a>
@@ -40,16 +41,18 @@
                     <a class="nav-link text-light" href="/profile">testprofile</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="/">Another link</a>
+                    <a class="nav-link text-light" href="/">Anotherlink</a>
                 </li>
                 
             </ul>
+            <div class="login-box">
+                <a class="nav-link text-light" href="/login" style="color:orange">Login</a>
+                <span class="breadcrumbs-separator">|</span>
+                <a class="nav-link text-light" href="/register" style="color:orange">Register</a>
+            </div>
+            
         </div>
-        <div class="login-box">
-            <a class="nav-link text-light" href="/login" style="color:orange">Login</a>
-            <span class="breadcrumbs-separator">|</span>
-            <a class="nav-link text-light" href="/register" style="color:orange">Register</a>
-        </div>
+        
     </div>
 </nav>
 

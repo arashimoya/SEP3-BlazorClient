@@ -8,8 +8,11 @@
         background-color: white;
         color: black;
     }
+    .confirmation-message{
+        color: greenyellow;
+    }
 </style>
-
+<p class="confirmation-message">@confirmationMessage</p>
 @if (branchesToShow == null)
 {
     <p>
@@ -64,7 +67,7 @@ else
                     }</td>
                 
                     <td>
-                        <button @onclick="@(() => RemoveBranch(item.Id))">
+                        <button @onclick="@(() => RemoveBranch(item))">
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
                     </td>
@@ -84,6 +87,7 @@ else
     private IList<Branch> branches;
     private IList<Branch> branchesToShow;
     private IBranchService BranchService = new BranchCloudService();
+    private string confirmationMessage="";
 
     protected override async Task OnInitializedAsync()
     {
@@ -91,13 +95,16 @@ else
         branches = new List<Branch>();
         if (!branches.Any())
         {
-            branches = BranchService.GetAll();
+            branches = await BranchService.GetAllBranches();
         }
         branchesToShow = branches;
     }
-    private Task<bool> RemoveBranch(int branchId)
+
+    private async Task RemoveBranch(Branch branch)
     {
-        return BranchService.DeleteBranch(branchId);
+        if (await BranchService.DeleteBranch(branch))
+            confirmationMessage = "Branch deleted successfully";
+
     }
 
     private void Edit(int id)

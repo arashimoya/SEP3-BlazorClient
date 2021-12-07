@@ -8,19 +8,7 @@ namespace ABDOTClient.Data
 {
     public class BranchCloudService : IBranchService
     {
-        public IList<Branch> Branches;
         
-        public BranchCloudService()
-        {
-            Branches = new List<Branch>();
-            Seed();
-        }
-
-        public IList<Branch> GetAll()
-        {
-            return Branches;
-        }
-
         public Task<bool> CreateBranch(Branch branch)
         {
             return ClientFactory.GetClient().CreateBranch(branch);
@@ -28,29 +16,23 @@ namespace ABDOTClient.Data
 
         public Task<bool> EditBranch(Branch branch)
         {
-            throw new System.NotImplementedException();
+            return ClientFactory.GetClient().EditBranch(branch);
         }
 
-        public Task<bool> DeleteBranch(int branchId)
+
+        public Task<bool> DeleteBranch(Branch branch)
         {
-            throw new System.NotImplementedException();
+            return ClientFactory.GetClient().DeleteBranch(branch);
         }
 
-        public Branch Get(int branchId)
+        public Task<Branch> GetBranch(int BranchId)
         {
-            Branch toReturn = Branches.FirstOrDefault(b => b.Id == branchId);
-            return toReturn;
+            return ClientFactory.GetClient().GetBranch(BranchId);
         }
 
-        public Hall GetHall(int hallId)
+        public Task<IList<Branch>> GetAllBranches()
         {
-            Hall toReturn = Get(1).Halls.FirstOrDefault(h=>h.Id == hallId);
-            return toReturn;
-        }
-
-        private void Seed()
-        {
-            
+            return ClientFactory.GetClient().GetAllBranches();
         }
     }
 }
