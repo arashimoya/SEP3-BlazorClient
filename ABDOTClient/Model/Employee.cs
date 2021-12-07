@@ -22,7 +22,7 @@ namespace ABDOTClient.Model
         [Required] public DateTime Birthday { get; set; }
         public IList<Ticket> TicketsSold { get; set; }
 
-        public Branch Branch;
+        public Branch Branch { get; set; }
 
         public Employee()
         {

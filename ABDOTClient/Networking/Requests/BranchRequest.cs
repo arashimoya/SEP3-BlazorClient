@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 using ABDOTClient.Networking.Requests.Interfaces;
@@ -7,29 +9,76 @@ namespace ABDOTClient.Networking.Requests
 {
     public class BranchRequest : IBranchRequest
     {
-        public Task<bool> CreateBranch(Branch branch)
+        private IList<Branch> Branches;
+
+        public BranchRequest()
         {
-            throw new System.NotImplementedException();
+            Branches = new List<Branch>();
+            if (!Branches.Any()) Seed();
+        }
+        //these are for testing the site --Adam
+        public async Task<bool> CreateBranch(Branch branch)
+        {
+            int max = Branches.Max(b => b.Id);
+            //branch.Id = (++max);
+            Branches.Add(branch);
+            return true;
         }
 
-        public Task<bool> EditBranch(Branch branch)
+        public async Task<bool> EditBranch(Branch branch)
         {
-            throw new System.NotImplementedException();
+            Branch toUpdate = Branches.FirstOrDefault(b => b.Id == branch.Id);
+            if (toUpdate == null) return false;
+            toUpdate.City = branch.City;
+            toUpdate.Employees = branch.Employees;
+            toUpdate.Halls = branch.Halls;
+            return true;
+            
         }
 
-        public Task<bool> DeleteBranch(Branch branch)
+        public async Task<bool> DeleteBranch(Branch branch)
         {
-            throw new System.NotImplementedException();
+            Branch toRemove = Branches.FirstOrDefault(b => b.Id == branch.Id);
+            if (toRemove == null) return false;
+            Branches.Remove(toRemove);
+            return true;
         }
 
-        public Task<Branch> GetBranch(int BranchId)
+        public async Task<Branch> GetBranch(int BranchId)
         {
-            throw new System.NotImplementedException();
+            return Branches.FirstOrDefault(b => b.Id == BranchId);
         }
 
-        public Task<List<Branch>> GetAllBranches()
+        public async Task<IList<Branch>> GetAllBranches()
         {
-            throw new System.NotImplementedException();
+            return Branches;
+        }
+
+        private void Seed()
+        {
+            Branches = new List<Branch>
+            {
+                new Branch()
+                {
+                    City = "Aarhus",
+                    Employees = new List<Employee>(),
+                    Halls = new List<Hall>()
+                    {
+                        new Hall(1),
+                        new Hall(2),
+                    },
+                },
+                new Branch()
+                {
+                    City = "Sonderborg",
+                    Employees = new List<Employee>(),
+                    Halls = new List<Hall>()
+                    {
+                        new Hall(2),
+                        new Hall(3),
+                    },
+                },
+            };
         }
     }
 }

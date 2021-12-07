@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ABDOTClient.Data;
 using ABDOTClient.Model;
 using ABDOTClient.Networking.Requests;
+using ABDOTClient.Networking.Requests.Interfaces;
 
 namespace ABDOTClient.Networking {
     public class Client
@@ -21,6 +22,7 @@ namespace ABDOTClient.Networking {
         private ITicketRequest ticketRequest;
         private IEmployeeRequest employeeRequest;
         private IHallRequest hallRequest;
+        private IBranchRequest branchRequest;
 
         public Client()
         {
@@ -31,16 +33,18 @@ namespace ABDOTClient.Networking {
             ticketRequest = new TicketRequest();
             employeeRequest = new EmployeeRequest();
             hallRequest = new HallRequest();
+            branchRequest = new BranchRequest();
 
-            
+
+
             //***********
             //TESTS
             //***********
-            
+
             //role 1 = employee
             //role 2 = manager
             //role 3 = owner
-            
+
             // this is from form
             // String role = "employee";
             //
@@ -62,7 +66,7 @@ namespace ABDOTClient.Networking {
             // {
             //     Role = role_id;
             // }
-            
+
             // Hall testHall = new Hall(1);
             // Hall testHall1 = new Hall(2);
             // Hall testHall2 = new Hall(3);
@@ -74,6 +78,70 @@ namespace ABDOTClient.Networking {
 
 
         //please make the methods in order of the classes
+        public async Task<bool> CreateBranch(Branch branch)
+        {
+            try
+            {
+                return await branchRequest.CreateBranch(branch);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task<bool> EditBranch(Branch branch)
+        {
+            try
+            {
+                return await branchRequest.EditBranch(branch);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteBranch(Branch branch)
+        {
+            try
+            {
+                return await branchRequest.DeleteBranch(branch);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        public async Task<Branch> GetBranch(int branchId)
+        {
+            try
+            {
+                return await branchRequest.GetBranch(branchId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
+        public async Task<IList<Branch>> GetAllBranches()
+        {
+            try
+            {
+                return await branchRequest.GetAllBranches();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
         public async Task<bool> RegisterUser(User user) {
             try {
                 return await userRequest.RegisterUser(user);
@@ -124,7 +192,7 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<List<User>> GetAllUsers() {
+        public async Task<IList<User>> GetAllUsers() {
             try {
                 return await userRequest.GetAllUsers();
             }
@@ -169,7 +237,7 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<List<Movie>> GetAllMovies() {
+        public async Task<IList<Movie>> GetAllMovies() {
             try {
                 return await movieRequest.GetAllMovies();
             }
@@ -219,7 +287,7 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<List<Play>> GetAllPlays() {
+        public async Task<IList<Play>> GetAllPlays() {
             try {
                 return await playRequest.GetAllPlays();
             }
@@ -319,9 +387,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<List<Ticket>> GetAllTickets() {
+        public async Task<IList<Ticket>> GetAllTickets() {
             try {
-                return await ticketRequest.GetAllTicktets();
+                return await ticketRequest.GetAllTickets();
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -369,7 +437,7 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<List<Hall>> GetAllHalls() {
+        public async Task<IList<Hall>> GetAllHalls() {
             try {
                 return await hallRequest.GetAllHalls();
             }
@@ -418,7 +486,7 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<List<Employee>> GetAllEmployees() {
+        public async Task<IList<Employee>> GetAllEmployees() {
             try {
                 return await employeeRequest.GetAllEmployees();
             }

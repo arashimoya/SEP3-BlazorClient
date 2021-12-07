@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Data;
 using ABDOTClient.Factories;
@@ -8,29 +9,59 @@ namespace ABDOTClient.Networking.Requests
 {
     public class EmployeeRequest : IEmployeeRequest
     {
-        public Task<bool> CreateEmployee(Employee employee)
+        private IList<Employee> Employees;
+
+        public EmployeeRequest()
         {
-            throw new System.NotImplementedException();
+            Employees = new List<Employee>();
+            if (!Employees.Any()) Seed();
+        }
+        public async Task<bool> CreateEmployee(Employee employee)
+        {
+            Employees.Add(employee);
+            return true;
         }
 
-        public Task<bool> EditEmployee(Employee employee)
+        public async Task<bool> EditEmployee(Employee employee)
         {
-            throw new System.NotImplementedException();
+            Employee toUpdate = Employees.FirstOrDefault(e => e.Id == employee.Id);
+            if (toUpdate == null) return false;
+            toUpdate.Birthday = employee.Birthday;
+            toUpdate.City = employee.City;
+            toUpdate.Branch = employee.Branch;
+            toUpdate.Country = employee.Country;
+            toUpdate.Postcode = employee.Postcode;
+            toUpdate.Role = employee.Role;
+            toUpdate.Street = employee.Street;
+            toUpdate.Email = employee.Email;
+            toUpdate.Password = employee.Password;
+            toUpdate.FirstName = employee.FirstName;
+            toUpdate.LastName = employee.LastName;
+            return true;
         }
 
-        public Task<bool> DeleteEmployee(Employee employee)
+        public async Task<bool> DeleteEmployee(Employee employee)
         {
-            throw new System.NotImplementedException();
+            Employee toRemove = Employees.FirstOrDefault(e => e.Id == employee.Id);
+            if (toRemove == null) return false;
+            Employees.Remove(toRemove);
+            return true;
+
         }
 
-        public Task<Employee> GetEmployee(int Employeeid)
+        public async Task<Employee> GetEmployee(int Employeeid)
         {
-            throw new System.NotImplementedException();
+            return Employees.FirstOrDefault(e => e.Id == Employeeid);
         }
 
-        public Task<List<Employee>> GetAllEmployees()
+        public async Task<IList<Employee>> GetAllEmployees()
         {
-            throw new System.NotImplementedException();
+            return Employees;
+        }
+
+        private void Seed()
+        {
+            
         }
     }
 }

@@ -12,6 +12,6 @@ namespace ABDOTClient.Networking.Requests {
 
         Task<Play> Get(int id);
 
-        Task<List<Play>> GetAllPlays();
+        Task<IList<Play>> GetAllPlays();
     }
 }

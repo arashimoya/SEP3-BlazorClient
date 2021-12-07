@@ -14,7 +14,7 @@ namespace ABDOTClient.Networking
 
         Task<User> GetUser(int id);
 
-        Task<List<User>> GetAllUsers();
+        Task<IList<User>> GetAllUsers();
         Task<User> Login(User user);
     }
 }

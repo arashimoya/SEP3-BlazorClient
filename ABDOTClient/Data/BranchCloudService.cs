@@ -1,39 +1,37 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using ABDOTClient.Factories;
 using ABDOTClient.Model;
 
 namespace ABDOTClient.Data
 {
     public class BranchCloudService : IBranchService
     {
-        public IList<Branch> Branches;
         
-        public BranchCloudService()
+        public Task<bool> CreateBranch(Branch branch)
         {
-            Branches = new List<Branch>();
-            Seed();
+            return ClientFactory.GetClient().CreateBranch(branch);
         }
 
-        public IList<Branch> GetAll()
+        public Task<bool> EditBranch(Branch branch)
         {
-            return Branches;
-        }
-        
-        public Branch Get(int branchId)
-        {
-            Branch toReturn = Branches.FirstOrDefault(b => b.Id == branchId);
-            return toReturn;
+            return ClientFactory.GetClient().EditBranch(branch);
         }
 
-        public Hall GetHall(int hallId)
+        public Task<bool> DeleteBranch(Branch branch)
         {
-            Hall toReturn = Get(1).Halls.FirstOrDefault(h=>h.Id == hallId);
-            return toReturn;
+            return ClientFactory.GetClient().DeleteBranch(branch);
         }
 
-        private void Seed()
+        public Task<Branch> GetBranch(int BranchId)
         {
-            
+            return ClientFactory.GetClient().GetBranch(BranchId);
+        }
+
+        public Task<IList<Branch>> GetAllBranches()
+        {
+            return ClientFactory.GetClient().GetAllBranches();
         }
     }
 }

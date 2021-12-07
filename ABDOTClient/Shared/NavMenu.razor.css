@@ -47,7 +47,6 @@
 .navbar-nav-custom {
     -webkit-box-align: center;
     -ms-flex-align: center;
-    
 }
 
     .nav-item:first-of-type {
@@ -100,12 +99,12 @@
     color: white;
 }
 
-@media (min-width: 641px) {
+@media (min-width: 992px) {
     .navbar-toggler {
         display: none;
     }
 
-    .collapse .login-box{
+    .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }

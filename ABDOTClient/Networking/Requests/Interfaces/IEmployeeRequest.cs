@@ -14,6 +14,6 @@ namespace ABDOTClient.Networking.Requests
 
         Task<Employee> GetEmployee(int Employeeid);
 
-        Task<List<Employee>> GetAllEmployees();
+        Task<IList<Employee>> GetAllEmployees();
     }
 }
