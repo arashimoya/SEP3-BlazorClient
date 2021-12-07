@@ -32,6 +32,7 @@ namespace ABDOTClient.Networking.Requests
         {
             graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
             Branches = new List<Branch>();
+            if (!Branches.Any()) Seed();
         }
         public async Task<bool> CreateBranch(Branch branch)
         {
@@ -106,15 +107,17 @@ namespace ABDOTClient.Networking.Requests
                 Console.WriteLine(branch.Street);
             }
             //Return
-            return graphQLResponse.Data.branches;
+            //return graphQLResponse.Data.branches;
+            return Branches;
         }
 
         private void Seed()
         {
-            Branches = new List<Branch>
+            Branch[] BranchArray = 
             {
                 new Branch()
                 {
+                    Id = 1,
                     City = "Aarhus",
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()
@@ -125,6 +128,7 @@ namespace ABDOTClient.Networking.Requests
                 },
                 new Branch()
                 {
+                    Id = 2,
                     City = "Sonderborg",
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()
@@ -134,6 +138,19 @@ namespace ABDOTClient.Networking.Requests
                     },
                 },
             };
+            BranchArray[0].Halls[0].Id = 1;
+            BranchArray[0].Halls[0].Branch = BranchArray[0];
+            BranchArray[0].Halls[1].Id = 2;
+            BranchArray[0].Halls[1].Branch = BranchArray[0];
+            
+            BranchArray[1].Halls[0].Id = 3;
+            BranchArray[1].Halls[0].Branch = BranchArray[1];
+            BranchArray[1].Halls[1].Id = 4;
+            BranchArray[1].Halls[1].Branch = BranchArray[1];
+
+            Branches = BranchArray.ToList();
+
+
         }
     }
 }

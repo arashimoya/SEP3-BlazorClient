@@ -9,7 +9,7 @@ namespace ABDOTClient.Model
     {
         
     
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         [Required]
         public int HallSize { get; set; }
@@ -21,7 +21,11 @@ namespace ABDOTClient.Model
         
         //generated in the constructor
         public List<Tuple<int, int>> Seats { get; set; }
-        
+
+        public Hall()
+        {
+            
+        }
         public Hall(int hallSize)
         {
 

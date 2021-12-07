@@ -28,6 +28,8 @@ namespace ABDOTClient{
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<IMovieService, CloudMovieService>();
+            services.AddScoped<IBranchService, BranchCloudService>();
+            services.AddScoped<IPlayService, PlayCloudService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
