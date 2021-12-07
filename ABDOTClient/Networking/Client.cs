@@ -34,7 +34,7 @@ namespace ABDOTClient.Networking {
             employeeRequest = new EmployeeRequest();
             hallRequest = new HallRequest();
             branchRequest = new BranchRequest();
-            //test
+            branchRequest.GetAllBranches();
 
 
 

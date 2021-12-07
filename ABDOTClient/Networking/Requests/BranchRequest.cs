@@ -1,33 +1,40 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 using ABDOTClient.Networking.Requests.Interfaces;
 using GraphQL;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
+using JsonSerializer = Newtonsoft.Json.JsonSerializer;
 
 namespace ABDOTClient.Networking.Requests
 {
+    
     public class BranchRequest : IBranchRequest
     {
+        
+        private class BranchRoot
+        {
+            public List<Branch> branches { get; set; }
+
+            public BranchRoot()
+            {
+                branches = new List<Branch>();
+            }
+        }
+
         private IList<Branch> Branches;
         private GraphQLHttpClient graphQlClient;
         public BranchRequest()
         {
             graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
             Branches = new List<Branch>();
-            // if (!Branches.Any()) Seed();
         }
-        //these are for testing the site --Adam
         public async Task<bool> CreateBranch(Branch branch)
         {
-            
-            // int max = Branches.Max(b => b.Id);
-            // //branch.Id = (++max);
-            // Branches.Add(branch);
-            // return true;
             throw new NotImplementedException();
         }
 
@@ -58,38 +65,48 @@ namespace ABDOTClient.Networking.Requests
 
         public async Task<IList<Branch>> GetAllBranches()
         {
-            var getAllbranches = new GraphQLRequest
-            {
-                Query = @"
-                   Branches{
+
+            //Create content of the query
+            string query = @"
+                  query {  
+                   branches{
                         id,
                         street,
                         city,
                         postcode,
                         country,
-                        halls{{
-                         id
-                        }},
+                        halls{
+                         id,
+                         hallSize
+                        },
                         employees{
-                        id}
-                   }                    
-                        "
-            };
-            var graphQlResponse = new GraphQLResponse<List<Branch>>();
-            try
+                        id,
+                        firstName,
+                        lastName,
+                        email,
+                        role,
+                        cPR,
+                        street,
+                        city,
+                        postcode,
+                        country,
+                        birthDate
+                        }
+                   }
+                  }             
+                        ";
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            //Send request
+            var graphQLResponse = await graphQlClient.SendQueryAsync<BranchRoot>(graphQLRequest);
+            //Print out result
+            Console.WriteLine(graphQLResponse.Data.branches);
+            foreach (Branch branch in graphQLResponse.Data.branches)
             {
-                graphQlResponse = await graphQlClient.SendQueryAsync<List<Branch>>(getAllbranches);
+                Console.WriteLine(branch.Street);
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            foreach (Branch branch in graphQlResponse.Data)
-            {
-                Console.WriteLine(branch.ToString());
-            }
-            return graphQlResponse.Data;
+            //Return
+            return graphQLResponse.Data.branches;
         }
 
         private void Seed()
