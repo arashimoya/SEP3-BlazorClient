@@ -6,11 +6,11 @@ namespace ABDOTClient.Data
 {
     public interface IBranchService
     {
-        Task<bool> CreateBranch(Branch branch);
+        Task<Branch> CreateBranch(Branch branch);
 
-        Task<bool> EditBranch(Branch branch);
+        Task<Branch> EditBranch(Branch branch);
 
-        Task<bool> DeleteBranch(Branch branch);
+        Task<bool> DeleteBranch(long branchId);
 
         Task<Branch> GetBranch(int BranchId);
 

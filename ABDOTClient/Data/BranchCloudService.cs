@@ -9,20 +9,20 @@ namespace ABDOTClient.Data
     public class BranchCloudService : IBranchService
     {
         
-        public Task<bool> CreateBranch(Branch branch)
+        public Task<Branch> CreateBranch(Branch branch)
         {
             return ClientFactory.GetClient().CreateBranch(branch);
         }
 
-        public Task<bool> EditBranch(Branch branch)
+        public Task<Branch> EditBranch(Branch branch)
         {
             return ClientFactory.GetClient().EditBranch(branch);
         }
 
 
-        public async Task<bool> DeleteBranch(Branch branch)
+        public async Task<bool> DeleteBranch(long branchId)
         {
-            return await ClientFactory.GetClient().DeleteBranch(branch);
+            return await ClientFactory.GetClient().DeleteBranch(branchId);
         }
 
         public Task<Branch> GetBranch(int BranchId)

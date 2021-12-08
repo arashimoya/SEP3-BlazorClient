@@ -29,14 +29,23 @@ namespace ABDOTClient.Networking {
             userRequest = new UserRequest();
             movieRequest = new MovieRequest();
             playRequest = new PlayRequest();
-            programRequest = new ProgramRequest();
             ticketRequest = new TicketRequest();
             employeeRequest = new EmployeeRequest();
             hallRequest = new HallRequest();
             branchRequest = new BranchRequest();
-            branchRequest.GetAllBranches();
-
-
+            Branch branch = new Branch()
+            {
+                Id = 13,
+                City = "chujowo2",
+                Street = "pica",
+                Postcode = "694202137",
+                Country = "jebane"
+            };
+            // branchRequest.GetAllBranches();
+            // branchRequest.GetBranch(3);
+            // branchRequest.DeleteBranch(6);
+            // branchRequest.CreateBranch(branch);
+            branchRequest.EditBranch(branch);
 
 
             //***********
@@ -80,7 +89,7 @@ namespace ABDOTClient.Networking {
 
 
         //please make the methods in order of the classes
-        public async Task<bool> CreateBranch(Branch branch)
+        public async Task<Branch> CreateBranch(Branch branch)
         {
             try
             {
@@ -89,11 +98,11 @@ namespace ABDOTClient.Networking {
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> EditBranch(Branch branch)
+        public async Task<Branch> EditBranch(Branch branch)
         {
             try
             {
@@ -102,15 +111,15 @@ namespace ABDOTClient.Networking {
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> DeleteBranch(Branch branch)
+        public async Task<bool> DeleteBranch(long branchId)
         {
             try
             {
-                return await branchRequest.DeleteBranch(branch);
+                return await branchRequest.DeleteBranch(branchId);
             }
             catch (Exception e)
             {

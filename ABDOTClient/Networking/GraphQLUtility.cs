@@ -28,6 +28,17 @@ namespace ABDOTClient.Networking
             return request;
         }
         
+        public static GraphQLRequest MakeGraphQLRequest(string query, object variables)
+        {
+            GraphQLRequest request;
+            request = new GraphQLRequest
+            {
+                Query = query,
+                Variables = variables
+            };
+            return request;
+        }
+        
         public static GraphQLRequest MakeGraphQLRequest(string query)
         {
             GraphQLRequest request;

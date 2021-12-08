@@ -6,11 +6,11 @@ namespace ABDOTClient.Networking.Requests.Interfaces
 {
     public interface IBranchRequest
     {
-        Task<bool> CreateBranch(Branch branch);
+        Task<Branch> CreateBranch(Branch branch);
 
-        Task<bool> EditBranch(Branch branch);
+        Task<Branch> EditBranch(Branch branch);
 
-        Task<bool> DeleteBranch(Branch branch);
+        Task<bool> DeleteBranch(long branch);
 
         Task<Branch> GetBranch(int branchId);
 

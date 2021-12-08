@@ -7,7 +7,7 @@ namespace ABDOTClient.Model
     {
         
       
-        public int Id { get; private set; }
+        public int Id { get; set; }
         
         [Required]
         public string City { get; set; }
