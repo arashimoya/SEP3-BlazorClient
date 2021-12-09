@@ -1,0 +1,26 @@
+﻿@page "/checkoutInfo/{selectedSeatsJson}"
+@using System.Text.Json
+
+<div class="container">
+    <h3>CheckoutInfo</h3>
+    
+    @foreach (var item in selectedSeats)
+                                    {
+                                        <div class="seat-select-choice">
+                                            <div class="seat-select-choice-key">
+                                                Seat:
+                                            </div>
+                                            <div class="seat-select-choice-value">
+                                                Row: @item.Item1 Column: @item.Item2
+                                            </div>
+                                        </div>
+                                    }
+</div>
+
+@code {
+    [Parameter] public string selectedSeatsJson { get; set; }
+    private IList<Tuple<int, int>> selectedSeats => JsonSerializer.Deserialize<IList<Tuple<int,int>>>(selectedSeatsJson);
+
+    
+    
+}

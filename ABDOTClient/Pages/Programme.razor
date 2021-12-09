@@ -75,7 +75,7 @@
         <div class="section row">
             @foreach (var play in plays)
             {
-                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item">
+                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id) )">
                     <div class="movie-list">
                         <div class="movie-list-poster movie-list-upcoming "><img src=@play.Movie.PosterSrc/>
                         </div>
@@ -143,6 +143,11 @@
     private void SelectDay(DateTime date)
     {
         selectedDay = date.ToString(dateFormat);
+    }
+
+    private void GoToMovie(int id)
+    {
+        NavigationManager.NavigateTo($"EditEmployee/{id}");
     }
     
     private void Seed()

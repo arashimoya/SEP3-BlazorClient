@@ -81,6 +81,8 @@ namespace ABDOTClient.Networking.Requests
             //also pay very very close attention to how the arguments are named in the graphQL project, in AddBranch, EditBranch classes etc, including capitalisation and types, because otherwise it wont work
             //u will get internal server error / unexpected execution
             //sometimes its called Id, sometimes its called just branchId, sometimes its Int sometimes its Long -- not ideal but now its too late so just check it :C
+            
+            // too much texto didnt read 
             string query = @"
                         mutation ($city: String!, $street: String!, $postcode: String!, $country: String!) {
                           createBranch (branch: {city: $city, street: $street, country: $country, postcode: $postcode}){
@@ -288,8 +290,8 @@ namespace ABDOTClient.Networking.Requests
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<BranchesRoot>(graphQLRequest);
             //Return
-            //return graphQLResponse.Data.branches;
-            return Branches;
+            return graphQLResponse.Data.branches;
+            // return Branches;
         }
 
         private void Seed()
@@ -303,8 +305,14 @@ namespace ABDOTClient.Networking.Requests
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()
                     {
-                        new Hall(1),
-                        new Hall(2),
+                        new Hall(1)
+                        {
+                            Id = 1,
+                        },
+                        new Hall(2)
+                        {
+                            Id = 2,
+                        },
                     },
                 },
                 new Branch()
@@ -314,19 +322,22 @@ namespace ABDOTClient.Networking.Requests
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()
                     {
-                        new Hall(2),
-                        new Hall(3),
+                        new Hall(2)
+                        {
+                            Id= 3,
+                        },
+                        new Hall(3)
+                        {
+                            Id = 4,
+                        },
                     },
                 },
             };
-            BranchArray[0].Halls[0].Id = 1;
+            
             BranchArray[0].Halls[0].Branch = BranchArray[0];
-            BranchArray[0].Halls[1].Id = 2;
             BranchArray[0].Halls[1].Branch = BranchArray[0];
             
-            BranchArray[1].Halls[0].Id = 3;
             BranchArray[1].Halls[0].Branch = BranchArray[1];
-            BranchArray[1].Halls[1].Id = 4;
             BranchArray[1].Halls[1].Branch = BranchArray[1];
 
             Branches = BranchArray.ToList();
