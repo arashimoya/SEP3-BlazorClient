@@ -374,9 +374,9 @@ namespace ABDOTClient.Networking {
             }
         }
         
-        public async Task<bool> AddTicket(Ticket ticket) {
+        public async Task<Ticket> AddTicket(Ticket ticket) {
             try {
-                return await ticketRequest.Create(ticket);
+                return await ticketRequest.CreateTicketAsync(ticket);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -384,9 +384,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> EditTicket(Ticket ticket) {
+        public async Task<Ticket> EditTicket(Ticket ticket) {
             try {
-                return await ticketRequest.Edit(ticket);
+                return await ticketRequest.EditTicketAsync(ticket);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -394,9 +394,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> DeleteTicket(Ticket ticket) {
+        public async Task<bool> DeleteTicket(int movieId) {
             try {
-                return await ticketRequest.Delete(ticket);
+                return await ticketRequest.DeleteTicketAsync(movieId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -406,7 +406,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<Ticket> GetTicket(int ticketId) {
             try {
-                return await ticketRequest.GetTicket(ticketId);
+                return await ticketRequest.GetTicketAsync(ticketId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -416,7 +416,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<IList<Ticket>> GetAllTickets() {
             try {
-                return await ticketRequest.GetAllTickets();
+                return await ticketRequest.GetAllTicketsAsync();
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -522,6 +522,5 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-        
     }
 }

@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using ABDOTClient.Data;
 using ABDOTClient.Model;
 using GraphQL;
 using GraphQL.Client.Http;
@@ -158,8 +153,8 @@ namespace ABDOTClient.Networking
                 Console.WriteLine(e);
                 throw;
             }
-            //Return, possibly print
-            Console.WriteLine(graphQLResponse.Data.editMovie.Director);
+            // Console.WriteLine(graphQLResponse.Data.editMovie.Director);
+
             return graphQLResponse.Data.editMovie;
         }
 
