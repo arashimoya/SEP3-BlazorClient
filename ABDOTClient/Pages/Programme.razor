@@ -56,14 +56,14 @@
                         var tempint = i;
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active"
-                               @onclick="()=>SelectDay(DateTime.Today.Date.AddDays(tempint))">@today.AddDays(tempint).ToString(dateFormat)</a>
+                               @onclick="()=>FilterByDay(DateTime.Today.Date.AddDays(tempint))">@today.AddDays(tempint).ToString(dateFormat)</a>
                         </div>
                     }
                 </div>
             </div>
             <div class="col-sm-4">
                 <div>
-                    <select class="header-selectpicker" value="@selectedBranch" @onchange="@SelectBranch">
+                    <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch">
                         @foreach (var branch in branches)
                         {
                             <option>@branch.City</option>
@@ -73,9 +73,10 @@
             </div>
         </div>
         <div class="section row">
-            @foreach (var play in plays)
+            
+            @foreach (var play in playsToShow)
             {
-                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id) )">
+                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id))">
                     <div class="movie-list">
                         <div class="movie-list-poster movie-list-upcoming "><img src=@play.Movie.PosterSrc/>
                         </div>
@@ -96,145 +97,95 @@
                         </div>
                     </div>
                 </div>
-                
+
             }
-            @plays.Count;
+            @plays.Count
+            @playsToShow.Count
         </div>
     </div>
     @selectedBranch
-    @selectedDay
+    @selectedDay.ToString();
 </div>
 
 @code{
-    private DateTime today { get; set; }= DateTime.Now;
+    private DateTime today { get; set; }= DateTime.Today;
     private string dateFormat = "dddd, dd/MM";
-    private string selectedBranch;
-    private string selectedDay;
+    
+    private string? selectedBranch;
+    private DateTime? selectedDay;
+    
     private IList<Branch> branches = new List<Branch>();
+    
     private IList<Play> plays = new List<Play>();
+    private IList<Play> playsToShow = new List<Play>();
     
     
     
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         branches = await BranchService.GetAllBranches();
-        selectedBranch = "Aarhus";
-        selectedDay = today.ToString(dateFormat);
+        selectedBranch = branches[0].City;
+        selectedDay = today;
 
-        // foreach (var branch in branches)
-        // {
-        //     foreach (var hall in branch.Halls)
-        //     {
-        //         foreach (var play in hall.Programme)
-        //         {
-        //             plays.Add(play);
-        //         }
-        //     }
-        // }
-        Seed();
+        plays = new List<Play>();
+        playsToShow = new List<Play>();
+        PopulatePlays();
+        playsToShow = plays;
     }
-
-    private void SelectBranch(ChangeEventArgs args)
-    {
-        if(args!=null)
-        selectedBranch = args.Value.ToString();
-    }
-
-    private void SelectDay(DateTime date)
-    {
-        selectedDay = date.ToString(dateFormat);
-    }
+    
 
     private void GoToMovie(int id)
     {
         NavigationManager.NavigateTo($"EditEmployee/{id}");
     }
-    
-    private void Seed()
-    {
-        Play[] playArray =
-        {
-            new Play
-            {
-                Movie = new Movie
-                {
-                    Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
-                    Director = "Peter Jackson",
-                    Genre = "Adventure, Melodrama, Fantasy",
-                    Language = "English",
-                    LengthInMinutes = 200,
-                    Year = 2005,
-                    Title = "King Kong",
-                    PosterSrc = "/images/king_kong.jpg",
-                },
-                Date = DateTime.Now,
-                Hall = new Hall(1),
-                Tickets = new List<Ticket>
-                {
-                    
-                },
-                TimeInMinutes = 200,
-            },
-            new Play
-            {
-                Date = DateTime.Now,
-                Hall = new Hall(2),
-                Movie = new Movie
-                {
-                    Title = "Forrest Gump",
-                    Director = "Robert Zemeckis",
-                    Genre = "Drama / Comedy",
-                    Year = 2004,
-                    Description = "The life story of Forrest, a boy with a low IQ with paralysis, who becomes a billionaire and a hero of the Vietnam War.",
-                    Language = "English",
-                    LengthInMinutes = 186,
-                    PosterSrc = "/images/forrest_gump.jpg",
-                },
-                Tickets = new List<Ticket>(),
-                TimeInMinutes = 186,
-            },
-            new Play
-            {
-                Date = DateTime.Now,
-                Hall = new Hall(3),
-                Movie = new Movie
-                {
-                    Description = "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
-                    Title = "Shrek",
-                    Director = "Andrew Adamson / Vicky Jenson",
-                    Genre = "Comedy, Animation, Family",
-                    Language = "English, Danish",
-                    LengthInMinutes = 90,
-                    Year = 2001,
-                    PosterSrc = "/images/shrek.jpg",
-                },
-                Tickets = new List<Ticket>(),
-                TimeInMinutes = 90,
-            },
-            new Play
-            {
-                Date = DateTime.Now,
-                Hall = new Hall(1),
-                Movie = new Movie
-                {
-                    //Id = 3,
-                    Title = "Shawshank Redemption",
-                    // Cast = new List<Actor>(),
-                    Description =
-                        "Adaptation of a Stephen King short story. A banker who is wrongly sentenced to life imprisonment, tries to survive in a brutal prison world. ",
-                    Director = "Frank Darabont",
-                    Genre = "Drama",
-                    Language = "English",
-                    LengthInMinutes = 110,
-                    Year = 1994,
-                    PosterSrc = "/images/shawshank.jpg"
-                },
-                Tickets = new List<Ticket>(),
-                TimeInMinutes = 110,
-            },
-        };
-        plays = playArray.ToList();
 
+    private void PopulatePlays()
+    {
+        foreach (var branch in branches)
+        {
+            foreach (var hall in branch.Halls)
+            {
+                foreach (var play in hall.Programme)
+                {
+                    plays.Add(play);
+                }
+            }
+        }
+    }
+
+    private void FilterByDay(DateTime dateTime)
+    {
+        selectedDay = DateTime.Today;
+        try
+        {
+            selectedDay = dateTime;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
+        }
+    }
+
+    private void FilterByBranch(ChangeEventArgs args)
+    {
+        selectedBranch = "";
+        try
+        {
+            selectedBranch = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
+        }
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        playsToShow = plays.Where(p =>
+            (selectedBranch != null && p.Hall.Branch.City.Equals(selectedBranch) || selectedBranch == null) &&
+            (selectedDay != null && p.Date.Equals(selectedDay) || selectedDay == null)
+            ).ToList();
     }
 
 }
