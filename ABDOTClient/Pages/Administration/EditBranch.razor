@@ -29,7 +29,7 @@
     
     private async Task EditABranch()
     {
-        if (await branchService.EditBranch(newBranchItem))
+        if (await branchService.EditBranch(newBranchItem) !=null)
         {
             confirmationMessage = "Success";
             NavigationManager.NavigateTo($"/branches");

@@ -26,7 +26,7 @@
     
     private async Task AddNewBranch()
     {
-        if (await branchService.CreateBranch(newBranchItem))
+        if (await branchService.CreateBranch(newBranchItem) != null)
         {
             confirmationMessage = "Success";
             NavigationManager.NavigateTo($"/branches");

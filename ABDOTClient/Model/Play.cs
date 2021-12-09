@@ -6,7 +6,7 @@ namespace ABDOTClient.Model
 {
     public class Play
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         
         [Required]
         public DateTime Date { get; set; }

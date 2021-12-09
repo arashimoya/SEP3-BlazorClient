@@ -67,7 +67,7 @@ else
                     }</td>
                 
                     <td>
-                        <button @onclick="@(() => RemoveBranch(item))">
+                        <button @onclick="@(() => RemoveBranch(item.Id))">
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
                     </td>
@@ -100,9 +100,9 @@ else
         branchesToShow = branches;
     }
 
-    private async Task RemoveBranch(Branch branch)
+    private async Task RemoveBranch(long branchId)
     {
-        if (await BranchService.DeleteBranch(branch))
+        if (await BranchService.DeleteBranch(branchId))
             confirmationMessage = "Branch deleted successfully";
 
     }
