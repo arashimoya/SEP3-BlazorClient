@@ -7,13 +7,13 @@ namespace ABDOTClient.Networking
     public interface IMovieRequest
     {
 
-        Task<bool> CreateMovie(Movie movie);
+        Task<Movie> CreateMovie(Movie movie);
 
-        Task<bool> EditMovie(Movie movie);
+        Task<Movie> EditMovie(Movie movie);
 
-        Task<bool> DeleteMovie(Movie movie);
+        Task<bool> DeleteMovie(int movieId);
 
-        Task<Movie> GetMovie(int id);
+        Task<Movie> GetMovie(int movieId);
 
         Task<IList<Movie>> GetAllMovies();
 

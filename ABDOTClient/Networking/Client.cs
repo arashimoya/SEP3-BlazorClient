@@ -41,12 +41,28 @@ namespace ABDOTClient.Networking {
                 Postcode = "694202137",
                 Country = "jebane"
             };
+
+            Movie movie = new Movie()
+            {
+                    Id = 9,
+                    Title =  "Whatever 2",
+                    Description = "Chuj w dupe",
+                    Genre = "Hardcore Erotica",
+                    Director = "Adam Sandler",
+                    Language = "Arabic",
+                    SubtitleLanguage = "asda",
+                    Year = 1992,
+                    LengthInMinutes = 132,
+                    PosterSrc = "pornhub.com"
+            };
             // branchRequest.GetAllBranches();
             // branchRequest.GetBranch(3);
             // branchRequest.DeleteBranch(6);
             // branchRequest.CreateBranch(branch);
-            branchRequest.EditBranch(branch);
+            // branchRequest.EditBranch(branch);
 
+            // movieRequest.GetAllMovies();
+            // movieRequest.CreateMovie(movie);
 
             //***********
             //TESTS
@@ -214,23 +230,23 @@ namespace ABDOTClient.Networking {
         }
 
 
-        public async Task<bool> AddMovie(Movie movie) {
+        public async Task<Movie> AddMovie(Movie movie) {
             try {
                 return await movieRequest.CreateMovie(movie);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> EditMovie(Movie movie) {
+        public async Task<Movie> EditMovie(Movie movie) {
             return await movieRequest.EditMovie(movie);
         }
 
-        public async Task<bool> DeleteMovie(Movie movie) {
+        public async Task<bool> DeleteMovie(int movieId) {
             try {
-                return await movieRequest.DeleteMovie(movie);
+                return await movieRequest.DeleteMovie(movieId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

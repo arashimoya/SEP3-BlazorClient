@@ -28,6 +28,18 @@ namespace ABDOTClient{
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<IMovieService, CloudMovieService>();
+
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("MustBeOwner", builder =>
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "Owner"));
+                options.AddPolicy("MustBeManager", builder =>
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "Manager"));
+                options.AddPolicy("MustBeEmployee", builder =>
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "Employee"));
+                
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
