@@ -10,7 +10,7 @@ namespace ABDOTClient.Networking.Requests
 
         Task<bool> EditEmployee(Employee employee);
 
-        Task<bool> DeleteEmployee(Employee employee);
+        Task<bool> DeleteEmployee(int employeeID);
 
         Task<Employee> GetEmployee(int Employeeid);
 

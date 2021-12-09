@@ -7,6 +7,7 @@ namespace ABDOTClient.Model
     public class Employee : User
     {
 
+        
         public int Role { get; set; }
         
         [Required] public string CPR { get; set; }

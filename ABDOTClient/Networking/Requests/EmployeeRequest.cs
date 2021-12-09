@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Data;
@@ -40,9 +41,9 @@ namespace ABDOTClient.Networking.Requests
             return true;
         }
 
-        public async Task<bool> DeleteEmployee(Employee employee)
+        public async Task<bool> DeleteEmployee(int employeeId)
         {
-            Employee toRemove = Employees.FirstOrDefault(e => e.Id == employee.Id);
+            Employee toRemove = Employees.FirstOrDefault(e => e.Id == employeeId);
             if (toRemove == null) return false;
             Employees.Remove(toRemove);
             return true;
@@ -61,7 +62,30 @@ namespace ABDOTClient.Networking.Requests
 
         private void Seed()
         {
-            
+            Employee[] employeesArray =
+            {
+                new Employee()
+                {
+                    Id = 1,
+                    FirstName = "Christian",
+                    LastName = "Dam",
+                    Email = "ChristianLDam@jourrapide.com",
+                    Password = "dam123",
+                    Birthday = new DateTime(1994, 9, 21),
+                    CPR = "210994-4869",
+                },
+                new Employee()
+                {
+                    Id = 2,
+                    FirstName = "Mille",
+                    LastName = "Bertensen",
+                    Email = "MilleABertelsen@dayrep.com",
+                    Password = "bertensen123",
+                    Birthday = new DateTime(1978, 11, 28),
+                    CPR = "281178-4756"
+                }
+            };
+            Employees = employeesArray.ToList();
         }
     }
 }

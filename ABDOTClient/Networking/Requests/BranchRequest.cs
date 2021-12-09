@@ -58,6 +58,7 @@ namespace ABDOTClient.Networking.Requests
             //make sure to put this in every class u make for this otherwise u will be very sad :(
             graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
             Branches = new List<Branch>();
+            if (!Branches.Any()) Seed();
         }
         public async Task<Branch> CreateBranch(Branch branch)
         {
@@ -254,7 +255,7 @@ namespace ABDOTClient.Networking.Requests
         {
 
             //Create content of the query
-            string query = @"
+         /*   string query = @"
                   query {  
                    branches{
                         id,
@@ -287,7 +288,8 @@ namespace ABDOTClient.Networking.Requests
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<BranchesRoot>(graphQLRequest);
             //Return
-            return graphQLResponse.Data.branches;
+            return graphQLResponse.Data.branches;*/
+         return Branches;
         }
 
         private void Seed()
@@ -295,7 +297,8 @@ namespace ABDOTClient.Networking.Requests
             Branches = new List<Branch>
             {
                 new Branch()
-                {
+                {   
+                    Id = 1,
                     City = "Aarhus",
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()
@@ -306,6 +309,7 @@ namespace ABDOTClient.Networking.Requests
                 },
                 new Branch()
                 {
+                    Id = 2,
                     City = "Sonderborg",
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()

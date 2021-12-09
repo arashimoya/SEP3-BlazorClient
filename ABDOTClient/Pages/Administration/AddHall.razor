@@ -1,0 +1,72 @@
+﻿@page "/Addhall"
+@using ABDOTClient.Data
+@using ABDOTClient.Model
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager NavigationManager
+
+<h3>AddHall</h3>
+<EditForm Model="@newHallItem" OnValidSubmit="@AddNewHall">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+    <div class="form-group">
+             Hall size:<br/>
+             <CustomInputSelect @bind-Value="newHallItem.HallSize">
+                 <option value="1">Small</option>
+                 <option value="2">Medium</option>
+                 <option value="3">Large</option>
+             </CustomInputSelect>
+         </div>
+    <div class="form-group">
+            Branch:<br/>
+            <InputSelect @bind-Value="branchid">
+                @if (branches != null)
+                {
+                    @foreach (var item in branches)
+                    {
+                        <option value="@item.Id">@item.City</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+    <p class="actions">
+        <button class="btn btn-dark" type="submit">Submit</button>
+    </p>
+</EditForm>
+@code {
+    private Hall newHallItem = new Hall(1);
+    private IHallService hallService = new HallCloudService();
+    private string confirmationMessage = "";
+    private IBranchService BranchService = new BranchCloudService();
+    private IList<Branch> branches;
+
+
+    private int branchid
+    {
+        get => newHallItem.Branch.Id;
+
+        set => newHallItem.Branch = branches.Single(c => c.Id == value);
+    }
+
+    private async Task AddNewHall()
+    {
+        if (await hallService.CreateHall(newHallItem))
+        {
+            
+            confirmationMessage = "Success";
+            NavigationManager.NavigateTo($"/halls");
+            
+        }
+     
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        newHallItem.Branch = new Branch();
+        branches = new List<Branch>();
+        if (!branches.Any())
+        {
+            branches =  await BranchService.GetAllBranches();
+        }
+        
+    }
+
+}

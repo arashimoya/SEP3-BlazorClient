@@ -14,17 +14,18 @@ namespace ABDOTClient.Data
 
         public Task<bool> EditEmployee(Employee employee)
         {
-            throw new System.NotImplementedException();
+            return ClientFactory.GetClient().EditEmployee(employee);
         }
 
         public Task<bool> DeleteEmployee(int employeeId)
         {
-            throw new System.NotImplementedException();
+           // return ClientFactory.GetClient().DeleteEmployee(employeeId);
+           throw new System.NotImplementedException();
         }
 
-        public Task<Employee> GetEmployee(int employeeId)
+        public async Task<Employee> GetEmployee(int employeeId)
         {
-            throw new System.NotImplementedException();
+            return await ClientFactory.GetClient().GetEmployee(employeeId);
         }
 
         public Task<List<Employee>> GetAllEmployees()
