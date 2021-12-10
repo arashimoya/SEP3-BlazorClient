@@ -10,7 +10,7 @@ namespace ABDOTClient.Networking.Requests
 
         Task<bool> EditHall(Hall hall);
 
-        Task<bool> DeleteHall(Hall hall);
+        Task<bool> DeleteHall(int hallId);
 
         Task<Hall> GetHall(int hallId);
 

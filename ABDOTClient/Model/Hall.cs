@@ -85,5 +85,28 @@ namespace ABDOTClient.Model
             Console.WriteLine("");
             Console.WriteLine("Total Seats :: " + totalColumns * totalRows);
         }
+
+        public void LoadSeats() {
+            //Hall size small = 6 rows, 8 columns
+            if (HallSize == 1)
+            {
+                CreateSeats(6, 8);
+            }
+            //Hall size medium = 12 rows = 14 columns
+            else if (HallSize == 2)
+            {
+                CreateSeats(12, 14);
+            }
+            //Hall size large = 15 rows, 20 columns
+            else if (HallSize == 3)
+            {
+                CreateSeats(15, 20);
+            } 
+            //Invalid hall size
+            else
+            {
+                throw new Exception("Invalid hall size");
+            }
+        }
     }
 }

@@ -7,62 +7,254 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Transactions;
 using ABDOTClient.Model;
+using GraphQL;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
+using LoginComponent;
 
 namespace ABDOTClient.Networking {
     public class UserRequest : IUserRequest {
+        private GraphQLHttpClient graphQlClient;
         private static readonly HttpClient httpClient = new HttpClient();
         private IList<User> Users;
         public UserRequest()
         {
+            graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
             Users = new List<User>();
         }
         
-        public async Task<bool> RegisterUser(User user)
+        
+        private class UsersRoot
         {
-            if (Users.Contains(user)) return false;
-            Users.Add(user);
-            return true;
+            public List<User> users { get; set; }
+
+            public UsersRoot()
+            {
+                users = new List<User>();
+            }
+        }
+
+        private class UserRoot
+        {
+            public User user { get; set; }
+        }
+
+        private class DeleteRoot
+        {
+            public bool deleteUser { get; set; }
+        }
+        
+        private class CreateUserRoot
+        {
+            //this has to be createBranch because thats how it comes from graphQL, same for edit branch...just query from banana cake and you will see what to put here
+            public User createUser { get; set; }
+        }
+
+        private class EditUserRoot
+        {
+            //same here, also u can see how im calling this later when im printing/returning it
+            public User editUser { get; set; }
+        }
+
+        private class LoginRoot
+        {
+            public User login { get; set; }   
+        }
+        
+        
+        
+        public async Task<User> RegisterUser(User user)
+        {
+            string query = @"
+                        mutation ($firstName : String!, $lastName : String!, $email: String!, $password: String!) {
+                          createUser(user: {firstName: $firstName, email: $email, lastName: $lastName, password: $password}) {
+                            firstName,
+                            lastName,
+                            email,
+                            password,
+                            ticketsPurchased {
+                              id
+                            }
+                          }
+                        }
+        
+                        ";
+            
+            //Set variables
+            var variables = new
+            {
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                email = user.Email,
+                password = user.Password
+            };
+            //Make request object out of content using custom method wrote by #me
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
+            //Send request, keep wrapped in try catch otherwise u wont get exception
+            var graphQLResponse = new GraphQLResponse<CreateUserRoot>();
+            try
+            {
+                graphQLResponse = await graphQlClient.SendMutationAsync<CreateUserRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            //Return, possibly print
+            Console.WriteLine(graphQLResponse.Data.createUser.FirstName);
+            return graphQLResponse.Data.createUser;
+            
         }
 
         public async Task<User> Login(User user)
         {
-            User toLogin = Users.FirstOrDefault(u => u.Email == user.Email);
-            if (toLogin == null) throw new Exception("Wrong username!");
-            if (!toLogin.Password.Equals(user.Password)) throw new Exception("Wrong password!");
-            return toLogin;
-
+            //Create content of the query
+            string query = @"
+                  mutation ($email : String!, $password: String!) {
+                      login (login : {email: $email, password: $password}) {
+                        firstName,
+                        lastName
+}         
+                        ";
+            var variables = new
+            {
+                email = user.Email,
+                password = user.Password
+            };
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            //Send request
+            var graphQLResponse = await graphQlClient.SendQueryAsync<LoginRoot>(graphQLRequest);
+            //Return
+            Console.WriteLine(graphQLResponse.Data.login.FirstName);
+            return graphQLResponse.Data.login;
         }
 
-        public async Task<bool> EditUser(User user)
+        public async Task<User> EditUser(User user)
         {
-            User toUpdate = Users.FirstOrDefault(u => u.Id == user.Id);
-            if (toUpdate == null) return false;
-            toUpdate.Email = user.Email;
-            toUpdate.Password = user.Password;
-            toUpdate.FirstName = user.FirstName;
-            toUpdate.LastName = user.LastName;
-            toUpdate.TicketsPurchased = user.TicketsPurchased;
-            return true;
+            string query = @"
+                        mutation ($id : Long!, $firstName : String!, $lastName : String!, $email: String!, $password: String!) {
+                          editUser(user: {id : $id, firstName: $firstName, email: $email, lastName: $lastName, password: $password}) {
+                            firstName,
+                            lastName,
+                            email,
+                            password
+                          }
+                        }
+         
+                        ";
+            
+            //Set variables
+            var variables = new
+            {
+                id = user.Id,
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                email = user.Email,
+                password = user.Password
+            };
+            //Make request object out of content using custom method wrote by #me
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
+            //Send request, keep wrapped in try catch otherwise u wont get exception
+            var graphQLResponse = new GraphQLResponse<EditUserRoot>();
+            try
+            {
+                graphQLResponse = await graphQlClient.SendMutationAsync<EditUserRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            //Return, possibly print
+            Console.WriteLine(graphQLResponse.Data.editUser.FirstName);
+            return graphQLResponse.Data.editUser;
         }
 
         public async Task<bool> DeleteUser(User user)
         {
-            User toRemove = Users.FirstOrDefault(u => u.Id == user.Id);
-            if (toRemove == null) return false;
-            Users.Remove(user);
-            return true;
+            //set query
+            string query = @"
+                        mutation ($userId : Long!) {
+                          deleteUser (userId : $userId)
+                        }          
+                        ";
+            
+            //Set variables
+            var variables = new
+            {
+                userId = user.Id
+            };
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
+            //Send request
+            var graphQLResponse = new GraphQLResponse<DeleteRoot>();
+            try
+            {
+                graphQLResponse = await graphQlClient.SendMutationAsync<DeleteRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            //Return
+            Console.WriteLine(graphQLResponse.Data.deleteUser);
+            return graphQLResponse.Data.deleteUser;
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<User> GetUser(int userId)
         {
-            User toReturn = Users.FirstOrDefault(u => u.Id == id);
-            if (toReturn == null) throw new Exception("Could not find a user with given Id");
-            return toReturn;
+            //set query
+            string query = @"
+                query ($id : Int!) {
+                  user (id: $id){
+                    firstName,
+                    lastName,
+                    email,
+                    ticketsPurchased {
+                      id
+                    }
+                  }
+                }            
+                        ";
+
+            var variables = new
+            {
+                id = userId
+            };
+            
+            
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            //Send request
+            var graphQLResponse = await graphQlClient.SendQueryAsync<UserRoot>(graphQLRequest);
+            //Return
+            return graphQLResponse.Data.user;
         }
 
         public async Task<IList<User>> GetAllUsers()
         {
-            return Users;
+            //Create content of the query
+            string query = @"
+                  query {
+                      users {
+                        firstName,
+                        lastName,
+                        email,
+                        ticketsPurchased {
+                          id
+                        }
+                      }
+                    }          
+                        ";
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            //Send request
+            var graphQLResponse = await graphQlClient.SendQueryAsync<UsersRoot>(graphQLRequest);
+            //Return
+            return graphQLResponse.Data.users;
         }
         
     }
