@@ -1,6 +1,7 @@
-﻿@page "/playlist"
+﻿@page "/playlist/{confirmationMessage}"
 @namespace ABDOTClient.Pages.Administration
 @inject NavigationManager NavigationManager
+@inject IPlayService PlayService
 @using ABDOTClient.Model
 @using Data
 
@@ -17,12 +18,13 @@
     </p>
 } else if (!playsToShow.Any()){
     <p>
-        <em>No Person items exist. Please add some</em>
+        <em>No Play items exist. Please add some</em>
     </p>
 }
 else
 {
     <div class="container" style="background-color: white">
+    <p style="color: green;">@confirmationMessage</p>
         <div class="section-separate" style="padding-top:40px">
             <button style="border-color: transparent; background-color:transparent">
             <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
@@ -31,7 +33,7 @@ else
     <h3 style="color:black">Playlist</h3>
         <p style="color:black">for operators</p>
         <div class="row">
-            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addpersonel"))"><button>
+            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addplay"))"><button>
                 <i class="oi oi-plus"/>
             </button>
                 </div>
@@ -42,7 +44,6 @@ else
             <th>ID</th>
             <th>Movie</th>
             <th>Date</th>
-            <th>Branch</th>
             <th>Hall</th>
             <th>Edit</th>
             <th>Remove</th>
@@ -55,6 +56,7 @@ else
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Movie.Title</td>
+                <td>@item.Date</td>
                 <td>@item.Hall.Id</td>
                 <td>
                         <button @onclick="@(() => RemovePlay(item.Id))">
@@ -76,18 +78,26 @@ else
 @code {
     private IList<Play> plays;
     private IList<Play> playsToShow;
-    private IMovieService MovieService = new CloudMovieService();
-    private IBranchService BranchService;
+    [Parameter]public string confirmationMessage { get; set; }
+    private string success;
 
     protected override async Task OnInitializedAsync()
     {
-        BranchService = new BranchCloudService();
-        plays = new List<Play>();
+        plays = await PlayService.GetAllAsync();
         if (!plays.Any())
         {
             Seed();
         }
         playsToShow = plays;
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+
+        plays = new List<Play>();
+        if (!plays.Any())
+        {
+            plays = await PlayService.GetAllAsync();
+        }
     }
     private async Task RemovePlay(int EmployeeId)
     {
@@ -99,7 +109,7 @@ else
         NavigationManager.NavigateTo($"EditPlay/{id}");
     }
 
-    private async void Seed()
+    private void Seed()
     {
         Play[] playArray =
         {

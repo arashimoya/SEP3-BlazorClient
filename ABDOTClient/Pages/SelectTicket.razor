@@ -1,8 +1,10 @@
 ﻿@page "/SelectTicket"
 @namespace SelectTicket
-
 @using SeatSelectionComponent
 @using ABDOTClient.Model
+@using System.Text.Json
+@inject NavigationManager NavigationManager
+
 <style>
     .c--background {
         background: #000 center/cover url(@backgroundSrc) no-repeat;
@@ -50,30 +52,7 @@
         </div>
     </section>
      <div class="inner-container"> 
-    @*     <div class="ticket-select"> *@
-    @*         <div class="container"> *@
-    @*             <div class="section-separate"> *@
-    @*                 <div class="row"> *@
-    @*                     <div class="col-md-12 section-title"> *@
-    @*                         How many tickets do you need? *@
-    @*                     </div> *@
-    @*                     <div class="col-md-12 ticket-select-content"> *@
-    @*                         <div class="counter-module"> *@
-    @*                             <div class="counter-text"> *@
-    @*                                 <p>Normal ticket</p> *@
-    @*                                 <p>price idk</p> *@
-    @*                             </div> *@
-    @*                             <div class="counter-incrementer"> *@
-    @*                                 <button class="btn btn--black btn--outline-white btn btn--hover"></button> *@
-    @*                                 <div class="counter-incrementer-amount">  </div> *@
-    @*                                 <button class="btn btn--black btn--outline-white btn btn--hover"></button> *@
-    @*                             </div> *@
-    @*                         </div> *@
-    @*                     </div> *@
-    @*                 </div> *@
-    @*             </div> *@
-    @*         </div> *@
-    @*     </div> *@
+    
         <div class="seat-selection">
             <div class="container">
                 <div class="section-separate">
@@ -129,8 +108,9 @@
     protected override async Task OnInitializedAsync()
     {
         selectedSeats = new List<Tuple<int, int>>();
-        play = new Play();
+        
         Seed();
+        
 
     }
 
@@ -148,26 +128,17 @@
 
     private void goSomewhere()
     {
-        throw new NotImplementedException();
+        string selectedSeatsJson = JsonSerializer.Serialize(selectedSeats);
+        NavigationManager.NavigateTo($"/checkoutInfo/{selectedSeatsJson}");
     }
 
     private void Seed()
     {
-        play = new Play
+        play = new Play()
         {
             Date = DateTime.Now,
-            Hall = new Hall(1)
-            {
-                Branch = new Branch
-                {
-                    City = "Aarhus",
-                    Employees = new List<Employee>(),
-                    Halls = new List<Hall>(),
-                },
-                HallSize = 1,
-                Programme = new List<Play>(),
-                Seats = new List<Tuple<int, int>>(),
-            },
+            Hall = new Hall(1),
+            Id = 1,
             Movie = new Movie
             {
                 Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
@@ -181,6 +152,17 @@
             },
             Tickets = new List<Ticket>(),
             TimeInMinutes = 200,
+        };
+        play.Hall.Branch = new Branch
+        {
+            Id = 1,
+            City = "Aarhus",
+            Employees = new List<Employee>(),
+            Halls = new List<Hall>()
+            {
+                new Hall(1),
+                new Hall(2),
+            },
         };
     }
 }

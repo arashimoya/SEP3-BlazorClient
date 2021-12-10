@@ -29,6 +29,10 @@ namespace ABDOTClient{
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<IMovieService, CloudMovieService>();
 
+            services.AddScoped<IBranchService, BranchCloudService>();
+            services.AddScoped<IPlayService, PlayCloudService>();
+
+
 
             services.AddAuthorization(options =>
             {
@@ -40,6 +44,7 @@ namespace ABDOTClient{
                     builder.RequireAuthenticatedUser().RequireClaim("Role", "Employee"));
                 
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

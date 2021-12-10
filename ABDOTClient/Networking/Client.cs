@@ -304,7 +304,7 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<Play> Get(int id) {
+        public async Task<Play> GetPlay(int id) {
             try {
                 return await playRequest.Get(id);
             }
