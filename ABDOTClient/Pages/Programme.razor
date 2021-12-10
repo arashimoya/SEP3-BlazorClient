@@ -1,7 +1,12 @@
 ﻿@page "/"
-@using ABDOTClient.Authentication
-@using ABDOTClient.Factories
-@namespace ProgrammeComponent
+@using ABDOTClient.Data
+@using ABDOTClient.Model
+@namespace Programme
+@inject IBranchService BranchService
+@inject NavigationManager NavigationManager
+@using HCarouselComponent
+
+
 <style>
     body {
         padding-top: 40px;
@@ -34,103 +39,153 @@
         border-radius: 10px;
         
     }
-    img {
-        box-shadow: inset 0 0 100px #000000;
-    }
+    
    
     
 </style>
-<BlazorStrap.BSCarousel NumberOfItems="@items.Count" class="carousel-slide-custom">
-    <div class="carousel-inner">
-        @foreach (var item in items)
-        {   
-                <BlazorStrap.BSCarouselItem Src="@item.Source" Alt="@item.Alt" class="carousel-img">
-                    <BlazorStrap.BSCarouselCaption CaptionText="@item.Caption" HeaderText="@item.Header" class="carousel-caption-custom"/>
-                </BlazorStrap.BSCarouselItem>
-        }
-    </div>
-    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Previous" NumberOfItems="@items.Count"/>
-    <BlazorStrap.BSCarouselControl CarouselDirection="BlazorStrap.CarouselDirection.Next" NumberOfItems="@items.Count"/>
-</BlazorStrap.BSCarousel>
 
+<Carousel/>
 <div class="section" >
     <div class="container">
         <h1 id="programme-header-now" class="">playing now</h1>
         <div class="program row">
             <div class="date-list col-sm-8 hidden-xs-down">
                 <div class="row"> <!-- basically a week through -->
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Today</a>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Monday</a>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Tuesday</a>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Wednesday</a>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Thursday</a>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Friday</a>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Saturday</a>
-                    </div>
-                    <div class="col-sm-6 col-md-4 col-lg-3">
-                        <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active" href="/">Sunday</a>
-                    </div>
+                    @for(int i=0;i<=7;i++)
+                    {
+                        var tempint = i;
+                        <div class="col-sm-6 col-md-4 col-lg-3">
+                            <a class="date-list-link btn btn--black btn--outline-white btn--small btn--full btn--hover date-list-active"
+                               @onclick="()=>FilterByDay(DateTime.Today.Date.AddDays(tempint))">@today.AddDays(tempint).ToString(dateFormat)</a>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div>
+                    <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch">
+                        @foreach (var branch in branches)
+                        {
+                            <option>@branch.City</option>
+                        }
+                    </select>
                 </div>
             </div>
         </div>
+        <div class="section row">
+            
+            @foreach (var play in playsToShow)
+            {
+                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id))">
+                    <div class="movie-list">
+                        <div class="movie-list-poster movie-list-upcoming "><img src=@play.Movie.PosterSrc/>
+                        </div>
+                        <div class="movie-list-top-content">
+                            <h4 class="movie-list-title">@play.Movie.Title</h4>
+                            <div>
+                                <h5 class="section-label">Director</h5>
+                                <p>@play.Movie.Director</p>
+                                <h5 class="section-label">Genre</h5>
+                                <p>@play.Movie.Genre</p>
+                            </div>
+                        </div>
+                        <div class="movie-list-bottom-content">
+                            <div>
+                                <p class="section-label">Premiere</p>
+                                <p class="movie-list-date">@play.Movie.Year</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+            @plays.Count
+            @playsToShow.Count
+        </div>
     </div>
+    @selectedBranch
+    @selectedDay.ToString();
 </div>
 
 @code{
-    protected async override Task OnInitializedAsync(){
-        ClientFactory.GetClient();
+    private DateTime today { get; set; }= DateTime.Today;
+    private string dateFormat = "dddd, dd/MM";
+    
+    private string? selectedBranch;
+    private DateTime? selectedDay;
+    
+    private IList<Branch> branches = new List<Branch>();
+    
+    private IList<Play> plays = new List<Play>();
+    private IList<Play> playsToShow = new List<Play>();
+    
+    
+    
+    protected override async Task OnInitializedAsync()
+    {
+        branches = await BranchService.GetAllBranches();
+        selectedBranch = branches[0].City;
+        selectedDay = today;
+
+        plays = new List<Play>();
+        playsToShow = new List<Play>();
+        PopulatePlays();
+        playsToShow = plays;
+    }
+    
+
+    private void GoToMovie(int id)
+    {
+        NavigationManager.NavigateTo($"EditEmployee/{id}");
     }
 
-    IList<Item> items = new List<Item>
+    private void PopulatePlays()
     {
-        new Item
+        foreach (var branch in branches)
         {
-            Source = "/images/ralf-rangnick.png",
-            Alt = "First Slide",
-            Caption = "Ralf Rangnick appointed as Manchester United Manager",
-            Header = "Welcome Ralf!",
-        },
-        new Item
-        {
-            Source = "/images/ole_sacked.png",
-            Alt = "Second Slide",
-            Caption = "Bye Ole!",
-            Header = "He got the sack",
-        },
-        new Item
-        {
-            Source = "/images/siu_manu.png",
-            Alt = "Third Slide",
-            Caption = "Every SIUUU in one article",
-            Header = "Random urge to shout SIUUUUUU",
-        },
-        new Item
-        {
-            Source = "/images/ballon-dor.png",
-            Alt = "Third Slide",
-            Caption = "This year's ballon d'or ceremony",
-            Header = "Will Lewangoalski finally get it?",
+            foreach (var hall in branch.Halls)
+            {
+                foreach (var play in hall.Programme)
+                {
+                    plays.Add(play);
+                }
+            }
         }
-    };
-    class Item
+    }
+
+    private void FilterByDay(DateTime dateTime)
     {
-        public string Source { get; set; } = "";
-        public string Alt { get; set; } = "";
-        public string Caption { get; set; } = "";
-        public string Header{ get; set; } = "";
+        selectedDay = DateTime.Today;
+        try
+        {
+            selectedDay = dateTime;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
+        }
+    }
+
+    private void FilterByBranch(ChangeEventArgs args)
+    {
+        selectedBranch = "";
+        try
+        {
+            selectedBranch = args.Value.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.StackTrace);
+        }
+        ExecuteFilter();
+    }
+
+    private void ExecuteFilter()
+    {
+        playsToShow = plays.Where(p =>
+            (selectedBranch != null && p.Hall.Branch.City.Equals(selectedBranch) || selectedBranch == null) &&
+            (selectedDay != null && p.Date.Equals(selectedDay) || selectedDay == null)
+            ).ToList();
     }
 
 }

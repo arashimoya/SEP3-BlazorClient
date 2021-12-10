@@ -7,29 +7,29 @@ namespace ABDOTClient.Data
 {
     public class TicketCloudService : ITicketService
     {
-        public async Task<IList<Ticket>> GetAllAsync()
+        public Task<IList<Ticket>> GetAllTickets()
         {
-            return await ClientFactory.GetClient().GetAllTickets();
+            return ClientFactory.GetClient().GetAllTickets();
         }
 
-        public async Task<bool> AddTicketAsync(Ticket ticket)
+        public Task<Ticket> AddTicket(Ticket ticket)
         {
-            return await ClientFactory.GetClient().AddTicket(ticket);
+            return ClientFactory.GetClient().AddTicket(ticket);
         }
 
-        public async Task<bool> UpdateTicketAsync(Ticket ticket)
+        public Task<Ticket> EditTicket(Ticket ticket)
         {
-            return await ClientFactory.GetClient().EditTicket(ticket);
+            return ClientFactory.GetClient().EditTicket(ticket);
         }
 
-        public async Task<bool> RemoveTicketAsync(Ticket ticket)
+        public Task<bool> DeleteTicket(int ticketId)
         {
-            return await ClientFactory.GetClient().DeleteTicket(ticket);
+            return ClientFactory.GetClient().DeleteTicket(ticketId);
         }
 
-        public async Task<Ticket> GetAsync(int ticketId)
+        public Task<Ticket> GetTicket(int ticketId)
         {
-            return await ClientFactory.GetClient().GetTicket(ticketId);
+            return ClientFactory.GetClient().GetTicket(ticketId);
         }
     }
 }

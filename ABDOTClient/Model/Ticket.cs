@@ -6,7 +6,6 @@ namespace ABDOTClient.Model
 {
     public class Ticket
     {
-        
         public int Id {set; get; }
         
         [Required]

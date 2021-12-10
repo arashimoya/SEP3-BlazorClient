@@ -58,7 +58,7 @@
     @*     </div> *@
     @* } *@
     <p class="actions">
-            <button class="btn btn-dark" type="submit">Submit</button>
+            <button @onclick="()=>AddNewMovie()" class="btn btn-dark" type="submit">Submit</button>
         </p>
 </EditForm>
 @code {
@@ -78,11 +78,10 @@
 
     private async Task AddNewMovie()
     {
-        if (await CloudMovieService.AddMovieAsync(newMovieItem))
+        if (await CloudMovieService.AddMovieAsync(newMovieItem) != null)
         {
             confirmationMessage = "Success";
-            NavigationManager.NavigateTo($"/movielist/{confirmationMessage}");
-            
+            NavigationManager.NavigateTo($"/movielist");
         }
     }
     protected override Task OnInitializedAsync()
