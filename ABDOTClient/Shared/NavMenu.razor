@@ -1,23 +1,24 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Filters
 @using ABDOTClient.Model
+@using ABDOTClient.Data
 @inject NavigationManager NavigationManager
+@inject IBranchService BranchService
+<style>
+    .header-selectpicker{
+        border: none;
+        background-color: #131313;
+        padding: 3px 0 3px 0;
+        float: right;
+        height: 25px;
+        font-size: 14px;
+        background-size: 13px;
+        color: white;
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark navbar-custom  box-shadow mb-3 fixed-top" >
     <div class="container" style="color:#1e1e1e!important;">
         <div class="col-icon">
             <a class="header-logo" href="/"><img src="images/logo.svg"/></a>
-            <div>
-                <select class="header-selectpicker" @onchange="@((arg) => GoToBranch(arg))" style="width:100px">
-                    @if (!branches.Any())
-                    {
-                        <option>city 1</option>
-                        <option>city 2</option>
-                    }
-                    @foreach (var branch in branches)
-                    {
-                        <option>branch.City</option>
-                    }
-                </select>
-            </div>
             
         </div>
         
@@ -60,15 +61,12 @@
 @code {
     private IList<Branch> branches;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        branches = new List<Branch>();
+        
     }
 
-    void GoToBranch(ChangeEventArgs args)
-    {
-        NavigationManager.NavigateTo("/");
-    }
+    
     bool collapseNavMenu = true;
 
     string NavMenuCssClass => collapseNavMenu ? "collapse" : null;

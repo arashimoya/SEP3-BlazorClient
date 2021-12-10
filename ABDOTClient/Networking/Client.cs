@@ -13,7 +13,8 @@ using ABDOTClient.Networking.Requests;
 using ABDOTClient.Networking.Requests.Interfaces;
 
 namespace ABDOTClient.Networking {
-    public class Client {
+    public class Client
+    {
         private IUserRequest userRequest;
         private IMovieRequest movieRequest;
         private IPlayRequest playRequest;
@@ -23,7 +24,8 @@ namespace ABDOTClient.Networking {
         private IHallRequest hallRequest;
         private IBranchRequest branchRequest;
 
-        public Client() {
+        public Client()
+        {
             userRequest = new UserRequest();
             movieRequest = new MovieRequest();
             playRequest = new PlayRequest();
@@ -31,85 +33,149 @@ namespace ABDOTClient.Networking {
             employeeRequest = new EmployeeRequest();
             hallRequest = new HallRequest();
             branchRequest = new BranchRequest();
-            Branch branch = new Branch() {
-                Id = 1,
+            Branch branch = new Branch()
+            {
+                Id = 13,
                 City = "chujowo2",
                 Street = "pica",
                 Postcode = "694202137",
                 Country = "jebane"
             };
 
-            Hall hall = new Hall(2) {
-                Id = 1,
-                Branch = branch,
-                HallSize = 2
+            Movie movie = new Movie()
+            {
+                    Id = 9,
+                    Title =  "Whatever 2",
+                    Description = "Chuj w dupe",
+                    Genre = "Hardcore Erotica",
+                    Director = "Adam Sandler",
+                    Language = "Arabic",
+                    SubtitleLanguage = "asda",
+                    Year = 1992,
+                    LengthInMinutes = 132,
+                    PosterSrc = "pornhub.com"
             };
-            
-            
-            hallRequest.GetAllHalls();
-            hallRequest.GetHall(2);
+            // branchRequest.GetAllBranches();
+            // branchRequest.GetBranch(3);
+            // branchRequest.DeleteBranch(6);
+            // branchRequest.CreateBranch(branch);
+            // branchRequest.EditBranch(branch);
+
+            // movieRequest.GetAllMovies();
+            // movieRequest.CreateMovie(movie);
+
+            //***********
+            //TESTS
+            //***********
+
+            //role 1 = employee
+            //role 2 = manager
+            //role 3 = owner
+
+            // this is from form
+            // String role = "employee";
+            //
+            // switch (role)
+            // {
+            //     case "employee" :
+            //         int role_id = 1;
+            //         break;
+            //     case "manager" :
+            //         int role_id = 2;
+            //         break;
+            //     case "owner" :
+            //         int role_id = 3;
+            //         break;
+            //     default:
+            //         throw new Exception("Invalid role id");
+            // }
+            // Employee employee = new Employee()
+            // {
+            //     Role = role_id;
+            // }
+
+            // Hall testHall = new Hall(1);
+            // Hall testHall1 = new Hall(2);
+            // Hall testHall2 = new Hall(3);
+            // testHall.PrintArray();
+            // testHall1.PrintArray();
+            // testHall2.PrintArray();
 
         }
 
 
         //please make the methods in order of the classes
-        public async Task<Branch> CreateBranch(Branch branch) {
-            try {
+        public async Task<Branch> CreateBranch(Branch branch)
+        {
+            try
+            {
                 return await branchRequest.CreateBranch(branch);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 return null;
             }
         }
 
-        public async Task<Branch> EditBranch(Branch branch) {
-            try {
+        public async Task<Branch> EditBranch(Branch branch)
+        {
+            try
+            {
                 return await branchRequest.EditBranch(branch);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 return null;
             }
         }
 
-        public async Task<bool> DeleteBranch(long branchId) {
-            try {
+        public async Task<bool> DeleteBranch(long branchId)
+        {
+            try
+            {
                 return await branchRequest.DeleteBranch(branchId);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 return false;
             }
         }
 
-        public async Task<Branch> GetBranch(int branchId) {
-            try {
+        public async Task<Branch> GetBranch(int branchId)
+        {
+            try
+            {
                 return await branchRequest.GetBranch(branchId);
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 return null;
             }
         }
 
-        public async Task<IList<Branch>> GetAllBranches() {
-            try {
+        public async Task<IList<Branch>> GetAllBranches()
+        {
+            try
+            {
                 return await branchRequest.GetAllBranches();
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
                 return null;
             }
         }
-
-        public async Task<bool> RegisterUser(User user) {
+        public async Task<User> RegisterUser(User user) {
             try {
                 return await userRequest.RegisterUser(user);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                return false;
+                return null;
             }
         }
 
@@ -123,13 +189,13 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> EditUser(User user) {
+        public async Task<User> EditUser(User user) {
             try {
                 return await userRequest.EditUser(user);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                throw;
+                return null;
             }
         }
 
@@ -164,23 +230,23 @@ namespace ABDOTClient.Networking {
         }
 
 
-        public async Task<bool> AddMovie(Movie movie) {
+        public async Task<Movie> AddMovie(Movie movie) {
             try {
                 return await movieRequest.CreateMovie(movie);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> EditMovie(Movie movie) {
+        public async Task<Movie> EditMovie(Movie movie) {
             return await movieRequest.EditMovie(movie);
         }
 
-        public async Task<bool> DeleteMovie(Movie movie) {
+        public async Task<bool> DeleteMovie(int movieId) {
             try {
-                return await movieRequest.DeleteMovie(movie);
+                return await movieRequest.DeleteMovie(movieId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -238,7 +304,7 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<Play> Get(int id) {
+        public async Task<Play> GetPlay(int id) {
             try {
                 return await playRequest.Get(id);
             }
@@ -307,10 +373,10 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-
-        public async Task<bool> AddTicket(Ticket ticket) {
+        
+        public async Task<Ticket> AddTicket(Ticket ticket) {
             try {
-                return await ticketRequest.Create(ticket);
+                return await ticketRequest.CreateTicketAsync(ticket);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -318,9 +384,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> EditTicket(Ticket ticket) {
+        public async Task<Ticket> EditTicket(Ticket ticket) {
             try {
-                return await ticketRequest.Edit(ticket);
+                return await ticketRequest.EditTicketAsync(ticket);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -328,9 +394,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> DeleteTicket(Ticket ticket) {
+        public async Task<bool> DeleteTicket(int movieId) {
             try {
-                return await ticketRequest.Delete(ticket);
+                return await ticketRequest.DeleteTicketAsync(movieId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -340,7 +406,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<Ticket> GetTicket(int ticketId) {
             try {
-                return await ticketRequest.GetTicket(ticketId);
+                return await ticketRequest.GetTicketAsync(ticketId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -350,7 +416,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<IList<Ticket>> GetAllTickets() {
             try {
-                return await ticketRequest.GetAllTickets();
+                return await ticketRequest.GetAllTicketsAsync();
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -378,9 +444,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> DeleteHall(int hallId) {
+        public async Task<bool> DeleteHall(Hall hall) {
             try {
-                return await hallRequest.DeleteHall(hallId);
+                return await hallRequest.DeleteHall(hall);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -407,41 +473,29 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-
         public async Task<bool> AddEmployee(Employee employee) {
             try {
-                var createdEmployee = await employeeRequest.CreateEmployee(employee);
-                if (createdEmployee == null) {
-                    return false;
-                }
+                return await employeeRequest.CreateEmployee(employee);
             }
-
             catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
-
-            return true;
         }
 
         public async Task<bool> EditEmployee(Employee employee) {
             try {
-                var editedEmployee = await employeeRequest.CreateEmployee(employee);
-                if (editedEmployee == null) {
-                    return false;
-                }
+                return await employeeRequest.EditEmployee(employee);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
-
-            return true;
         }
 
         public async Task<bool> DeleteEmployee(Employee employee) {
             try {
-                return await employeeRequest.DeleteEmployee(employee.Id);
+                return await employeeRequest.DeleteEmployee(employee);
             }
             catch (Exception e) {
                 Console.WriteLine(e);

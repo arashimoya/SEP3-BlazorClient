@@ -1,0 +1,100 @@
+﻿@page "/addplay"
+@using ABDOTClient.Model
+@using ABDOTClient.Data
+@inject NavigationManager NavigationManager
+@inject IPlayService PlayService
+@inject IMovieService MovieService
+@namespace AddPlayComponent
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
+<div class="container">
+<h3>Add Play</h3>
+    <EditForm Model="@newPlayItem" OnValidSubmit="@AddNewPlay">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="form-group">
+            Date and Time: <br/>
+            <InputDate @bind-Value="newPlayItem.Date" @bind-Value:format="yyyy-MM-dd"/>
+        </div>
+        <div class="form-group">
+            Movie: <br/>
+            <InputSelect @bind-Value="@SelectedMovieId">
+                @foreach (var movie in movies)
+                {
+                    <option value="@movie.Id">@movie.Title</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            Hall: <br/>
+            <InputSelect @bind-Value="@SelectedHallId">
+                @foreach (var hall in halls)
+                {
+                    <option value="@hall.Id">@hall.Branch.City @hall.Id</option>
+                }
+            </InputSelect>
+        </div>
+        <p class="actions">
+            <button class="btn btn-dark" type="submit">Submit</button>
+        </p>
+    </EditForm>
+    
+</div>
+@code {
+    private Play newPlayItem;
+    private string confirmationMessage = "'";
+    private IList<Movie> movies = new List<Movie>();
+    private IList<Branch> branches;
+    private IList<Hall> halls;
+    private Branch chosenBranch;
+    private IBranchService BranchService;
+    private DateTime defaultDate = DateTime.Now;
+    
+
+    private int SelectedMovieId
+    {
+        get => newPlayItem.Movie.Id;
+        set => newPlayItem.Movie = movies.Single(m => m.Id == value);
+    }
+
+    private int SelectedHallId
+    {
+        get => newPlayItem.Hall.Id;
+        set => newPlayItem.Hall = halls.Single(h => h.Id == value);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        newPlayItem = new Play();
+        newPlayItem.Movie = new Movie();
+        newPlayItem.Hall = new Hall(1);
+        newPlayItem.Date = defaultDate;
+        BranchService = new BranchCloudService();
+        halls = new List<Hall>();
+        movies = await MovieService.GetAllAsync();
+        branches = await BranchService.GetAllBranches();
+        foreach (var branch in branches)
+        {
+            foreach (var hall in branch.Halls)
+            {
+                halls.Add(hall);
+            }
+        }
+    }
+
+    private async Task AddNewPlay()
+    {
+        newPlayItem.Movie = movies.FirstOrDefault(m => m.Id == SelectedMovieId);
+        if (await PlayService.AddPlayAsync(newPlayItem))
+        {
+            confirmationMessage = "Success";
+            NavigationManager.NavigateTo($"/playlist/{confirmationMessage}");
+            
+        }
+    }
+
+}
