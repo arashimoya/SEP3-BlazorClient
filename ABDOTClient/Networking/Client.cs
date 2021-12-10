@@ -153,13 +153,13 @@ namespace ABDOTClient.Networking {
                 return null;
             }
         }
-        public async Task<bool> RegisterUser(User user) {
+        public async Task<User> RegisterUser(User user) {
             try {
                 return await userRequest.RegisterUser(user);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                return false;
+                return null;
             }
         }
 
@@ -173,13 +173,13 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> EditUser(User user) {
+        public async Task<User> EditUser(User user) {
             try {
                 return await userRequest.EditUser(user);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                throw;
+                return null;
             }
         }
 
