@@ -41,12 +41,28 @@ namespace ABDOTClient.Networking {
                 Postcode = "694202137",
                 Country = "jebane"
             };
+
+            Movie movie = new Movie()
+            {
+                    Id = 9,
+                    Title =  "Whatever 2",
+                    Description = "Chuj w dupe",
+                    Genre = "Hardcore Erotica",
+                    Director = "Adam Sandler",
+                    Language = "Arabic",
+                    SubtitleLanguage = "asda",
+                    Year = 1992,
+                    LengthInMinutes = 132,
+                    PosterSrc = "pornhub.com"
+            };
             // branchRequest.GetAllBranches();
             // branchRequest.GetBranch(3);
             // branchRequest.DeleteBranch(6);
             // branchRequest.CreateBranch(branch);
-            branchRequest.EditBranch(branch);
+            // branchRequest.EditBranch(branch);
 
+            // movieRequest.GetAllMovies();
+            // movieRequest.CreateMovie(movie);
 
             //***********
             //TESTS
@@ -214,23 +230,23 @@ namespace ABDOTClient.Networking {
         }
 
 
-        public async Task<bool> AddMovie(Movie movie) {
+        public async Task<Movie> AddMovie(Movie movie) {
             try {
                 return await movieRequest.CreateMovie(movie);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
-                return false;
+                return null;
             }
         }
 
-        public async Task<bool> EditMovie(Movie movie) {
+        public async Task<Movie> EditMovie(Movie movie) {
             return await movieRequest.EditMovie(movie);
         }
 
-        public async Task<bool> DeleteMovie(Movie movie) {
+        public async Task<bool> DeleteMovie(int movieId) {
             try {
-                return await movieRequest.DeleteMovie(movie);
+                return await movieRequest.DeleteMovie(movieId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -358,9 +374,9 @@ namespace ABDOTClient.Networking {
             }
         }
         
-        public async Task<bool> AddTicket(Ticket ticket) {
+        public async Task<Ticket> AddTicket(Ticket ticket) {
             try {
-                return await ticketRequest.Create(ticket);
+                return await ticketRequest.CreateTicketAsync(ticket);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -368,9 +384,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> EditTicket(Ticket ticket) {
+        public async Task<Ticket> EditTicket(Ticket ticket) {
             try {
-                return await ticketRequest.Edit(ticket);
+                return await ticketRequest.EditTicketAsync(ticket);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -378,9 +394,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> DeleteTicket(Ticket ticket) {
+        public async Task<bool> DeleteTicket(int movieId) {
             try {
-                return await ticketRequest.Delete(ticket);
+                return await ticketRequest.DeleteTicketAsync(movieId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -390,7 +406,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<Ticket> GetTicket(int ticketId) {
             try {
-                return await ticketRequest.GetTicket(ticketId);
+                return await ticketRequest.GetTicketAsync(ticketId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -400,7 +416,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<IList<Ticket>> GetAllTickets() {
             try {
-                return await ticketRequest.GetAllTickets();
+                return await ticketRequest.GetAllTicketsAsync();
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -506,6 +522,5 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-        
     }
 }

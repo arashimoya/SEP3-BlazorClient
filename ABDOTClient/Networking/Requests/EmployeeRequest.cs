@@ -4,17 +4,22 @@ using System.Threading.Tasks;
 using ABDOTClient.Data;
 using ABDOTClient.Factories;
 using ABDOTClient.Model;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 
 namespace ABDOTClient.Networking.Requests
 {
     public class EmployeeRequest : IEmployeeRequest
     {
         private IList<Employee> Employees;
+        private GraphQLHttpClient graphQlClient;
+
 
         public EmployeeRequest()
         {
             Employees = new List<Employee>();
-            if (!Employees.Any()) Seed();
+            // if (!Employees.Any()) Seed();
+            graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
         }
         public async Task<bool> CreateEmployee(Employee employee)
         {
