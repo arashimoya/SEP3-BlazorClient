@@ -69,7 +69,7 @@ else
                 @* </td> *@
                 
                     <td>
-                        <button @onclick="@(() => RemoveMovie(item))">
+                        <button @onclick="@(() => RemoveMovie(item.Id))">
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
                     </td>
@@ -105,9 +105,9 @@ else
 
     
 
-    private async Task RemoveMovie(Movie movie)
+    private async Task RemoveMovie(int movieId)
     {
-        if (await CloudMovieService.RemoveMovieAsync(movie))
+        if (await CloudMovieService.RemoveMovieAsync(movieId))
             confirmationMessage = "Movie deleted successfully";
     }
 

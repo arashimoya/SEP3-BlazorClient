@@ -21,23 +21,22 @@ namespace ABDOTClient.Data
             
         }
 
-
-        public async Task<bool> AddMovieAsync(Movie movie)
+        public async Task<Movie> AddMovieAsync(Movie movie)
         {
             return await ClientFactory.GetClient().AddMovie(movie);
         }
 
-        public async Task<bool> UpdateMovieAsync(Movie movie)
+        public async Task<Movie> UpdateMovieAsync(Movie movie)
         {
             return await ClientFactory.GetClient().EditMovie(movie);
         }
 
-        public async Task<bool> RemoveMovieAsync(Movie movie)
+        public async Task<bool> RemoveMovieAsync(int movieId)
         {
-            return await ClientFactory.GetClient().DeleteMovie(movie);
+            return await ClientFactory.GetClient().DeleteMovie(movieId);
         }
 
-        public async Task<Movie> GetAsync(int id)
+        public async Task<Movie> GetMovieAsync(int id)
         {
             return await ClientFactory.GetClient().GetMovie(id);
         }

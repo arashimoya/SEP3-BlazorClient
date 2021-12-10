@@ -7,10 +7,10 @@ namespace ABDOTClient.Data
     public interface IMovieService
     {
         
-        Task<bool> AddMovieAsync(Movie movie);
-        Task<bool> UpdateMovieAsync(Movie movie);
-        Task<bool> RemoveMovieAsync(Movie movie);
-        Task<Movie> GetAsync(int id);
+        Task<Movie> AddMovieAsync(Movie movie);
+        Task<Movie> UpdateMovieAsync(Movie movie);
+        Task<bool> RemoveMovieAsync(int movieId);
+        Task<Movie> GetMovieAsync(int id);
         Task<IList<Movie>> GetAllAsync();
         
     }
