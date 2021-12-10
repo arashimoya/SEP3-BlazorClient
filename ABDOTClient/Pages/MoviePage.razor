@@ -1,17 +1,23 @@
-﻿@page "/movie" 
+﻿@page "/movie/{Id:int}" 
+@using ABDOTClient.Data
+@using ABDOTClient.Model
 @inject NavigationManager NavigationManager
+@inject IMovieService MovieService
+@inject IPlayService PlayService
 
 @namespace MoviePage
+
+@* This page is directed to the movie page, although it is redirected upon play.Id, but it has the chosen branch and movie *@
 
 <div class="container">
     <div class="movie">
         <div class="movie-top">
             <div class="row">
                 <div class="movie-poster-container">
-                    <div class="movie-list-poster"><img src="images/king_kong.jpg" alt="king kong"/></div>
+                    <div class="movie-list-poster"><img src="@play.Movie.PosterSrc" alt="king kong"/></div>
                 </div>
                 <div class="movie-date-select">
-                    <h1 class="movie-list-title">king kong</h1>
+                    <h1 class="movie-list-title">@play.Movie.Title</h1>
                     <h3 class="section-label">Choose a day</h3>
                     <select class="selectpicker">
                         <option>
@@ -24,7 +30,6 @@
                             Choose time
                         </option>
                     </select>
-                    <a href="/ticket">(debug) go to ticket</a>
                 </div>
             </div>
         </div>
@@ -33,26 +38,26 @@
                 <div class="movie-facts">
                     <div class="movie-fact">
                         <p class="section-label">Title</p>
-                        <p class="movie-fact-value">King Kong</p>
+                        <p class="movie-fact-value">@play.Movie.Title</p>
                     </div>
                     <div class="movie-fact">
                         <p class="section-label">Length</p>
-                        <p class="movie-fact-value">200</p>
+                        <p class="movie-fact-value">@play.Movie.LengthInMinutes</p>
                     </div>
                     <div class="movie-fact">
                         <p class="section-label">Premiere</p>
-                        <p class="movie-fact-value">2005</p>
+                        <p class="movie-fact-value">@play.Movie.Year</p>
                     </div>
                     <div class="movie-fact">
                         <p class="section-label">Genre</p>
-                        <p class="movie-fact-value">Adventure / Drama / Fantasy</p>
+                        <p class="movie-fact-value">@play.Movie.Genre</p>
                     </div>
                     
                 </div> 
             </div>
             <div class="col-sm-6 col-xl-5">
                 <p class="movie-description">
-                    description and shit
+                    @play.Movie.Description
                 </p>
             </div>
         </div>
@@ -60,6 +65,15 @@
 </div>
 
 @code {
+
+    [Parameter]public int Id { get; set; }
+    private Play play { get; set; }
+    private DateTime day { get; set; }
+    protected override async Task OnInitializedAsync()
+    {
+        play = await PlayService.GetAsync(Id);
+        
+    }
 
     public void GoToCheckout()
     {

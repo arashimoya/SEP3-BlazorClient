@@ -17,8 +17,21 @@
         <DataAnnotationsValidator/>
         <ValidationSummary/>
         <div class="form-group">
-            Date and Time: <br/>
+            Date: <br/>
             <InputDate @bind-Value="newPlayItem.Date" @bind-Value:format="yyyy-MM-dd"/>
+        </div>
+        <div class="form-group">
+            Time: <br/>
+            <select @onchange="@((arg)=>GetTime(arg))">
+                @for (int i = 0; i < 96; i++)
+                {
+                    <option>@timeOption(i)</option>
+                }
+            </select>
+            Chosen date: @newPlayItem.Date.ToString();
+            Chosen date2: @defaultDate;
+            hour: @hour;
+            minute: @minute;
         </div>
         <div class="form-group">
             Movie: <br/>
@@ -52,8 +65,28 @@
     private IList<Hall> halls;
     private Branch chosenBranch;
     private IBranchService BranchService;
-    private DateTime defaultDate = DateTime.Now;
-    
+    private DateTime defaultDate = DateTime.Today;
+    private string time;
+    private DateTime newPlayDate;
+
+    int hour;
+    int minute;
+
+    private string timeOption(int i)
+    {
+        TimeSpan time = new TimeSpan(i / 4, i * 15 % 60, 0);
+        string output = time.ToString(@"hh\:mm");
+        return output;
+    }
+
+    private void GetTime(ChangeEventArgs args)
+    {
+        time = "";
+        time = args.Value.ToString();
+        string[] times = time.Split(':');
+        hour = Int32.Parse(times[0]);
+        minute = Int32.Parse(times[1]);
+    }
 
     private int SelectedMovieId
     {
@@ -89,6 +122,7 @@
     private async Task AddNewPlay()
     {
         newPlayItem.Movie = movies.FirstOrDefault(m => m.Id == SelectedMovieId);
+        newPlayItem.Date = new DateTime(newPlayItem.Date.Year, newPlayItem.Date.Month, newPlayItem.Date.Day, hour, minute, 0);
         if (await PlayService.AddPlayAsync(newPlayItem))
         {
             confirmationMessage = "Success";

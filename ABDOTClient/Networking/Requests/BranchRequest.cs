@@ -312,8 +312,10 @@ namespace ABDOTClient.Networking.Requests
                             {
                                 new Play
                                 {
+                                    Id = 1,
                                     Movie = new Movie
                                     {
+                                        Id = 1,
                                         Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
                                         Director = "Peter Jackson",
                                         Genre = "Adventure, Melodrama, Fantasy",
@@ -341,10 +343,12 @@ namespace ABDOTClient.Networking.Requests
                             {
                                 new Play
                                 {
+                                    Id = 2,
                                     Date = DateTime.Now,
                                     Hall = new Hall(2),
                                     Movie = new Movie
                                     {
+                                        Id = 2,
                                         Title = "Forrest Gump",
                                         Director = "Robert Zemeckis",
                                         Genre = "Drama / Comedy",
@@ -357,6 +361,7 @@ namespace ABDOTClient.Networking.Requests
                                     Tickets = new List<Ticket>(),
                                     TimeInMinutes = 186,
                                 },
+                                
                             }
                         },
                     },
@@ -375,10 +380,12 @@ namespace ABDOTClient.Networking.Requests
                             {
                                 new Play
                                 {
+                                    Id =3,
                                     Date = DateTime.Now,
                                     Hall = new Hall(3),
                                     Movie = new Movie
                                     {
+                                        Id = 2,
                                         Description = "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
                                         Title = "Shrek",
                                         Director = "Andrew Adamson / Vicky Jenson",
@@ -400,11 +407,12 @@ namespace ABDOTClient.Networking.Requests
                             {
                                 new Play
                                 {
+                                    Id = 4,
                                     Date = DateTime.Now,
                                     Hall = new Hall(1),
                                     Movie = new Movie
                                     {
-                                        //Id = 3,
+                                        Id = 3,
                                         Title = "Shawshank Redemption",
                                         // Cast = new List<Actor>(),
                                         Description =

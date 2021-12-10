@@ -64,7 +64,7 @@ namespace ABDOTClient.Networking {
             {
                 new Movie
                 {
-                    //Id = 1,
+                    Id = 1,
                     Description =
                         "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
                     Director = "Peter Jackson",
@@ -79,7 +79,7 @@ namespace ABDOTClient.Networking {
                 },
                 new Movie
                 {
-                    //Id = 2,
+                    Id = 2,
                     Title = "Forrest Gump",
                     Director = "Robert Zemeckis",
                     Genre = "Drama / Comedy",
@@ -93,7 +93,7 @@ namespace ABDOTClient.Networking {
                 },
                 new Movie
                 {
-                    //Id = 3,
+                    Id = 3,
                     Title = "Shawshank Redemption",
                     // Cast = new List<Actor>(),
                     Description =
@@ -107,7 +107,7 @@ namespace ABDOTClient.Networking {
                 },
                 new Movie
                 {
-                    //Id = 4,
+                    Id = 4,
                     Title = "Leon",
                     // Cast = new List<Actor>(),
                     Description =
@@ -121,7 +121,7 @@ namespace ABDOTClient.Networking {
                 },
                 new Movie
                 {
-                    //Id=5,
+                    Id=5,
                     // Cast = new List<Actor>(),
                     Description =
                         "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
@@ -135,7 +135,7 @@ namespace ABDOTClient.Networking {
                 },
                 new Movie
                 {
-                    //Id = 6,
+                    Id = 6,
                     // Cast = new List<Actor>(),
                     Description =
                         "Computer hacker Neo learns from mysterious rebels that the world he lives in is just an image sent to his brain by robots.",
