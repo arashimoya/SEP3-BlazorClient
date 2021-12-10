@@ -48,7 +48,6 @@ else
             <th>Name</th>
             <th>Email</th>
             <th>Password</th>
-            <th>Address</th>
             <th>Role</th>
             <th>CPR</th>
             <th>Birthday</th>
@@ -67,7 +66,7 @@ else
                 <td><span class="password">@item.Password</span></td>
                 <td>@item.Role</td>
                 <td>@item.CPR</td>
-                <td>@item.Birthday</td>
+                <td>@item.Birthday.ToString("yyyy-MM-dd")</td>
                 
                     <td>
                         <button @onclick="@(() => RemoveEmployee(item.Id))">

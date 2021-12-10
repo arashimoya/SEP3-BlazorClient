@@ -63,7 +63,7 @@ else
                 
                 
                     <td>
-                        <button @onclick="@(() => RemoveTicket(item))">
+                        <button @onclick="@(() => RemoveTicket(item.Id))">
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
                     </td>
@@ -91,7 +91,7 @@ else
         ticketsAll = new List<Ticket>();
         if (!ticketsAll.Any())
         {
-            ticketsAll = await TicketService.GetAllAsync();
+            ticketsAll = await TicketService.GetAllTickets();
         }
         ticketsToShow = ticketsAll;
 
@@ -103,9 +103,9 @@ else
         NavigationManager.NavigateTo($"EditTicket/{id}");
     }
 
-    private void RemoveTicket(Ticket ticket)
+    private void RemoveTicket(int ticketId)
     {
-        TicketService.RemoveTicketAsync(ticket);
+        TicketService.DeleteTicket(ticketId);
     }
 
     

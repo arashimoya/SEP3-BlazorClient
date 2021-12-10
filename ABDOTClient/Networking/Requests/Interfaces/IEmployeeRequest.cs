@@ -6,13 +6,13 @@ namespace ABDOTClient.Networking.Requests
 {
     public interface IEmployeeRequest
     {
-        Task<bool> CreateEmployee(Employee employee);
+        Task<Employee> CreateEmployee(Employee employee);
 
-        Task<bool> EditEmployee(Employee employee);
+        Task<Employee> EditEmployee(Employee employee);
 
-        Task<bool> DeleteEmployee(int employeeID);
+        Task<bool> DeleteEmployee(int employeeId);
 
-        Task<Employee> GetEmployee(int Employeeid);
+        Task<Employee> GetEmployee(int employeeId);
 
         Task<IList<Employee>> GetAllEmployees();
     }

@@ -6,10 +6,10 @@ namespace ABDOTClient.Data
 {
     public interface ITicketService
     {
-        Task<IList<Ticket>> GetAllAsync();
-        Task<bool> AddTicketAsync(Ticket ticket);
-        Task<bool> UpdateTicketAsync(Ticket ticket);
-        Task<bool> RemoveTicketAsync(Ticket ticket);
-        Task<Ticket> GetAsync(int ticketId);
+        Task<Ticket> AddTicket(Ticket ticket);
+        Task<Ticket> EditTicket(Ticket ticket);
+        Task<bool> DeleteTicket(int ticketId);
+        Task<Ticket> GetTicket(int ticketId);
+        Task<IList<Ticket>> GetAllTickets();
     }
 }

@@ -81,13 +81,15 @@ namespace ABDOTClient.Networking.Requests
             //also pay very very close attention to how the arguments are named in the graphQL project, in AddBranch, EditBranch classes etc, including capitalisation and types, because otherwise it wont work
             //u will get internal server error / unexpected execution
             //sometimes its called Id, sometimes its called just branchId, sometimes its Int sometimes its Long -- not ideal but now its too late so just check it :C
+            
+            // too much texto didnt read 
             string query = @"
                         mutation ($city: String!, $street: String!, $postcode: String!, $country: String!) {
                           createBranch (branch: {city: $city, street: $street, country: $country, postcode: $postcode}){
                             city,
                             country,
                             street,
-                            postcode,i a
+                            postcode,
                             employees{
                               firstName,
                               lastName
@@ -255,7 +257,7 @@ namespace ABDOTClient.Networking.Requests
         {
 
             //Create content of the query
-         /*   string query = @"
+            string query = @"
                   query {  
                    branches{
                         id,
@@ -288,23 +290,75 @@ namespace ABDOTClient.Networking.Requests
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<BranchesRoot>(graphQLRequest);
             //Return
-            return graphQLResponse.Data.branches;*/
-         return Branches;
+            //return graphQLResponse.Data.branches;
+             return Branches;
         }
 
         private void Seed()
         {
-            Branches = new List<Branch>
+            Branch[] BranchArray = 
             {
                 new Branch()
-                {   
+                {
                     Id = 1,
                     City = "Aarhus",
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()
                     {
-                        new Hall(1),
-                        new Hall(2),
+                        new Hall(1)
+                        {
+                            Id = 1,
+                            Programme = new List<Play>()
+                            {
+                                new Play
+                                {
+                                    Movie = new Movie
+                                    {
+                                        Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
+                                        Director = "Peter Jackson",
+                                        Genre = "Adventure, Melodrama, Fantasy",
+                                        Language = "English",
+                                        LengthInMinutes = 200,
+                                        Year = 2005,
+                                        Title = "King Kong",
+                                        PosterSrc = "/images/king_kong.jpg",
+                                    },
+                                    Date = DateTime.Now.AddDays(1),
+                                    Hall = new Hall(1),
+                                    Tickets = new List<Ticket>
+                                    {
+                        
+                                    },
+                                    TimeInMinutes = 200,
+                                },
+                            },
+                            
+                        },
+                        new Hall(2)
+                        {
+                            Id = 2,
+                            Programme = new List<Play>()
+                            {
+                                new Play
+                                {
+                                    Date = DateTime.Now,
+                                    Hall = new Hall(2),
+                                    Movie = new Movie
+                                    {
+                                        Title = "Forrest Gump",
+                                        Director = "Robert Zemeckis",
+                                        Genre = "Drama / Comedy",
+                                        Year = 2004,
+                                        Description = "The life story of Forrest, a boy with a low IQ with paralysis, who becomes a billionaire and a hero of the Vietnam War.",
+                                        Language = "English",
+                                        LengthInMinutes = 186,
+                                        PosterSrc = "/images/forrest_gump.jpg",
+                                    },
+                                    Tickets = new List<Ticket>(),
+                                    TimeInMinutes = 186,
+                                },
+                            }
+                        },
                     },
                 },
                 new Branch()
@@ -314,11 +368,85 @@ namespace ABDOTClient.Networking.Requests
                     Employees = new List<Employee>(),
                     Halls = new List<Hall>()
                     {
-                        new Hall(2),
-                        new Hall(3),
+                        new Hall(2)
+                        {
+                            Id= 3,
+                            Programme = new List<Play>()
+                            {
+                                new Play
+                                {
+                                    Date = DateTime.Now,
+                                    Hall = new Hall(3),
+                                    Movie = new Movie
+                                    {
+                                        Description = "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
+                                        Title = "Shrek",
+                                        Director = "Andrew Adamson / Vicky Jenson",
+                                        Genre = "Comedy, Animation, Family",
+                                        Language = "English, Danish",
+                                        LengthInMinutes = 90,
+                                        Year = 2001,
+                                        PosterSrc = "/images/shrek.jpg",
+                                    },
+                                    Tickets = new List<Ticket>(),
+                                    TimeInMinutes = 90,
+                                },
+                            }
+                        },
+                        new Hall(3)
+                        {
+                            Id = 4,
+                            Programme = new List<Play>()
+                            {
+                                new Play
+                                {
+                                    Date = DateTime.Now,
+                                    Hall = new Hall(1),
+                                    Movie = new Movie
+                                    {
+                                        //Id = 3,
+                                        Title = "Shawshank Redemption",
+                                        // Cast = new List<Actor>(),
+                                        Description =
+                                            "Adaptation of a Stephen King short story. A banker who is wrongly sentenced to life imprisonment, tries to survive in a brutal prison world. ",
+                                        Director = "Frank Darabont",
+                                        Genre = "Drama",
+                                        Language = "English",
+                                        LengthInMinutes = 110,
+                                        Year = 1994,
+                                        PosterSrc = "/images/shawshank.jpg"
+                                    },
+                                    Tickets = new List<Ticket>(),
+                                    TimeInMinutes = 110,
+                                },
+                            }
+                        },
                     },
                 },
             };
+            
+            BranchArray[0].Halls[0].Branch = BranchArray[0];
+            BranchArray[0].Halls[0].Programme[0].Hall = BranchArray[0].Halls[0];
+            BranchArray[0].Halls[0].Programme[0].Hall.Branch = BranchArray[0];
+            
+            BranchArray[0].Halls[1].Branch = BranchArray[0];
+            BranchArray[0].Halls[1].Programme[0].Hall = BranchArray[0].Halls[1];
+            BranchArray[0].Halls[1].Programme[0].Hall.Branch = BranchArray[0];
+            
+            
+            BranchArray[1].Halls[0].Branch = BranchArray[1];
+            BranchArray[1].Halls[0].Programme[0].Hall = BranchArray[1].Halls[0];
+            BranchArray[1].Halls[0].Programme[0].Hall.Branch = BranchArray[0];
+            
+            BranchArray[1].Halls[1].Branch = BranchArray[1];
+            BranchArray[1].Halls[1].Programme[0].Hall = BranchArray[1].Halls[1];
+            BranchArray[1].Halls[1].Programme[0].Hall.Branch = BranchArray[1];
+            
+            
+
+            Branches = BranchArray.ToList();
+
+
         }
     }
 }

@@ -96,9 +96,18 @@ body {
 }
 .movie-list-item{
     padding-bottom: 30px;
-    
+    transition: all 0.2s ease;
+}
+.movie-list-item:hover{
+    transform: scale(1.02);
     
 }
+
+
+.movie-list-bottom-content, .movie-list-top-content{
+    padding: 10px;
+}
+
 @media (min-width: 1024px) {
     .col-md-3 {
         flex: 0 0 25%;
@@ -257,20 +266,24 @@ background-color: #21221f;
 }
 .btn--black {
     background-color: #151515;
+    border-radius: 0;
 }
 
 .btn--white {
     background-color: #ffffff;
     color: black;
+    border-radius: 0;
 }
 
 .btn--outline-black {
     border-color: black;
+    border-radius: 0;
 }
 .btn--outline-white {
     color: #fff;
     border: 2px solid currentColor;
     background-color: transparent;
+    border-radius: 0;
 }
 .btn--small {
     padding: .75rem 1rem;

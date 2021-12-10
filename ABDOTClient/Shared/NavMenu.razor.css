@@ -12,15 +12,7 @@
     left: 0;
     top: 0;
 }
-.header-selectpicker{
-    background-color: #131313;
-    padding: 3px 2rem 3px 0;
-    float: right;
-    height: 20px;
-    font-size: 14px;
-    background-size: 13px;
-    color: white;
-}
+
 
 .top-row {
     height: 3.5rem;

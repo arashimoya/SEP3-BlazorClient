@@ -1,91 +1,253 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Data;
 using ABDOTClient.Factories;
 using ABDOTClient.Model;
+using GraphQL;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 
-namespace ABDOTClient.Networking.Requests
-{
-    public class EmployeeRequest : IEmployeeRequest
-    {
+namespace ABDOTClient.Networking.Requests {
+    public class EmployeeRequest : IEmployeeRequest {
+        private class EmployeesRoot {
+            public List<Employee> Employees { get; set; }
+
+            public EmployeesRoot() {
+                Employees = new List<Employee>();
+            }
+        }
+
+        private class EmployeeRoot {
+            public Employee Employee { get; set; }
+        }
+
+        private class DeleteRoot {
+            public bool deleteEmployee { get; set; }
+        }
+
+
+        private class CreateEmployeeRoot {
+            public Employee createEmployee { get; set; }
+        }
+
+        private class EditEmployeeRoot {
+            public Employee editEmployee { get; set; }
+        }
+
+
         private IList<Employee> Employees;
+        private GraphQLHttpClient graphQlClient;
 
-        public EmployeeRequest()
-        {
+        public EmployeeRequest() {
+            graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql",
+                new NewtonsoftJsonSerializer());
             Employees = new List<Employee>();
             if (!Employees.Any()) Seed();
         }
-        public async Task<bool> CreateEmployee(Employee employee)
-        {
-            Employees.Add(employee);
-            return true;
-        }
 
-        public async Task<bool> EditEmployee(Employee employee)
-        {
-            Employee toUpdate = Employees.FirstOrDefault(e => e.Id == employee.Id);
-            if (toUpdate == null) return false;
-            toUpdate.Birthday = employee.Birthday;
-            toUpdate.City = employee.City;
-            toUpdate.Branch = employee.Branch;
-            toUpdate.Country = employee.Country;
-            toUpdate.Postcode = employee.Postcode;
-            toUpdate.Role = employee.Role;
-            toUpdate.Street = employee.Street;
-            toUpdate.Email = employee.Email;
-            toUpdate.Password = employee.Password;
-            toUpdate.FirstName = employee.FirstName;
-            toUpdate.LastName = employee.LastName;
-            return true;
-        }
-
-        public async Task<bool> DeleteEmployee(int employeeId)
-        {
-            Employee toRemove = Employees.FirstOrDefault(e => e.Id == employeeId);
-            if (toRemove == null) return false;
-            Employees.Remove(toRemove);
-            return true;
-
-        }
-
-        public async Task<Employee> GetEmployee(int Employeeid)
-        {
-            return Employees.FirstOrDefault(e => e.Id == Employeeid);
-        }
-
-        public async Task<IList<Employee>> GetAllEmployees()
-        {
-            return Employees;
-        }
-
-        private void Seed()
-        {
-            Employee[] employeesArray =
-            {
-                new Employee()
-                {
-                    Id = 1,
-                    FirstName = "Christian",
-                    LastName = "Dam",
-                    Email = "ChristianLDam@jourrapide.com",
-                    Password = "dam123",
-                    Birthday = new DateTime(1994, 9, 21),
-                    CPR = "210994-4869",
+        public async Task<Employee> CreateEmployee(Employee employee) {
+            string query = @"
+            mutation($firstName : String,$lastName : String, $branchId : Int!,$city : String, $country : String, $cpr: String, $email:String,$password: String, $role:Int!, $street: String, $birthday:String!, $postcode : String!){
+              createEmployee(
+                input:{firstName:$firstName, lastName:$lastName, branchId: $branchId, city:$city, country:$country, cpr:$cpr, email:$email, password : $password, role:$role, street : $street, birthday:$birthday, postcode:$postcode }
+               ) {
+                firstName,
+                birthday,
+                branch{
+                  id
                 },
-                new Employee()
-                {
-                    Id = 2,
-                    FirstName = "Mille",
-                    LastName = "Bertensen",
-                    Email = "MilleABertelsen@dayrep.com",
-                    Password = "bertensen123",
-                    Birthday = new DateTime(1978, 11, 28),
-                    CPR = "281178-4756"
-                }
+                city,
+                country,
+                cPR,
+                email,
+                password,
+                postcode,
+                role,
+                street,
+                birthday
+              }  
+            }";
+
+            var variables = new {
+                firstName = employee.FirstName,
+                lastName = employee.LastName,
+                branchId = employee.Branch.Id,
+                city = employee.City,
+                country = employee.Country,
+                cpr = employee.CPR,
+                email = employee.Email,
+                password = employee.Password,
+                role = employee.Role,
+                street = employee.Street,
+                birthday = employee.Birthday.ToString(CultureInfo.CurrentCulture),
+                postcode = employee.Postcode
             };
-            Employees = employeesArray.ToList();
+
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            var graphQlResponse = new GraphQLResponse<CreateEmployeeRoot>();
+            try {
+                graphQlResponse = await graphQlClient.SendMutationAsync<CreateEmployeeRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            Console.WriteLine(graphQlResponse.Data.createEmployee);
+            return graphQlResponse.Data.createEmployee;
+        }
+
+        public async Task<Employee> EditEmployee(Employee employee) {
+        string query = @"
+            mutation($id : Int!, $firstName : String,$lastName : String, $branchId : Int!,$city : String, $country : String, $cpr: String, $email:String,$password: String, $role:Int!, $street: String, $birthday:String!, $postcode : String!){
+              editEmployee(
+                input:{firstName:$firstName, lastName:$lastName, branchId: $branchId, city:$city, country:$country, cpr:$cpr, email:$email, password : $password, role:$role, street : $street, birthday:$birthday, postcode:$postcode }
+               ) {
+                firstName
+                birthday
+                branch{
+                  id
+                }
+                city,
+                country,
+                cPR,
+                email,password,
+                postcode,
+                role,
+                street,
+                birthday
+              }  
+            }";
+
+            var variables = new {
+                firstName = employee.FirstName,
+                lastName = employee.LastName,
+                branchId = employee.Branch.Id,
+                city = employee.City,
+                country = employee.Country,
+                cpr = employee.CPR,
+                email = employee.Email,
+                password = employee.Password,
+                role = employee.Role,
+                street = employee.Street,
+                birthday = employee.Birthday.ToString(CultureInfo.CurrentCulture),
+                postcode = employee.Postcode,
+                id = employee.Id
+            };
+
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            var graphQlResponse = new GraphQLResponse<EditEmployeeRoot>();
+            try {
+                graphQlResponse = await graphQlClient.SendMutationAsync<EditEmployeeRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            Console.WriteLine(graphQlResponse.Data.editEmployee);
+            return graphQlResponse.Data.editEmployee;
+        }
+
+        public async Task<bool> DeleteEmployee(int employeeId) {
+            string query = @"
+                mutation($id:Int!){
+                  deleteEmployee(id:$id)
+                }
+            ";
+            var variables = new {
+                id = employeeId
+            };
+
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            var graphQlResponse = new GraphQLResponse<DeleteRoot>();
+            try {
+                graphQlResponse = await graphQlClient.SendMutationAsync<DeleteRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            Console.WriteLine(graphQlResponse.Data.deleteEmployee);
+            return graphQlResponse.Data.deleteEmployee;
+        }
+
+        public async Task<Employee> GetEmployee(int employeeId) {
+            string query = @"query($id: Int!) {employee(id:$id){
+                              role,
+                              firstName,
+                              lastName,
+                              email,
+                              password,
+                              cPR,
+                              street,
+                              city,
+                              postcode,
+                              country,
+                              birthday,
+                              branch{
+                                  id
+                              }
+                              id
+                            }}";
+
+            var variables = new {
+                id = employeeId
+            };
+
+
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            GraphQLResponse<EmployeeRoot> graphQlResponse;
+            try {
+                graphQlResponse = await graphQlClient.SendQueryAsync<EmployeeRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            Console.WriteLine(graphQlResponse.Data.Employee.FirstName);
+            return graphQlResponse.Data.Employee;
+        }
+
+        public async Task<IList<Employee>> GetAllEmployees() {
+            string query = @"query {employees{
+                              role,
+                              firstName,
+                              lastName,
+                              email,
+                              password,
+                              cPR,
+                              street,
+                              city,
+                              postcode,
+                              country,
+                              birthday,
+                              branch{
+                                  id
+                              }
+                              id
+                            }}";
+
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            GraphQLResponse<EmployeesRoot> graphQlResponse;
+            try {
+                graphQlResponse = await graphQlClient.SendQueryAsync<EmployeesRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            Console.WriteLine(graphQlResponse.Data.Employees.Count);
+            return graphQlResponse.Data.Employees;
+        }
+
+        private void Seed() {
         }
     }
 }
