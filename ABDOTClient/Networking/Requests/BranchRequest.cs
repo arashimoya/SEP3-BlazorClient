@@ -86,7 +86,7 @@ namespace ABDOTClient.Networking.Requests
                             city,
                             country,
                             street,
-                            postcode,i a
+                            postcode,
                             employees{
                               firstName,
                               lastName

@@ -13,8 +13,7 @@ using ABDOTClient.Networking.Requests;
 using ABDOTClient.Networking.Requests.Interfaces;
 
 namespace ABDOTClient.Networking {
-    public class Client
-    {
+    public class Client {
         private IUserRequest userRequest;
         private IMovieRequest movieRequest;
         private IPlayRequest playRequest;
@@ -24,8 +23,7 @@ namespace ABDOTClient.Networking {
         private IHallRequest hallRequest;
         private IBranchRequest branchRequest;
 
-        public Client()
-        {
+        public Client() {
             userRequest = new UserRequest();
             movieRequest = new MovieRequest();
             playRequest = new PlayRequest();
@@ -33,126 +31,78 @@ namespace ABDOTClient.Networking {
             employeeRequest = new EmployeeRequest();
             hallRequest = new HallRequest();
             branchRequest = new BranchRequest();
-            Branch branch = new Branch()
-            {
-                Id = 13,
+            Branch branch = new Branch() {
+                Id = 1,
                 City = "chujowo2",
                 Street = "pica",
                 Postcode = "694202137",
                 Country = "jebane"
             };
-            // branchRequest.GetAllBranches();
-            // branchRequest.GetBranch(3);
-            // branchRequest.DeleteBranch(6);
-            // branchRequest.CreateBranch(branch);
-            branchRequest.EditBranch(branch);
 
-
-            //***********
-            //TESTS
-            //***********
-
-            //role 1 = employee
-            //role 2 = manager
-            //role 3 = owner
-
-            // this is from form
-            // String role = "employee";
-            //
-            // switch (role)
-            // {
-            //     case "employee" :
-            //         int role_id = 1;
-            //         break;
-            //     case "manager" :
-            //         int role_id = 2;
-            //         break;
-            //     case "owner" :
-            //         int role_id = 3;
-            //         break;
-            //     default:
-            //         throw new Exception("Invalid role id");
-            // }
-            // Employee employee = new Employee()
-            // {
-            //     Role = role_id;
-            // }
-
-            // Hall testHall = new Hall(1);
-            // Hall testHall1 = new Hall(2);
-            // Hall testHall2 = new Hall(3);
-            // testHall.PrintArray();
-            // testHall1.PrintArray();
-            // testHall2.PrintArray();
+            Hall hall = new Hall(2) {
+                Id = 1,
+                Branch = branch,
+                HallSize = 2
+            };
+            
+            
+            hallRequest.GetAllHalls();
+            hallRequest.GetHall(2);
 
         }
 
 
         //please make the methods in order of the classes
-        public async Task<Branch> CreateBranch(Branch branch)
-        {
-            try
-            {
+        public async Task<Branch> CreateBranch(Branch branch) {
+            try {
                 return await branchRequest.CreateBranch(branch);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine(e);
                 return null;
             }
         }
 
-        public async Task<Branch> EditBranch(Branch branch)
-        {
-            try
-            {
+        public async Task<Branch> EditBranch(Branch branch) {
+            try {
                 return await branchRequest.EditBranch(branch);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine(e);
                 return null;
             }
         }
 
-        public async Task<bool> DeleteBranch(long branchId)
-        {
-            try
-            {
+        public async Task<bool> DeleteBranch(long branchId) {
+            try {
                 return await branchRequest.DeleteBranch(branchId);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine(e);
                 return false;
             }
         }
 
-        public async Task<Branch> GetBranch(int branchId)
-        {
-            try
-            {
+        public async Task<Branch> GetBranch(int branchId) {
+            try {
                 return await branchRequest.GetBranch(branchId);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine(e);
                 return null;
             }
         }
 
-        public async Task<IList<Branch>> GetAllBranches()
-        {
-            try
-            {
+        public async Task<IList<Branch>> GetAllBranches() {
+            try {
                 return await branchRequest.GetAllBranches();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 Console.WriteLine(e);
                 return null;
             }
         }
+
         public async Task<bool> RegisterUser(User user) {
             try {
                 return await userRequest.RegisterUser(user);
@@ -357,7 +307,7 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-        
+
         public async Task<bool> AddTicket(Ticket ticket) {
             try {
                 return await ticketRequest.Create(ticket);
@@ -428,9 +378,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> DeleteHall(Hall hall) {
+        public async Task<bool> DeleteHall(int hallId) {
             try {
-                return await hallRequest.DeleteHall(hall);
+                return await hallRequest.DeleteHall(hallId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -457,29 +407,41 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
+
         public async Task<bool> AddEmployee(Employee employee) {
             try {
-                return await employeeRequest.CreateEmployee(employee);
+                var createdEmployee = await employeeRequest.CreateEmployee(employee);
+                if (createdEmployee == null) {
+                    return false;
+                }
             }
+
             catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
+
+            return true;
         }
 
         public async Task<bool> EditEmployee(Employee employee) {
             try {
-                return await employeeRequest.EditEmployee(employee);
+                var editedEmployee = await employeeRequest.CreateEmployee(employee);
+                if (editedEmployee == null) {
+                    return false;
+                }
             }
             catch (Exception e) {
                 Console.WriteLine(e);
                 throw;
             }
+
+            return true;
         }
 
         public async Task<bool> DeleteEmployee(Employee employee) {
             try {
-                return await employeeRequest.DeleteEmployee(employee);
+                return await employeeRequest.DeleteEmployee(employee.Id);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -506,6 +468,5 @@ namespace ABDOTClient.Networking {
                 throw;
             }
         }
-        
     }
 }
