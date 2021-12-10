@@ -444,9 +444,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> DeleteHall(Hall hall) {
+        public async Task<bool> DeleteHall(int hallId) {
             try {
-                return await hallRequest.DeleteHall(hall);
+                return await hallRequest.DeleteHall(hallId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -475,7 +475,7 @@ namespace ABDOTClient.Networking {
         }
         public async Task<bool> AddEmployee(Employee employee) {
             try {
-                return await employeeRequest.CreateEmployee(employee);
+                return await employeeRequest.CreateEmployee(employee) == null;
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -485,7 +485,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<bool> EditEmployee(Employee employee) {
             try {
-                return await employeeRequest.EditEmployee(employee);
+                return await employeeRequest.EditEmployee(employee) == null;
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -493,9 +493,9 @@ namespace ABDOTClient.Networking {
             }
         }
 
-        public async Task<bool> DeleteEmployee(Employee employee) {
+        public async Task<bool> DeleteEmployee(int employeeId) {
             try {
-                return await employeeRequest.DeleteEmployee(employee);
+                return await employeeRequest.DeleteEmployee(employeeId);
             }
             catch (Exception e) {
                 Console.WriteLine(e);
