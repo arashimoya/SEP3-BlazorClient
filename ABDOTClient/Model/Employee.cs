@@ -25,7 +25,7 @@ namespace ABDOTClient.Model
         
         [Required] public string Country { get; set; }
 
-        [Required] public DateTime Birthday { get; set; }
+        [Required] public string Birthday { get; set; }
         public IList<Ticket> TicketsSold { get; set; }
 
         public Branch Branch { get; set; }
