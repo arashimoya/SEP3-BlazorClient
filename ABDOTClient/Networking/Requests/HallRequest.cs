@@ -191,7 +191,10 @@ namespace ABDOTClient.Networking.Requests {
                     id,
                     hallSize,
                     branch{
-                      id
+                      id,
+                        street,
+city,
+postcode
                     },
                     programme{
                       movie{
