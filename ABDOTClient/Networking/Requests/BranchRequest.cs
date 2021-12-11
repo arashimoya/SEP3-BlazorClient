@@ -88,9 +88,18 @@ namespace ABDOTClient.Networking.Requests
                             street,
                             postcode,
                             employees{
-                              firstName,
-                              lastName
-                            },
+                        id,
+                        firstName,
+                        lastName,
+                        email,
+                        role,
+                        cPR,
+                        street,
+                        city,
+                        postcode,
+                        country,
+                        birthday
+                        },
                             halls{
                               id,
                               hallSize
@@ -296,7 +305,7 @@ namespace ABDOTClient.Networking.Requests
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<BranchesRoot>(graphQLRequest);
             //Return
-            //return graphQLResponse.Data.branches;
+            return graphQLResponse.Data.branches;
              return Branches;
         }
     }

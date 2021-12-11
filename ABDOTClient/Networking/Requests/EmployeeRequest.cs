@@ -47,48 +47,136 @@ namespace ABDOTClient.Networking.Requests {
         }
 
         public async Task<Employee> CreateEmployee(Employee employee) {
-            //TODO FIX
-//             string query = @"
-//
-//                             
-//                             ";
-//             
-//             
-//             var variables = new {
-//                 birthday = employee.Birthday,
-//                 city = employee.City,
-//                 branch = employee.Branch,
-//                 country = employee.Country,
-//                 postcode = employee.Postcode,
-//                 role = employee.Role,
-//                 street = employee.Street,
-//                 email = employee.Email,
-//                 password = employee.Password,
-//                 firstName = employee.FirstName,
-//                 lastName = employee.LastName
-//             };
-            return null;
+            string query = @"
+                    mutation ($email : String!, $firstName : String!, $lastName : String!, $password: String!
+                    $role : Int!, $cpr: String!, $street: String!, $city: String!, $postcode: String!
+                    $country : String!, $birthday : String!, $branchId : Int!) {
+                      createEmployee (input: {email : $email, firstName : $firstName, lastName : $lastName
+                      password : $password, role: $role, cpr : $cpr, street : $street, city : $city, postcode : $postcode
+                      country : $country, birthday : $birthday, branchId: $branchId}) {
+                    id,      
+                    email,
+                          firstName,
+                          lastName,
+                          password,
+                          role,
+                          cPR,
+                          city,
+                          street,
+                          postcode,
+                          country,
+                          birthday,
+                          branch {
+                            id,
+                            street,
+                            city,
+                            postcode,
+                            country
+                          },
+                          ticketsSold {
+                            id,
+                            row,
+                            column
+                              }
+                          }
+                        }
+                             
+                             ";
+            
+             var variables = new {
+                 birthday = employee.Birthday,
+                 city = employee.City,
+                 branchId = employee.Branch.Id,
+                 country = employee.Country,
+                 postcode = employee.Postcode,
+                 role = employee.Role,
+                 street = employee.Street,
+                 email = employee.Email,
+                 password = employee.Password,
+                 firstName = employee.FirstName,
+                 lastName = employee.LastName,
+                 cpr = employee.CPR
+             };
+             var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+             var graphQlResponse = new GraphQLResponse<CreateEmployeeRoot>();
+             try {
+                 graphQlResponse = await graphQlClient.SendMutationAsync<CreateEmployeeRoot>(graphQlRequest);
+             }
+             catch (Exception e) {
+                 throw;
+             }
+             
+             return graphQlResponse.Data.createEmployee;
         }
 
-        public async Task<Employee> EditEmployee(Employee employee) {
-            //TODO FIX
-            // string query
-            //
-            //
-            // var variables = new {
-            //     birthday = employee.Birthday,
-            //     city = employee.City,
-            //     branch = employee.Branch,
-            //     country = employee.Country,
-            //     postcode = employee.Postcode,
-            //     role = employee.Role,
-            //     street = employee.Street,
-            //     email = employee.Email,
-            //     password = employee.Password,
-            //     firstName = employee.FirstName,
-            //     lastName = employee.LastName
-            // };
-            return null;
+        public async Task<Employee> EditEmployee(Employee employee)
+        {
+
+            string query = @"
+mutation ($id : Int!, $email : String!, $firstName : String!, $lastName : String!, $password: String!
+$role : Int!, $cpr: String!, $street: String!, $city: String!, $postcode: String!
+$country : String!, $birthday : String!, $branchId : Int!) {
+  editEmployee (input: {id: $id, email : $email, firstName : $firstName, lastName : $lastName
+  password : $password, role: $role, cpr : $cpr, street : $street, city : $city, postcode : $postcode
+  country : $country, birthday : $birthday, branchId: $branchId}) {
+id,     
+ email,
+      firstName,
+      lastName,
+      password,
+      role,
+      cPR,
+      city,
+      street,
+      postcode,
+      country,
+      birthday,
+      branch {
+        id,
+        street,
+        city,
+        postcode,
+        country
+      },
+      ticketsSold {
+        id,
+        row,
+        column
+      }
+  }
+}
+
+
+                    ";
+            
+            
+            var variables = new {
+                id = employee.Id,
+                birthday = employee.Birthday,
+                city = employee.City,
+                branchId = employee.Branch.Id,
+                country = employee.Country,
+                postcode = employee.Postcode,
+                role = employee.Role,
+                street = employee.Street,
+                email = employee.Email,
+                password = employee.Password,
+                firstName = employee.FirstName,
+                lastName = employee.LastName,
+                cpr = employee.CPR
+            };
+            
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            var graphQlResponse = new GraphQLResponse<EditEmployeeRoot>();
+            try {
+                graphQlResponse = await graphQlClient.SendMutationAsync<EditEmployeeRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                throw;
+            }
+
+            return graphQlResponse.Data.editEmployee;
+
         }
 
         public async Task<bool> DeleteEmployee(int employeeId) {
@@ -110,13 +198,12 @@ namespace ABDOTClient.Networking.Requests {
                 Console.WriteLine(e);
                 throw;
             }
-
-            Console.WriteLine(graphQlResponse.Data.deleteEmployee);
             return graphQlResponse.Data.deleteEmployee;
         }
 
         public async Task<Employee> GetEmployee(int employeeId) {
             string query = @"query($id: Int!) {employee(id:$id){
+                                id,
                               role,
                               firstName,
                               lastName,
@@ -128,10 +215,18 @@ namespace ABDOTClient.Networking.Requests {
                               postcode,
                               country,
                               birthDate,
-                              branch{
-                                  id
-                              }
-                              id
+                                    branch {
+        id,
+        street,
+        city,
+        postcode,
+        country
+      },      ticketsSold {
+        id,
+        row,
+        column
+      }
+                              
                             }}";
 
             var variables = new {
@@ -155,6 +250,7 @@ namespace ABDOTClient.Networking.Requests {
 
         public async Task<IList<Employee>> GetAllEmployees() {
             string query = @"query {employees{
+id,
                               role,
                               firstName,
                               lastName,
@@ -166,10 +262,18 @@ namespace ABDOTClient.Networking.Requests {
                               postcode,
                               country,
                               birthDate,
-                              branch{
-                                  id
-                              }
-                              id
+                                                              branch {
+        id,
+        street,
+        city,
+        postcode,
+        country
+      }, 
+                                    ticketsSold {
+        id,
+        row,
+        column
+      }
                             }}";
 
             var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query);

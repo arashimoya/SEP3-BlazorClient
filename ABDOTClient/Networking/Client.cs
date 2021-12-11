@@ -39,221 +39,221 @@ namespace ABDOTClient.Networking {
             //TEST OBJECTS
             //***********
             
-            Branch branch = new Branch()
-            {
-                Id = 1,
-                City = "chujowo2",
-                Street = "pica",
-                Postcode = "694202137",
-                Country = "jebane"
-            };
-            
-            Hall hall = new Hall(1)
-            {
-                Id = 1,
-                Branch = branch,
-                Programme = null
-            };
-            Movie movie = new Movie()
-            {
-                Id = 1,
-                Title =  "Whatever 2",
-                Description = "Chuj w dupe",
-                Genre = "Hardcore Erotica",
-                Director = "Adam Sandler",
-                Language = "Arabic",
-                SubtitleLanguage = "asda",
-                Year = 1992,
-                LengthInMinutes = 132,
-                PosterSrc = "pornhub.com"
-            };
-            Play play = new Play()
-            {
-                Id = 1,
-                Date = new DateTime(2021 - 12 - 21),
-                Hall = hall,
-                Movie = movie,
-                TimeInMinutes = 260
-            };
-            
-
-            Employee employee = new Employee()
-            {
-                Id = 1,
-                Birthday = new DateTime(2021 - 12 - 10),
-                Branch = branch,
-                City = "Bratislava",
-                Country = "Slovakia",
-                CPR = "21371488",
-                Email = "chuj.chuj@gmail.com",
-                FirstName = "chuj",
-                LastName = "chujowski",
-                Password = "123",
-                TicketsSold = null
-            };
-
-            User user = new User()
-            {
-                Id = 1,
-                Email = "jebo.jebowski@kokot.com",
-                FirstName = "Jebo",
-                LastName = "Jebowski",
-                Password = "Pojebane123",
-                TicketsPurchased = null
-            };
-
-            Ticket ticket = new Ticket()
-            {
-                Id = 1,
-                Column = 6,
-                Row = 4,
-                Employee = employee,
-                Play = play,
-                User = user
-            };
-            
-            //***********
-            //API TESTING
-            //***********
-
-            //***********
-            //BRANCH
-            //***********
-
-            Task<Branch> createBranch = branchRequest.CreateBranch(branch);
-            Task<Branch> editBranch = branchRequest.EditBranch(branch);
-            Task<Branch> getBranch = branchRequest.GetBranch(1);
-            Task<IList<Branch>> getBranches = branchRequest.GetAllBranches();
-            Task<bool> deleteBranch = branchRequest.DeleteBranch(1);
-
-            Console.WriteLine(createBranch);
-            Console.WriteLine(editBranch);
-            Console.WriteLine(getBranch);
-            foreach (Branch forBranch in getBranches.Result) {
-                Console.WriteLine(forBranch);
-            }
-            Console.WriteLine(deleteBranch);
-            
-            //***********
-            //EMPLOYEE
-            //***********
-
-            Task<Employee> createEmployee = employeeRequest.CreateEmployee(employee);
-            Task<Employee> editEmployee = employeeRequest.EditEmployee(employee);
-            Task<Employee> getEmployee = employeeRequest.GetEmployee(1);
-            Task<IList<Employee>> getEmployees = employeeRequest.GetAllEmployees();
-            Task<bool> deleteEmployee = employeeRequest.DeleteEmployee(1);
-
-            Console.WriteLine(createEmployee);
-            Console.WriteLine(editEmployee);
-            Console.WriteLine(getEmployee);
-            foreach (Employee forEmployee in getEmployees.Result) {
-                Console.WriteLine(forEmployee);
-            }
-
-            Console.WriteLine(deleteEmployee);
-            
-            
-            
-            
-            //***********
-            //HALL
-            //***********
-            
-            Task<Hall> createHall = hallRequest.CreateHall(hall);
-            Task<Hall> editHall = hallRequest.EditHall(hall);
-            Task<Hall> getHall = hallRequest.GetHall(1);
-            Task<IList<Hall>> getHalls = hallRequest.GetAllHalls();
-            Task<bool> deleteHall = hallRequest.DeleteHall(1);
-            
-            Console.WriteLine(createHall);
-            Console.WriteLine(editHall);
-            Console.WriteLine(getHall);
-            foreach (Hall forHall in getHalls.Result) {
-                Console.WriteLine(forHall);
-            }
-
-            Console.WriteLine(deleteHall);
-            
-            //***********
-            //MOVIE
-            //***********
-            
-            Task<Movie> createMovie = movieRequest.CreateMovie(movie);
-            Task<Movie> editMovie = movieRequest.EditMovie(movie);
-            Task<Movie> getMovie = movieRequest.GetMovie(1);
-            Task<IList<Movie>> getMovies = movieRequest.GetAllMovies();
-            Task<bool> deleteMovie = movieRequest.DeleteMovie(1);
-            
-            Console.WriteLine(createMovie);
-            Console.WriteLine(editMovie);
-            Console.WriteLine(getMovie);
-            foreach (Movie forMovie in getMovies.Result) {
-                Console.WriteLine(forMovie);
-            }
-
-            Console.WriteLine(deleteMovie);
-            
-            //***********
-            //PLAY
-            //***********
-            
-            Task<Play> createPlay = playRequest.CreatePlay(play);
-            Task<Play> editPlay = playRequest.EditPlay(play);
-            Task<Play> getPlay = playRequest.GetPlay(1);
-            Task<IList<Play>> getPlays = playRequest.GetAllPlays();
-            Task<bool> deletePlay = playRequest.DeletePlay(1);
-            
-            Console.WriteLine(createPlay);
-            Console.WriteLine(editPlay);
-            Console.WriteLine(getPlay);
-            foreach (Play forPlay in getPlays.Result) {
-                Console.WriteLine(forPlay);
-            }
-
-            Console.WriteLine(deletePlay);
-            
-            //***********
-            //TICKET
-            //***********
-            
-            Task<Ticket> createTicket = ticketRequest.CreateTicket(ticket);
-            Task<Ticket> editTicket = ticketRequest.EditTicket(ticket);
-            Task<Ticket> getTicket = ticketRequest.GetTicket(1);
-            Task<IList<Ticket>> getTickets = ticketRequest.GetAllTickets();
-            Task<bool> deleteTicket = ticketRequest.DeleteTicket(1);
-            
-            Console.WriteLine(createTicket);
-            Console.WriteLine(editTicket);
-            Console.WriteLine(getTicket);
-            foreach (Ticket forTicket in getTickets.Result) {
-                Console.WriteLine(forTicket);
-            }
-
-            Console.WriteLine(deleteTicket);
-            
-            //***********
-            //USER
-            //***********
-            
-            
-            
-            Task<User> createUser = userRequest.RegisterUser(user);
-            Task<User> editUser = userRequest.EditUser(user);
-            Task<User> getUser = userRequest.GetUser(1);
-            Task<IList<User>> getUsers = userRequest.GetAllUsers();
-            Task<bool> deleteUser = userRequest.DeleteUser(1);
-            Task<User> loginUser = userRequest.Login(user);
-            
-            Console.WriteLine(createUser);
-            Console.WriteLine(editUser);
-            Console.WriteLine(getUser);
-            foreach (User forUser in getUsers.Result) {
-                Console.WriteLine(forUser);
-            }
-
-            Console.WriteLine(deleteUser);
-            Console.WriteLine(loginUser);
+            // Branch branch = new Branch()
+            // {
+            //     Id = 1,
+            //     City = "chujowo2",
+            //     Street = "pica",
+            //     Postcode = "694202137",
+            //     Country = "jebane"
+            // };
+            //
+            // Hall hall = new Hall(1)
+            // {
+            //     Id = 1,
+            //     Branch = branch,
+            //     Programme = null
+            // };
+            // Movie movie = new Movie()
+            // {
+            //     Id = 1,
+            //     Title =  "Whatever 2",
+            //     Description = "Chuj w dupe",
+            //     Genre = "Hardcore Erotica",
+            //     Director = "Adam Sandler",
+            //     Language = "Arabic",
+            //     SubtitleLanguage = "asda",
+            //     Year = 1992,
+            //     LengthInMinutes = 132,
+            //     PosterSrc = "pornhub.com"
+            // };
+            // Play play = new Play()
+            // {
+            //     Id = 1,
+            //     Date = new DateTime(2021 - 12 - 21),
+            //     Hall = hall,
+            //     Movie = movie,
+            //     TimeInMinutes = 260
+            // };
+            //
+            //
+            // Employee employee = new Employee()
+            // {
+            //     Id = 1,
+            //     Birthday = new DateTime(2021 - 12 - 10),
+            //     Branch = branch,
+            //     City = "Bratislava",
+            //     Country = "Slovakia",
+            //     CPR = "21371488",
+            //     Email = "chuj.chuj@gmail.com",
+            //     FirstName = "chuj",
+            //     LastName = "chujowski",
+            //     Password = "123",
+            //     TicketsSold = null
+            // };
+            //
+            // User user = new User()
+            // {
+            //     Id = 1,
+            //     Email = "jebo.jebowski@kokot.com",
+            //     FirstName = "Jebo",
+            //     LastName = "Jebowski",
+            //     Password = "Pojebane123",
+            //     TicketsPurchased = null
+            // };
+            //
+            // Ticket ticket = new Ticket()
+            // {
+            //     Id = 1,
+            //     Column = 6,
+            //     Row = 4,
+            //     Employee = employee,
+            //     Play = play,
+            //     User = user
+            // };
+            //
+            // //***********
+            // //API TESTING
+            // //***********
+            //
+            // //***********
+            // //BRANCH
+            // //***********
+            //
+            // Task<Branch> createBranch = branchRequest.CreateBranch(branch);
+            // Task<Branch> editBranch = branchRequest.EditBranch(branch);
+            // Task<Branch> getBranch = branchRequest.GetBranch(1);
+            // Task<IList<Branch>> getBranches = branchRequest.GetAllBranches();
+            // Task<bool> deleteBranch = branchRequest.DeleteBranch(1);
+            //
+            // Console.WriteLine(createBranch);
+            // Console.WriteLine(editBranch);
+            // Console.WriteLine(getBranch);
+            // foreach (Branch forBranch in getBranches.Result) {
+            //     Console.WriteLine(forBranch);
+            // }
+            // Console.WriteLine(deleteBranch);
+            //
+            // //***********
+            // //EMPLOYEE
+            // //***********
+            //
+            // Task<Employee> createEmployee = employeeRequest.CreateEmployee(employee);
+            // Task<Employee> editEmployee = employeeRequest.EditEmployee(employee);
+            // Task<Employee> getEmployee = employeeRequest.GetEmployee(1);
+            // Task<IList<Employee>> getEmployees = employeeRequest.GetAllEmployees();
+            // Task<bool> deleteEmployee = employeeRequest.DeleteEmployee(1);
+            //
+            // Console.WriteLine(createEmployee);
+            // Console.WriteLine(editEmployee);
+            // Console.WriteLine(getEmployee);
+            // foreach (Employee forEmployee in getEmployees.Result) {
+            //     Console.WriteLine(forEmployee);
+            // }
+            //
+            // Console.WriteLine(deleteEmployee);
+            //
+            //
+            //
+            //
+            // //***********
+            // //HALL
+            // //***********
+            //
+            // Task<Hall> createHall = hallRequest.CreateHall(hall);
+            // Task<Hall> editHall = hallRequest.EditHall(hall);
+            // Task<Hall> getHall = hallRequest.GetHall(1);
+            // Task<IList<Hall>> getHalls = hallRequest.GetAllHalls();
+            // Task<bool> deleteHall = hallRequest.DeleteHall(1);
+            //
+            // Console.WriteLine(createHall);
+            // Console.WriteLine(editHall);
+            // Console.WriteLine(getHall);
+            // foreach (Hall forHall in getHalls.Result) {
+            //     Console.WriteLine(forHall);
+            // }
+            //
+            // Console.WriteLine(deleteHall);
+            //
+            // //***********
+            // //MOVIE
+            // //***********
+            //
+            // Task<Movie> createMovie = movieRequest.CreateMovie(movie);
+            // Task<Movie> editMovie = movieRequest.EditMovie(movie);
+            // Task<Movie> getMovie = movieRequest.GetMovie(1);
+            // Task<IList<Movie>> getMovies = movieRequest.GetAllMovies();
+            // Task<bool> deleteMovie = movieRequest.DeleteMovie(1);
+            //
+            // Console.WriteLine(createMovie);
+            // Console.WriteLine(editMovie);
+            // Console.WriteLine(getMovie);
+            // foreach (Movie forMovie in getMovies.Result) {
+            //     Console.WriteLine(forMovie);
+            // }
+            //
+            // Console.WriteLine(deleteMovie);
+            //
+            // //***********
+            // //PLAY
+            // //***********
+            //
+            // Task<Play> createPlay = playRequest.CreatePlay(play);
+            // Task<Play> editPlay = playRequest.EditPlay(play);
+            // Task<Play> getPlay = playRequest.GetPlay(1);
+            // Task<IList<Play>> getPlays = playRequest.GetAllPlays();
+            // Task<bool> deletePlay = playRequest.DeletePlay(1);
+            //
+            // Console.WriteLine(createPlay);
+            // Console.WriteLine(editPlay);
+            // Console.WriteLine(getPlay);
+            // foreach (Play forPlay in getPlays.Result) {
+            //     Console.WriteLine(forPlay);
+            // }
+            //
+            // Console.WriteLine(deletePlay);
+            //
+            // //***********
+            // //TICKET
+            // //***********
+            //
+            // Task<Ticket> createTicket = ticketRequest.CreateTicket(ticket);
+            // Task<Ticket> editTicket = ticketRequest.EditTicket(ticket);
+            // Task<Ticket> getTicket = ticketRequest.GetTicket(1);
+            // Task<IList<Ticket>> getTickets = ticketRequest.GetAllTickets();
+            // Task<bool> deleteTicket = ticketRequest.DeleteTicket(1);
+            //
+            // Console.WriteLine(createTicket);
+            // Console.WriteLine(editTicket);
+            // Console.WriteLine(getTicket);
+            // foreach (Ticket forTicket in getTickets.Result) {
+            //     Console.WriteLine(forTicket);
+            // }
+            //
+            // Console.WriteLine(deleteTicket);
+            //
+            // //***********
+            // //USER
+            // //***********
+            //
+            //
+            //
+            // Task<User> createUser = userRequest.RegisterUser(user);
+            // Task<User> editUser = userRequest.EditUser(user);
+            // Task<User> getUser = userRequest.GetUser(1);
+            // Task<IList<User>> getUsers = userRequest.GetAllUsers();
+            // Task<bool> deleteUser = userRequest.DeleteUser(1);
+            // Task<User> loginUser = userRequest.Login(user);
+            //
+            // Console.WriteLine(createUser);
+            // Console.WriteLine(editUser);
+            // Console.WriteLine(getUser);
+            // foreach (User forUser in getUsers.Result) {
+            //     Console.WriteLine(forUser);
+            // }
+            //
+            // Console.WriteLine(deleteUser);
+            // Console.WriteLine(loginUser);
 
         }
 
