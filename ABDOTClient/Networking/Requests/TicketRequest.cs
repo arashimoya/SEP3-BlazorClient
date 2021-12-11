@@ -50,7 +50,7 @@ namespace ABDOTClient.Networking.Requests
             Tickets = new List<Ticket>();
         }
 
-        public async Task<Ticket> CreateTicketAsync(Ticket ticket)
+        public async Task<Ticket> CreateTicket(Ticket ticket)
         {
             string query = @"";
             
@@ -60,8 +60,8 @@ namespace ABDOTClient.Networking.Requests
                 play = ticket.Play,
                 user = ticket.User,
                 employee = ticket.Employee,
-                row = ticket.row,
-                column = ticket.column
+                Row = ticket.Row,
+                Column = ticket.Column
             };
 
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
@@ -80,7 +80,7 @@ namespace ABDOTClient.Networking.Requests
             return graphQLResponse.Data.createTicket;
         }
 
-        public async Task<Ticket> EditTicketAsync(Ticket ticket)
+        public async Task<Ticket> EditTicket(Ticket ticket)
         {
             string query = @"";
             
@@ -91,8 +91,8 @@ namespace ABDOTClient.Networking.Requests
                 play = ticket.Play,
                 user = ticket.User,
                 employee = ticket.Employee,
-                row = ticket.row,
-                column = ticket.column
+                Row = ticket.Row,
+                Column = ticket.Column
             };
             
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
@@ -112,7 +112,7 @@ namespace ABDOTClient.Networking.Requests
             return graphQLResponse.Data.editTicket;  
         }
 
-        public async Task<bool> DeleteTicketAsync(int ticketId)
+        public async Task<bool> DeleteTicket(int ticketId)
         {
             string query = @"";
             
@@ -138,7 +138,7 @@ namespace ABDOTClient.Networking.Requests
             return graphQLResponse.Data.deleteTicket;
         }
 
-        public async Task<Ticket> GetTicketAsync(int ticketId)
+        public async Task<Ticket> GetTicket(int ticketId)
         {
             string query = @"";
             
@@ -154,7 +154,7 @@ namespace ABDOTClient.Networking.Requests
             return graphQLResponse.Data.ticket;
         }
 
-        public async Task<IList<Ticket>> GetAllTicketsAsync()
+        public async Task<IList<Ticket>> GetAllTickets()
         {
             string query = @"";
         

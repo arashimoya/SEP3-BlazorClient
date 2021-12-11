@@ -172,7 +172,7 @@ namespace ABDOTClient.Networking {
             return graphQLResponse.Data.editUser;
         }
 
-        public async Task<bool> DeleteUser(User user)
+        public async Task<bool> DeleteUser(int id)
         {
             //set query
             string query = @"
@@ -184,7 +184,7 @@ namespace ABDOTClient.Networking {
             //Set variables
             var variables = new
             {
-                userId = user.Id
+                userId = id
             };
             //Make request object out of content
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);

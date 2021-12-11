@@ -44,10 +44,10 @@ namespace ABDOTClient.Networking.Requests {
             graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql",
                 new NewtonsoftJsonSerializer());
             Employees = new List<Employee>();
-            if (!Employees.Any()) Seed();
         }
 
         public async Task<Employee> CreateEmployee(Employee employee) {
+            //TODO FIX
 //             string query = @"
 //
 //                             
@@ -71,6 +71,7 @@ namespace ABDOTClient.Networking.Requests {
         }
 
         public async Task<Employee> EditEmployee(Employee employee) {
+            //TODO FIX
             // string query
             //
             //
@@ -184,8 +185,6 @@ namespace ABDOTClient.Networking.Requests {
             Console.WriteLine(graphQlResponse.Data.Employees.Count);
             return graphQlResponse.Data.Employees;
         }
-
-        private void Seed() {
-        }
+        
     }
 }

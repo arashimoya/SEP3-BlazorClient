@@ -15,5 +15,13 @@ namespace ABDOTClient.Model{
         {
             TicketsPurchased = new List<Ticket>();
         }
+
+        public override string ToString()
+        {
+            string returnString = "User{\nId : " + Id + "\nEmail : " + Email + "\nFirstName : " + FirstName
+                                  + "\nLastname : " + LastName + "\nPassword : " + Password + "\nTicketsPurchased : " +
+                                  TicketsPurchased + "\n}";
+            return returnString;
+        }
     }
 }

@@ -12,8 +12,14 @@ namespace ABDOTClient.Model
         public Play Play { set; get; }
         public User User { set; get; }
         public Employee Employee { set; get; }
-        // public Tuple<int, int> seat { get; set; }
-        [Required] public int row { get; set; }
-        [Required] public int column { get; set; }
+        [Required] public int Row { get; set; }
+        [Required] public int Column { get; set; }
+
+        public override string ToString()
+        {
+            string returnString = "Ticket{\nId : " + Id + "\nPlay : " + Play + "\nUser" + User + "\nEmployee" + Employee + "\nRow" + Row
+                           + "\nColumn" + Column + "\n}";
+            return returnString;
+        }
     }
 }
