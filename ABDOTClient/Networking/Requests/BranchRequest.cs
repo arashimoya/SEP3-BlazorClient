@@ -134,10 +134,19 @@ namespace ABDOTClient.Networking.Requests
                             country,
                             street,
                             postcode,
-                            employees{
-                              firstName,
-                              lastName
-                            },
+                                                    employees{
+                        id,
+                        firstName,
+                        lastName,
+                        email,
+                        role,
+                        cPR,
+                        street,
+                        city,
+                        postcode,
+                        country,
+                        birthday
+                        },
                             halls{
                               id,
                               hallSize
@@ -230,7 +239,7 @@ namespace ABDOTClient.Networking.Requests
                             city,
                             postcode,
                             country,
-                            birthDate
+                            birthday
                             }
                           }
                         }             
