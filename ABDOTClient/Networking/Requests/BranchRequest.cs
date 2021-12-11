@@ -277,7 +277,7 @@ namespace ABDOTClient.Networking.Requests
                         city,
                         postcode,
                         country,
-                        birthDate
+                        birthday
                         }
                    }
                   }             
