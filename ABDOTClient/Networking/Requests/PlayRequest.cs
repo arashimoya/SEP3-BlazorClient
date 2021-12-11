@@ -84,7 +84,7 @@ namespace ABDOTClient.Networking.Requests {
                 date = play.Date,
                 timeInMinutes = play.TimeInMinutes,
                 movieId = play.Movie.Id,
-                hall = play.Hall.Id,
+                hallId = play.Hall.Id,
                 price = play.Price
             };
             //Make request object out of content using custom method wrote by #me
