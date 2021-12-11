@@ -107,33 +107,51 @@ namespace ABDOTClient.Networking.Requests {
         public async Task<Play> EditPlay(Play play)
         {
             string query = @"
-                        mutation ($id : Long!, $firstName : String!, $lastName : String!, $email: String!, $password: String!) {
-                          editUser(user: {id : $id, firstName: $firstName, email: $email, lastName: $lastName, password: $password}) {
-                            firstName,
-                            lastName,
-                            email,
-                            password
-                          }
-                        }
+                        mutation ($id : Long!, $date : String!, $timeInMinutes : Int!, $movieId : Long!, $hallId : Long!, $price : Int!) {
+  editPlay (play: {id : $id, date : $date, timeInMinutes : $timeInMinutes, movieId : $movieId, hallId: $hallId, price: $price} ){
+    id,
+    timeInMinutes,
+    price,
+    movie {
+      id,
+      title,
+      description,
+      genre,
+      director,
+      language,
+      subtitleLanguage,
+      year,
+      lengthInMinutes,
+      posterSrc
+    }
+    hall {
+      id,
+      hallSize,
+
+    }
+  }
+}
+
          
                         ";
             
             //Set variables
             var variables = new
             {
-                id = user.Id,
-                firstName = user.FirstName,
-                lastName = user.LastName,
-                email = user.Email,
-                password = user.Password
+                id = play.Id,
+                date = play.Date.ToString(CultureInfo.InvariantCulture),
+                timeInMinutes = play.TimeInMinutes,
+                movieId = play.Movie.Id,
+                hall = play.Hall.Id,
+                price = play.Price
             };
             //Make request object out of content using custom method wrote by #me
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
             //Send request, keep wrapped in try catch otherwise u wont get exception
-            var graphQLResponse = new GraphQLResponse<EditUserRoot>();
+            var graphQLResponse = new GraphQLResponse<EditPlayRoot>();
             try
             {
-                graphQLResponse = await graphQlClient.SendMutationAsync<EditUserRoot>(graphQLRequest);
+                graphQLResponse = await graphQlClient.SendMutationAsync<EditPlayRoot>(graphQLRequest);
             }
             catch (Exception e)
             {
@@ -141,24 +159,23 @@ namespace ABDOTClient.Networking.Requests {
                 throw;
             }
             //Return, possibly print
-            Console.WriteLine(graphQLResponse.Data.editUser.FirstName);
-            return graphQLResponse.Data.editUser;
+            return graphQLResponse.Data.editPlay;
         }
 
-        public async Task<bool> DeletePlay(int id)
+        public async Task<bool> DeletePlay(int playId)
         {
             
             //set query
             string query = @"
-                        mutation ($userId : Long!) {
-                          deleteUser (userId : $userId)
-                        }          
+                        mutation ($id : Long!) {
+                          deletePlay(playId: $id)
+                        }         
                         ";
             
             //Set variables
             var variables = new
             {
-                userId = id
+                id = playId
             };
             //Make request object out of content
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
@@ -174,40 +191,52 @@ namespace ABDOTClient.Networking.Requests {
                 throw;
             }
             //Return
-            Console.WriteLine(graphQLResponse.Data.deleteUser);
-            return graphQLResponse.Data.deleteUser;
+            return graphQLResponse.Data.deletePlay;
             
         }
 
-        public async Task<Play> GetPlay(int id)
+        public async Task<Play> GetPlay(int playId)
         {
             
             //set query
             string query = @"
                 query ($id : Int!) {
-                  user (id: $id){
-                    firstName,
-                    lastName,
-                    email,
-                    ticketsPurchased {
-                      id
-                    }
-                  }
-                }            
-                        ";
+  play(id : $id){
+    id,
+    timeInMinutes,
+    price,
+    movie {
+      id,
+      title,
+      description,
+      genre,
+      director,
+      language,
+      subtitleLanguage,
+      year,
+      lengthInMinutes,
+      posterSrc
+    }
+    hall {
+      id,
+      hallSize,
+
+    }
+  }
+} ";
 
             var variables = new
             {
-                id = userId
+                id = playId
             };
             
             
             //Make request object out of content
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
             //Send request
-            var graphQLResponse = await graphQlClient.SendQueryAsync<UserRoot>(graphQLRequest);
+            var graphQLResponse = await graphQlClient.SendQueryAsync<PlayRoot>(graphQLRequest);
             //Return
-            return graphQLResponse.Data.user;
+            return graphQLResponse.Data.Play;
             
         }
 
@@ -216,22 +245,35 @@ namespace ABDOTClient.Networking.Requests {
             //Create content of the query
             string query = @"
                   query {
-                      users {
-                        firstName,
-                        lastName,
-                        email,
-                        ticketsPurchased {
-                          id
-                        }
-                      }
-                    }          
-                        ";
+  plays {
+        id,
+    timeInMinutes,
+    price,
+    movie {
+      id,
+      title,
+      description,
+      genre,
+      director,
+      language,
+      subtitleLanguage,
+      year,
+      lengthInMinutes,
+      posterSrc
+    }
+    hall {
+      id,
+      hallSize,
+
+    }
+  }
+}";
             //Make request object out of content
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
             //Send request
-            var graphQLResponse = await graphQlClient.SendQueryAsync<UsersRoot>(graphQLRequest);
+            var graphQLResponse = await graphQlClient.SendQueryAsync<PlaysRoot>(graphQLRequest);
             //Return
-            return graphQLResponse.Data.users;
+            return graphQLResponse.Data.Plays;
         }
     }
 }
