@@ -37,11 +37,11 @@ namespace ABDOTClient.Model
 
         public override string ToString()
         {
-            string returnString = "Movie{\nId : " + Id + "\nTitle : " + Title + "\nDescription : " + Description + "\nGenre" +
+            string returnString = "Movie{\nId : " + Id + "\nTitle : " + Title + "\nDescription : " + Description + "\nGenre : " +
                                   Genre
-                                  + "\nDirector : " + Director + "\nLanguage" + Language + "\nSubtitleLanguage" +
-                                  SubtitleLanguage + "\nYear" + Year
-                                  + "\nLengthInMinutes" + LengthInMinutes + "\nPosterSrc" + PosterSrc  + "\n}";
+                                  + "\nDirector : " + Director + "\nLanguage : " + Language + "\nSubtitleLanguage : " +
+                                  SubtitleLanguage + "\nYear : " + Year
+                                  + "\nLengthInMinutes : " + LengthInMinutes + "\nPosterSrc : " + PosterSrc  + "\n}";
             return returnString;
         }
     }

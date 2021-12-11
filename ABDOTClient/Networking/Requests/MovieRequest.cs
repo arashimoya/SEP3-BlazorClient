@@ -64,6 +64,7 @@ namespace ABDOTClient.Networking
                   genre : $genre, director : $director, language : $language, subtitleLanguage : $subtitleLanguage, 
                   year : $year, lengthInMinutes : $lengthInMinutes, posterSrc : $posterSrc})
                   {
+                    id,
                     title,
                     description,
                     genre,
