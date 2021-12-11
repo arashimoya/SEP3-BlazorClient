@@ -36,7 +36,7 @@ namespace ABDOTClient.Data {
                 FirstName = firstName,
                 LastName = lastName
             };
-            return await ClientFactory.GetClient().RegisterUser( freshUser);
+            return await ClientFactory.GetClient().RegisterUser( freshUser) == null;
         }
 
         public bool IsAlreadyInUse(string email) {
