@@ -56,6 +56,7 @@ namespace ABDOTClient.Networking.Requests {
                             id,
                             timeInMinutes,
                             price,
+                            date,
                             movie {
                               id,
                               title,
@@ -70,7 +71,7 @@ namespace ABDOTClient.Networking.Requests {
                             }
                             hall {
                               id,
-                              hallSize,
+                              hallSize
 
                             }
                           }
@@ -80,7 +81,7 @@ namespace ABDOTClient.Networking.Requests {
             //Set variables
             var variables = new
             {
-                date = play.Date.ToString(CultureInfo.InvariantCulture),
+                date = play.Date,
                 timeInMinutes = play.TimeInMinutes,
                 movieId = play.Movie.Id,
                 hall = play.Hall.Id,
@@ -112,6 +113,7 @@ namespace ABDOTClient.Networking.Requests {
     id,
     timeInMinutes,
     price,
+       date,
     movie {
       id,
       title,
@@ -139,7 +141,7 @@ namespace ABDOTClient.Networking.Requests {
             var variables = new
             {
                 id = play.Id,
-                date = play.Date.ToString(CultureInfo.InvariantCulture),
+                date = play.Date,
                 timeInMinutes = play.TimeInMinutes,
                 movieId = play.Movie.Id,
                 hall = play.Hall.Id,
@@ -205,6 +207,7 @@ namespace ABDOTClient.Networking.Requests {
     id,
     timeInMinutes,
     price,
+    date,
     movie {
       id,
       title,
@@ -249,6 +252,7 @@ namespace ABDOTClient.Networking.Requests {
         id,
     timeInMinutes,
     price,
+     date,
     movie {
       id,
       title,
