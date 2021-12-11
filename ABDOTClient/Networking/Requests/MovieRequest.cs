@@ -132,6 +132,7 @@ namespace ABDOTClient.Networking
             var variables = new
             {
                 id = movie.Id,
+                title = movie.Title,
                 description = movie.Description,
                 genre = movie.Genre,
                 director = movie.Director,
