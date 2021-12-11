@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Data;
@@ -48,46 +49,107 @@ namespace ABDOTClient.Networking.Requests {
         }
 
         public async Task<Employee> CreateEmployee(Employee employee) {
-//             string query = @"
-//
-//                             
-//                             ";
-//             
-//             
-//             var variables = new {
-//                 birthday = employee.Birthday,
-//                 city = employee.City,
-//                 branch = employee.Branch,
-//                 country = employee.Country,
-//                 postcode = employee.Postcode,
-//                 role = employee.Role,
-//                 street = employee.Street,
-//                 email = employee.Email,
-//                 password = employee.Password,
-//                 firstName = employee.FirstName,
-//                 lastName = employee.LastName
-//             };
-            return null;
+            string query = @"
+            mutation($firstName : String,$lastName : String, $branchId : Int!,$city : String, $country : String, $cpr: String, $email:String,$password: String, $role:Int!, $street: String, $birthday:String!, $postcode : String!){
+              createEmployee(
+                input:{firstName:$firstName, lastName:$lastName, branchId: $branchId, city:$city, country:$country, cpr:$cpr, email:$email, password : $password, role:$role, street : $street, birthday:$birthday, postcode:$postcode }
+               ) {
+                firstName,
+                birthday,
+                branch{
+                  id
+                },
+                city,
+                country,
+                cPR,
+                email,
+                password,
+                postcode,
+                role,
+                street,
+                birthday
+              }  
+            }";
+
+            var variables = new {
+                firstName = employee.FirstName,
+                lastName = employee.LastName,
+                branchId = employee.Branch.Id,
+                city = employee.City,
+                country = employee.Country,
+                cpr = employee.CPR,
+                email = employee.Email,
+                password = employee.Password,
+                role = employee.Role,
+                street = employee.Street,
+                birthday = employee.Birthday.ToString(CultureInfo.CurrentCulture),
+                postcode = employee.Postcode
+            };
+
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            var graphQlResponse = new GraphQLResponse<CreateEmployeeRoot>();
+            try {
+                graphQlResponse = await graphQlClient.SendMutationAsync<CreateEmployeeRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            Console.WriteLine(graphQlResponse.Data.createEmployee);
+            return graphQlResponse.Data.createEmployee;
         }
 
         public async Task<Employee> EditEmployee(Employee employee) {
-            // string query
-            //
-            //
-            // var variables = new {
-            //     birthday = employee.Birthday,
-            //     city = employee.City,
-            //     branch = employee.Branch,
-            //     country = employee.Country,
-            //     postcode = employee.Postcode,
-            //     role = employee.Role,
-            //     street = employee.Street,
-            //     email = employee.Email,
-            //     password = employee.Password,
-            //     firstName = employee.FirstName,
-            //     lastName = employee.LastName
-            // };
-            return null;
+        string query = @"
+            mutation($id : Int!, $firstName : String,$lastName : String, $branchId : Int!,$city : String, $country : String, $cpr: String, $email:String,$password: String, $role:Int!, $street: String, $birthday:String!, $postcode : String!){
+              editEmployee(
+                input:{firstName:$firstName, lastName:$lastName, branchId: $branchId, city:$city, country:$country, cpr:$cpr, email:$email, password : $password, role:$role, street : $street, birthday:$birthday, postcode:$postcode }
+               ) {
+                firstName
+                birthday
+                branch{
+                  id
+                }
+                city,
+                country,
+                cPR,
+                email,password,
+                postcode,
+                role,
+                street,
+                birthday
+              }  
+            }";
+
+            var variables = new {
+                firstName = employee.FirstName,
+                lastName = employee.LastName,
+                branchId = employee.Branch.Id,
+                city = employee.City,
+                country = employee.Country,
+                cpr = employee.CPR,
+                email = employee.Email,
+                password = employee.Password,
+                role = employee.Role,
+                street = employee.Street,
+                birthday = employee.Birthday.ToString(CultureInfo.CurrentCulture),
+                postcode = employee.Postcode,
+                id = employee.Id
+            };
+
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            var graphQlResponse = new GraphQLResponse<EditEmployeeRoot>();
+            try {
+                graphQlResponse = await graphQlClient.SendMutationAsync<EditEmployeeRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            Console.WriteLine(graphQlResponse.Data.editEmployee);
+            return graphQlResponse.Data.editEmployee;
         }
 
         public async Task<bool> DeleteEmployee(int employeeId) {
@@ -126,7 +188,7 @@ namespace ABDOTClient.Networking.Requests {
                               city,
                               postcode,
                               country,
-                              birthDate,
+                              birthday,
                               branch{
                                   id
                               }
@@ -164,7 +226,7 @@ namespace ABDOTClient.Networking.Requests {
                               city,
                               postcode,
                               country,
-                              birthDate,
+                              birthday,
                               branch{
                                   id
                               }
