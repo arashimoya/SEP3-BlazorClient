@@ -56,6 +56,7 @@ namespace ABDOTClient.Networking.Requests {
                             id,
                             timeInMinutes,
                             price,
+                            date,
                             movie {
                               id,
                               title,
@@ -70,7 +71,7 @@ namespace ABDOTClient.Networking.Requests {
                             }
                             hall {
                               id,
-                              hallSize,
+                              hallSize
 
                             }
                           }
@@ -112,6 +113,7 @@ namespace ABDOTClient.Networking.Requests {
     id,
     timeInMinutes,
     price,
+       date,
     movie {
       id,
       title,
@@ -205,6 +207,7 @@ namespace ABDOTClient.Networking.Requests {
     id,
     timeInMinutes,
     price,
+    date,
     movie {
       id,
       title,
@@ -249,6 +252,7 @@ namespace ABDOTClient.Networking.Requests {
         id,
     timeInMinutes,
     price,
+     date,
     movie {
       id,
       title,
