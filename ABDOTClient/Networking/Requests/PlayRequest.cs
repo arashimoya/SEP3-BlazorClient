@@ -1,146 +1,237 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Model;
+using GraphQL;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 
 namespace ABDOTClient.Networking.Requests {
     public class PlayRequest : IPlayRequest
     {
+        private GraphQLHttpClient graphQlClient;
         private IList<Play> Plays;
 
         public PlayRequest()
         {
+            graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
             Plays = new List<Play>();
-            if (!Plays.Any()) Seed();
         }
-        public async Task<bool> CreatePlay(Play play)
+        
+        private class PlaysRoot
         {
-            int max = Plays.Max(play => play.Id);
-            play.Id = (++max);
-            Plays.Add(play);
-            return true;
+            public List<Play> Plays { get; set; }
+
+            public PlaysRoot() {
+                Plays = new List<Play>();
+            }
         }
 
-        public async Task<bool> EditPlay(Play play)
-        {
-            Play toUpdate = Plays.FirstOrDefault(p => p.Id == play.Id);
-            if (toUpdate == null) return false;
-            toUpdate.Date = play.Date;
-            toUpdate.Hall = play.Hall;
-            toUpdate.Movie = play.Movie;
-            toUpdate.Tickets = play.Tickets;
-            toUpdate.TimeInMinutes = play.Movie.LengthInMinutes;
-            return true;
+        private class PlayRoot {
+            public Play Play { get; set; }
         }
 
-        public async Task<bool> DeletePlay(Play play)
-        {
-            Play toRemove = Plays.FirstOrDefault(p => p.Id == play.Id);
-            if (toRemove == null) return false;
-            Plays.Remove(toRemove);
-            return true;
+        private class DeleteRoot {
+            public bool deletePlay { get; set; }
         }
 
-        public async Task<Play> Get(int id)
+
+        private class CreatePlayRoot {
+            public Play createPlay { get; set; }
+        }
+
+        private class EditPlayRoot {
+            public Play editPlay { get; set; }
+        }
+        
+        
+        public async Task<Play> CreatePlay(Play play) 
         {
-            return Plays.FirstOrDefault(p => p.Id == id);
+            
+            string query = @"
+                        mutation ($date : String!, $timeInMinutes : Int!, $movieId : Long!, $hallId : Long!, $price : Int!) {
+                          createPlay (play: {date : $date, timeInMinutes : $timeInMinutes, movieId : $movieId, hallId: $hallId, price: $price} ){
+                            id,
+                            timeInMinutes,
+                            price,
+                            movie {
+                              id,
+                              title,
+                              description,
+                              genre,
+                              director,
+                              language,
+                              subtitleLanguage,
+                              year,
+                              lengthInMinutes,
+                              posterSrc
+                            }
+                            hall {
+                              id,
+                              hallSize,
+
+                            }
+                          }
+                        }
+                        ";
+            
+            //Set variables
+            var variables = new
+            {
+                date = play.Date.ToString(CultureInfo.InvariantCulture),
+                timeInMinutes = play.TimeInMinutes,
+                movieId = play.Movie.Id,
+                hall = play.Hall.Id,
+                price = play.Price
+            };
+            //Make request object out of content using custom method wrote by #me
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
+            //Send request, keep wrapped in try catch otherwise u wont get exception
+            var graphQLResponse = new GraphQLResponse<CreatePlayRoot>();
+            try
+            {
+                graphQLResponse = await graphQlClient.SendMutationAsync<CreatePlayRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            //Return, possibly print
+            return graphQLResponse.Data.createPlay;
+
+        }
+
+        public async Task<Play> EditPlay(Play play)
+        {
+            string query = @"
+                        mutation ($id : Long!, $firstName : String!, $lastName : String!, $email: String!, $password: String!) {
+                          editUser(user: {id : $id, firstName: $firstName, email: $email, lastName: $lastName, password: $password}) {
+                            firstName,
+                            lastName,
+                            email,
+                            password
+                          }
+                        }
+         
+                        ";
+            
+            //Set variables
+            var variables = new
+            {
+                id = user.Id,
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                email = user.Email,
+                password = user.Password
+            };
+            //Make request object out of content using custom method wrote by #me
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
+            //Send request, keep wrapped in try catch otherwise u wont get exception
+            var graphQLResponse = new GraphQLResponse<EditUserRoot>();
+            try
+            {
+                graphQLResponse = await graphQlClient.SendMutationAsync<EditUserRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            //Return, possibly print
+            Console.WriteLine(graphQLResponse.Data.editUser.FirstName);
+            return graphQLResponse.Data.editUser;
+        }
+
+        public async Task<bool> DeletePlay(int id)
+        {
+            
+            //set query
+            string query = @"
+                        mutation ($userId : Long!) {
+                          deleteUser (userId : $userId)
+                        }          
+                        ";
+            
+            //Set variables
+            var variables = new
+            {
+                userId = id
+            };
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
+            //Send request
+            var graphQLResponse = new GraphQLResponse<DeleteRoot>();
+            try
+            {
+                graphQLResponse = await graphQlClient.SendMutationAsync<DeleteRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            //Return
+            Console.WriteLine(graphQLResponse.Data.deleteUser);
+            return graphQLResponse.Data.deleteUser;
+            
+        }
+
+        public async Task<Play> GetPlay(int id)
+        {
+            
+            //set query
+            string query = @"
+                query ($id : Int!) {
+                  user (id: $id){
+                    firstName,
+                    lastName,
+                    email,
+                    ticketsPurchased {
+                      id
+                    }
+                  }
+                }            
+                        ";
+
+            var variables = new
+            {
+                id = userId
+            };
+            
+            
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            //Send request
+            var graphQLResponse = await graphQlClient.SendQueryAsync<UserRoot>(graphQLRequest);
+            //Return
+            return graphQLResponse.Data.user;
+            
         }
 
         public async Task<IList<Play>> GetAllPlays()
         {
-            return Plays;
-        }
-        
-        private void Seed()
-        {
-            Play[] playArray =
-            {
-                new Play
-                {
-                    Id = 1,
-                    Movie = new Movie
-                    {
-                        Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
-                        Director = "Peter Jackson",
-                        Genre = "Adventure, Melodrama, Fantasy",
-                        Language = "English",
-                        LengthInMinutes = 200,
-                        Year = 2005,
-                        Title = "King Kong",
-                        PosterSrc = "/images/king_kong.jpg",
-                    },
-                    Date = DateTime.Now,
-                    Hall = new Hall(1),
-                    Tickets = new List<Ticket>
-                    {
-                        
-                    },
-                    TimeInMinutes = 200,
-                },
-                new Play
-                {
-                    Id = 2,
-                    Date = DateTime.Now,
-                    Hall = new Hall(2),
-                    Movie = new Movie
-                    {
-                        Title = "Forrest Gump",
-                        Director = "Robert Zemeckis",
-                        Genre = "Drama / Comedy",
-                        Year = 2004,
-                        Description = "The life story of Forrest, a boy with a low IQ with paralysis, who becomes a billionaire and a hero of the Vietnam War.",
-                        Language = "English",
-                        LengthInMinutes = 186,
-                        PosterSrc = "/images/forrest_gump.jpg",
-                    },
-                    Tickets = new List<Ticket>(),
-                    TimeInMinutes = 186,
-                },
-                new Play
-                {
-                    Id = 3,
-                    Date = DateTime.Now,
-                    Hall = new Hall(3),
-                    Movie = new Movie
-                    {
-                        
-                        Description = "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
-                        Title = "Shrek",
-                        Director = "Andrew Adamson / Vicky Jenson",
-                        Genre = "Comedy, Animation, Family",
-                        Language = "English, Danish",
-                        LengthInMinutes = 90,
-                        Year = 2001,
-                        PosterSrc = "/images/shrek.jpg",
-                    },
-                    Tickets = new List<Ticket>(),
-                    TimeInMinutes = 90,
-                },
-                new Play
-                {
-                    Id = 4,
-                    Date = DateTime.Now,
-                    Hall = new Hall(1),
-                    Movie = new Movie
-                    {
-                        Title = "Shawshank Redemption",
-                        // Cast = new List<Actor>(),
-                        Description =
-                            "Adaptation of a Stephen King short story. A banker who is wrongly sentenced to life imprisonment, tries to survive in a brutal prison world. ",
-                        Director = "Frank Darabont",
-                        Genre = "Drama",
-                        Language = "English",
-                        LengthInMinutes = 110,
-                        Year = 1994,
-                        PosterSrc = "/images/shawshank.jpg"
-                    },
-                    Tickets = new List<Ticket>(),
-                    TimeInMinutes = 110,
-                },
-            };
-            Plays = playArray.ToList();
-
+            //Create content of the query
+            string query = @"
+                  query {
+                      users {
+                        firstName,
+                        lastName,
+                        email,
+                        ticketsPurchased {
+                          id
+                        }
+                      }
+                    }          
+                        ";
+            //Make request object out of content
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            //Send request
+            var graphQLResponse = await graphQlClient.SendQueryAsync<UsersRoot>(graphQLRequest);
+            //Return
+            return graphQLResponse.Data.users;
         }
     }
 }

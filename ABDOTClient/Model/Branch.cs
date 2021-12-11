@@ -27,5 +27,13 @@ namespace ABDOTClient.Model
             Halls = new List<Hall>();
             Employees = new List<Employee>();
         }
+
+        public override string ToString()
+        {
+            string returnString = "Branch{\nId : " + Id + "\n" + "City : " + City + "\n" + "Postcode : " + Postcode + "\n"
+                                  + "Street : " + Street + "\n" + "Country : " + Country + "\n" + "Halls : " + Halls +
+                                  "\n" + "Employees : " + Employees + "\n}";
+            return returnString;
+        }
     }
 }

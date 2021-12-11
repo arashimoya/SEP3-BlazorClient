@@ -85,7 +85,7 @@ namespace ABDOTClient.Model
             Console.WriteLine("");
             Console.WriteLine("Total Seats :: " + totalColumns * totalRows);
         }
-
+        
         public void LoadSeats() {
             //Hall size small = 6 rows, 8 columns
             if (HallSize == 1)
@@ -107,6 +107,13 @@ namespace ABDOTClient.Model
             {
                 throw new Exception("Invalid hall size");
             }
+        }
+
+        public override string ToString()
+        {
+            string returnString = "Hall{\nId : " + Id + "\nHallSize : " + HallSize + "\nProgramme : " + Programme +
+                                  "\nBranch : " + Branch + "\nSeats : " + Seats + "\n}";
+            return returnString;
         }
     }
 }

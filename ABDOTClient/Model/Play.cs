@@ -19,12 +19,21 @@ namespace ABDOTClient.Model
         
         [Required]
         public Hall Hall { get; set; }
+        
+        public double Price { get; set; }
 
         public IList<Ticket> Tickets { get; set; }
 
         public Play()
         {
             Tickets = new List<Ticket>();
+        }
+
+        public override string ToString()
+        {
+            string returnString = "Play{\nId : " + Id + "\nDate" + Date + "\nTimeInMinutes" + TimeInMinutes + "\nMovie" + Movie
+                                  + "\nHall: " + Hall + "\nTickets" + Tickets + "\n}";
+            return returnString;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ABDOTClient.Networking
 
         Task<User> EditUser(User user);
 
-        Task<bool> DeleteUser(User user);
+        Task<bool> DeleteUser(int id);
 
         Task<User> GetUser(int id);
 
