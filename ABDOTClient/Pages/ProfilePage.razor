@@ -139,12 +139,11 @@
 
 
 @code {
-    private User user;
+    private User user = new User();
     [Parameter] public int Id { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
-        user = new User();
+    protected override async Task OnInitializedAsync() {
+        user = await UserService.GetUser(Id);
     }
 
     private void Edit(int id)

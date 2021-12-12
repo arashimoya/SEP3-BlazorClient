@@ -7,29 +7,25 @@ namespace ABDOTClient.Data
 {
     public class EmployeeCloudService : IEmployeeService
     {
-        public Task<bool> CreateEmployee(Employee employee)
+        public async Task<Employee> CreateEmployee(Employee employee)
         {
-            return ClientFactory.GetClient().AddEmployee(employee);
+            return await ClientFactory.GetClient().AddEmployee(employee);
         }
 
-        public Task<bool> EditEmployee(Employee employee)
-        {
-            throw new System.NotImplementedException();
+        public async Task<Employee> EditEmployee(Employee employee) {
+            return await ClientFactory.GetClient().EditEmployee(employee);
         }
 
-        public Task<bool> DeleteEmployee(int employeeId)
-        {
-            throw new System.NotImplementedException();
+        public async Task<bool> DeleteEmployee(int employeeId) {
+            return await ClientFactory.GetClient().DeleteEmployee(employeeId);
         }
 
-        public Task<Employee> GetEmployee(int employeeId)
-        {
-            throw new System.NotImplementedException();
+        public async Task<Employee> GetEmployee(int employeeId) {
+            return await ClientFactory.GetClient().GetEmployee(employeeId);
         }
 
-        public Task<List<Employee>> GetAllEmployees()
-        {
-            throw new System.NotImplementedException();
+        public async Task<IList<Employee>> GetAllEmployees() {
+            return await ClientFactory.GetClient().GetAllEmployees();
         }
     }
 }

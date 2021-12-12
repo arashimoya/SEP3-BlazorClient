@@ -13,6 +13,24 @@
 
     <ItemGroup>
       <Folder Include="Shared\Classes" />
+      <Folder Include="wwwroot\images" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="wwwroot\images\prof-pic.svg" />
+      <Content Remove="wwwroot\images\logo.svg" />
+      <Content Remove="wwwroot\images\king_kong.jpg" />
+      <Content Remove="wwwroot\images\shawshank.jpg" />
+      <Content Remove="wwwroot\images\matrix.jpg" />
+      <Content Remove="wwwroot\images\shrek.jpg" />
+      <Content Remove="wwwroot\images\leon.jpg" />
+      <Content Remove="wwwroot\images\ole_sacked.png" />
+      <Content Remove="wwwroot\images\kingkonggodzilla.jpg" />
+      <Content Remove="wwwroot\images\ballon-dor.png" />
+      <Content Remove="wwwroot\images\ralf-rangnick.png" />
+      <Content Remove="wwwroot\images\siu_manu.png" />
+      <Content Remove="wwwroot\images\ticket-background.gif" />
+      <Content Remove="wwwroot\images\ticket-background.png" />
     </ItemGroup>
 
 </Project>

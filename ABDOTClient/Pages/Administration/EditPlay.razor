@@ -1,4 +1,5 @@
-﻿@page "/addplay"
+﻿@page "/editplay/{Id:int}"
+
 @using ABDOTClient.Model
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
@@ -14,77 +15,79 @@
     }
 </style>
 <div class="container">
-<h3>Add Play</h3>
-    <EditForm Model="@newPlayItem" OnValidSubmit="@AddNewPlay">
-        <DataAnnotationsValidator/>
-        <ValidationSummary/>
-        <div class="form-group">
-            Date: <br/>
-            <InputDate @bind-Value="today" @bind-Value:format="yyyy-MM-dd"/>
-        </div>
-        <div class="form-group">
-            Time: <br/>
-            <select @onchange="@((arg)=>GetTime(arg))">
-                @for (int i = 0; i < 96; i++)
-                {
-                    <option>@(i/4)<text>:</text>@(i * 15 % 60)</option>
-                }
-            </select>
-        </div>
-        <div class="form-group">
-            Movie: <br/>
-            
+<h3>Edit Play</h3>
+    
+        <EditForm Model="@newPlayItem" OnValidSubmit="@EditAPlay">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="form-group">
+                Date: <br/>
+                <InputDate @bind-Value="today" @bind-Value:format="yyyy-MM-dd"/>
+            </div>
+            <div class="form-group">
+                Time: <br/>
+                <select @onchange="@((arg)=>GetTime(arg))">
+                    @for (int i = 0; i < 96; i++)
+                    {
+                        <option>@(i/4)<text>:</text>@(i * 15 % 60)</option>
+                    }
+                </select>
+
+            </div>
+            <div class="form-group">
+                Movie: <br/>
                 <InputSelect @bind-Value="@SelectedMovieId">
                     @foreach (var movie in movies)
                     {
                         <option value="@movie.Id">@movie.Title</option>
                     }
                 </InputSelect>
-        </div>
-        <div class="form-group">
-            Hall: <br/>
-            
+            </div>
+            <div class="form-group">
+                Hall: <br/>
                 <InputSelect @bind-Value="@SelectedHallId">
                     @foreach (var hall in halls)
                     {
                         <option value="@hall.Id">@hall.Branch.City @hall.Id</option>
                     }
                 </InputSelect>
-        </div>
-        <div class="form-group">
-            Price:<br/>
-            <InputNumber @bind-Value="@newPlayItem.Price"/>
-        </div>
-        <p class="actions">
-            <button class="btn btn-dark" type="submit">Submit</button>
-        </p>
-    </EditForm>
-    @newPlayItem
+            </div>
+            <div class="form-group">
+                Price:<br/>
+                <InputNumber @bind-Value="@newPlayItem.Price"/>
+            </div>
+            <p class="actions">
+                <button class="btn btn-dark" type="submit">Submit</button>
+            </p>
+        </EditForm>
+        @foreach (var movie in movies) {
+            @movie.ToString()
+        }
+        
+    
 </div>
 @code {
+    [Parameter] public int Id { get; set; }
     private Play newPlayItem = new Play();
-    private string confirmationMessage = "'";
     
+    private string confirmationMessage = "'";
     private IList<Movie> movies = new List<Movie>();
     private IList<Branch> branches = new List<Branch>();
     private IList<Hall> halls = new List<Hall>();
-    
+    private Branch chosenBranch;
     private string time = "00:00";
     private DateTime today = DateTime.Today;
     
     protected override async Task OnInitializedAsync() {
-    
-        newPlayItem.Movie = new Movie();
+        
         newPlayItem.Hall = new Hall();
+        newPlayItem.Movie = new Movie();
+        newPlayItem = await PlayService.GetAsync(Id);
+        
+        
+        branches = await BranchService.GetAllBranches();
         movies = await MovieService.GetAllAsync();
-        newPlayItem.Movie = movies[0];
-
-        
         halls = await HallService.GetAllHalls();
-        newPlayItem.Hall = halls[0];
-        
-
-        newPlayItem.Date = today.Year + "-" + today.Month + "-" + today.Day + "," + time;
 
     }
 
@@ -105,21 +108,23 @@
         get => newPlayItem.Hall.Id;
         set => newPlayItem.Hall = halls.Single(h => h.Id == value);
     }
-
     
-
-    private async Task AddNewPlay()
+    private async Task EditAPlay()
     {
         newPlayItem.Date = today.Year + "-" + today.Month + "-" + today.Day + ", " + time;
         newPlayItem.TimeInMinutes = newPlayItem.Movie.LengthInMinutes;
-        Console.WriteLine(newPlayItem);
+       
         Play returnedPlay = await PlayService.AddPlayAsync(newPlayItem);
         if (returnedPlay != null && returnedPlay.GetType() == typeof(Play))
         {
-            confirmationMessage = "New play added successfully";
+            confirmationMessage = "Play edited successfully";
             NavigationManager.NavigateTo($"/playlist/{confirmationMessage}");
             
         }
     }
 
 }
+    
+
+    
+

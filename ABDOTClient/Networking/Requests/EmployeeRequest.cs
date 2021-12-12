@@ -47,6 +47,7 @@ namespace ABDOTClient.Networking.Requests {
         }
 
         public async Task<Employee> CreateEmployee(Employee employee) {
+            Console.WriteLine("we are here in employeeRequest.cs and thats the employee:" + employee.ToString());
             string query = @"
                     mutation ($email : String!, $firstName : String!, $lastName : String!, $password: String!
                     $role : Int!, $cpr: String!, $street: String!, $city: String!, $postcode: String!

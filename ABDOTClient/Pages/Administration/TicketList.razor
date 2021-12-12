@@ -4,7 +4,7 @@
 @using ABDOTClient.Model
 @using Data
 
-@inject IMovieService CloudMovieService
+@inject ITicketService TicketService
 
 <style>
     html, body {
@@ -82,17 +82,14 @@ else
 @code {
     private IList<Ticket> ticketsAll;
     private IList<Ticket> ticketsToShow;
-    private ITicketService TicketService = new TicketCloudService();
+    
     
 
     protected override async Task OnInitializedAsync()
     {
         
         ticketsAll = new List<Ticket>();
-        if (!ticketsAll.Any())
-        {
-            ticketsAll = await TicketService.GetAllTickets();
-        }
+        ticketsAll = await TicketService.GetAllTickets();
         ticketsToShow = ticketsAll;
 
 

@@ -6,14 +6,14 @@ namespace ABDOTClient.Data
 {
     public interface IEmployeeService
     {
-        Task<bool> CreateEmployee(Employee employee);
+        Task<Employee> CreateEmployee(Employee employee);
 
-        Task<bool> EditEmployee(Employee employee);
+        Task<Employee> EditEmployee(Employee employee);
 
         Task<bool> DeleteEmployee(int employeeId);
 
         Task<Employee> GetEmployee(int employeeId);
 
-        Task<List<Employee>> GetAllEmployees();
+        Task<IList<Employee>> GetAllEmployees();
     }
 }

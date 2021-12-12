@@ -21,13 +21,14 @@ namespace ABDOTClient.Data
             
         }
 
-        public async Task<Movie> AddMovieAsync(Movie movie)
-        {
+        public async Task<Movie> AddMovieAsync(Movie movie) {
+            movie.PosterSrc = "css/images/default_poster.jpg";
             return await ClientFactory.GetClient().AddMovie(movie);
         }
 
         public async Task<Movie> UpdateMovieAsync(Movie movie)
         {
+            movie.PosterSrc = "css/images/default_poster.jpg";
             return await ClientFactory.GetClient().EditMovie(movie);
         }
 

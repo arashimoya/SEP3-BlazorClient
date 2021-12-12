@@ -46,6 +46,7 @@ namespace ABDOTClient.Networking.Requests {
         }
 
         public async Task<Hall> CreateHall(Hall hall) {
+            Console.WriteLine("we here in HallRequest in createHall and this the hall: "+  hall);
             var query =
                 @"mutation($branchId : Int!, $hallSize: Int!) {
                   createHall (input : {branchId : $branchId, hallSize:$hallSize}) {
@@ -82,6 +83,7 @@ namespace ABDOTClient.Networking.Requests {
         }
 
         public async Task<Hall> EditHall(Hall hall) {
+            Console.WriteLine("we here in HallRequest in EditHall and this the hall: "+  hall);
             var query =
                 @"mutation($id:Int!,$branchId : Int!, $hallSize: Int!) {
                     editHall (input : {id:$id  ,branchId : $branchId, hallSize:$hallSize}) {

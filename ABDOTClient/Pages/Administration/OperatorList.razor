@@ -1,6 +1,7 @@
-﻿@page "/personel"
+﻿@page "/personel/{confirmationMessage}"
 @namespace ABDOTClient.Pages.Administration
 @inject NavigationManager NavigationManager
+@inject IEmployeeService EmployeeService
 @using ABDOTClient.Model
 @using Data
 @using ABDOTClient.Factories
@@ -10,7 +11,11 @@
         background-color: white;
         color: black;
     }
+    .confirmation-message{
+        color: greenyellow;
+    }
 </style>
+<p class="confirmation-message">@confirmationMessage</p>
 @if (personelToShow == null)
 {
     <p>
@@ -49,6 +54,7 @@ else
             <th>Email</th>
             <th>Password</th>
             <th>Role</th>
+            <th>Branch</th>
             <th>CPR</th>
             <th>Birthday</th>
             <th>Edit</th>
@@ -65,8 +71,9 @@ else
                 <td>@item.Email</td>
                 <td><span class="password">@item.Password</span></td>
                 <td>@item.Role</td>
+                <td>@item.Branch.City</td>
                 <td>@item.CPR</td>
-                <td>@item.Birthday.ToString("yyyy-MM-dd")</td>
+                <td>@item.Birthday</td>
                 
                     <td>
                         <button @onclick="@(() => RemoveEmployee(item.Id))">
@@ -86,55 +93,35 @@ else
     </div>
 }
 @code {
+    [Parameter] public string confirmationMessage { get; set; }
     private IList<Employee> personel;
     private IList<Employee> personelToShow;
-    private IEmployeeService employeeService = new EmployeeCloudService();
-    
+
 
     protected override async Task OnInitializedAsync()
     {
         personel = new List<Employee>();
-        if (!personel.Any())
-        {
-            Seed();
-        }
+        personel = await EmployeeService.GetAllEmployees();
         personelToShow = personel;
+        if (!confirmationMessage.Contains("success")) {
+            confirmationMessage = " ";
+        }
     }
-    private Task<bool> RemoveEmployee(int employeeId)
-    {
-        return employeeService.DeleteEmployee(employeeId);
+    private async Task RemoveEmployee(int employeeId) {
+        Employee toRemove = personel.FirstOrDefault(e => e.Id == employeeId);
+        if (toRemove != null) {
+            personel.Remove(toRemove);
+            personelToShow.Remove(toRemove);
+            if (await EmployeeService.DeleteEmployee(employeeId)) {
+                confirmationMessage = "Employee deleted successfully";
+            }
+        }
     }
 
     private void Edit(int id)
     {
         NavigationManager.NavigateTo($"EditEmployee/{id}");
     }
-
-    private void Seed()
-    {
-        Employee[] employeesArray =
-        {
-            new Employee()
-            {
-                FirstName = "Christian",
-                LastName = "Dam",
-                Email = "ChristianLDam@jourrapide.com",
-                Password = "dam123",
-                Birthday = new DateTime(1994, 9, 21),
-                CPR = "210994-4869",
-            },
-            new Employee()
-            {
-                FirstName = "Mille",
-                LastName = "Bertensen",
-                Email = "MilleABertelsen@dayrep.com",
-                Password = "bertensen123",
-                Birthday = new DateTime(1978, 11, 28),
-                CPR = "281178-4756"
-            }
-        };
-        personel = employeesArray.ToList();
-
-    }
+    
 
 }

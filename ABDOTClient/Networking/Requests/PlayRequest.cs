@@ -49,7 +49,6 @@ namespace ABDOTClient.Networking.Requests {
         
         public async Task<Play> CreatePlay(Play play) 
         {
-            
             string query = @"
                         mutation ($date : String!, $timeInMinutes : Int!, $movieId : Long!, $hallId : Long!, $price : Int!) {
                           createPlay (play: {date : $date, timeInMinutes : $timeInMinutes, movieId : $movieId, hallId: $hallId, price: $price} ){
@@ -87,6 +86,11 @@ namespace ABDOTClient.Networking.Requests {
                 hallId = play.Hall.Id,
                 price = play.Price
             };
+            Console.WriteLine(variables.date);
+            Console.WriteLine(variables.timeInMinutes);
+            Console.WriteLine(variables.movieId);
+            Console.WriteLine(variables.hallId);
+            Console.WriteLine(variables.price);
             //Make request object out of content using custom method wrote by #me
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
             //Send request, keep wrapped in try catch otherwise u wont get exception
@@ -226,7 +230,7 @@ namespace ABDOTClient.Networking.Requests {
     }
     hall {
       id,
-      hallSize,
+      hallSize
 
     }
   }
@@ -281,6 +285,7 @@ namespace ABDOTClient.Networking.Requests {
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<PlaysRoot>(graphQLRequest);
             //Return
+            
             return graphQLResponse.Data.Plays;
         }
     }

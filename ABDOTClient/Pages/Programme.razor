@@ -3,6 +3,7 @@
 @using ABDOTClient.Model
 @namespace Programme
 @inject IBranchService BranchService
+@inject IPlayService PlayService
 @inject NavigationManager NavigationManager
 @using HCarouselComponent
 
@@ -63,56 +64,57 @@
             </div>
             <div class="col-sm-4">
                 <div>
-                    <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch">
-                        @foreach (var branch in branches)
-                        {
-                            <option>@branch.City</option>
-                        }
-                    </select>
+                    @* <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch"> *@
+                    @*     @foreach (var branch in branches) *@
+                    @*     { *@
+                    @*         <option>@branch.City</option> *@
+                    @*     } *@
+                    @* </select> *@
                 </div>
             </div>
         </div>
         <div class="section row">
             
-            @foreach (var play in playsToShow)
-            {
-                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id))">
-                    <div class="movie-list">
-                        <div class="movie-list-poster movie-list-upcoming "><img src=@play.Movie.PosterSrc/>
-                        </div>
-                        <div class="movie-list-top-content">
-                            <h4 class="movie-list-title">@play.Movie.Title</h4>
-                            <div>
-                                <h5 class="section-label">Director</h5>
-                                <p>@play.Movie.Director</p>
-                                <h5 class="section-label">Genre</h5>
-                                <p>@play.Movie.Genre</p>
-                            </div>
-                        </div>
-                        <div class="movie-list-bottom-content">
-                            <div>
-                                <p class="section-label">Premiere</p>
-                                <p class="movie-list-date">@play.Movie.Year</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            }
-            @plays.Count
-            @playsToShow.Count
+            @* @foreach (var play in playsToShow) *@
+            @* { *@
+            @*     <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id))"> *@
+            @*         <div class="movie-list"> *@
+            @*             <div class="movie-list-poster movie-list-upcoming "><img src=@play.Movie.PosterSrc/> *@
+            @*             </div> *@
+            @*             <div class="movie-list-top-content"> *@
+            @*                 <h4 class="movie-list-title">@play.Movie.Title</h4> *@
+            @*                 <div> *@
+            @*                     <h5 class="section-label">Director</h5> *@
+            @*                     <p>@play.Movie.Director</p> *@
+            @*                     <h5 class="section-label">Genre</h5> *@
+            @*                     <p>@play.Movie.Genre</p> *@
+            @*                 </div> *@
+            @*             </div> *@
+            @*             <div class="movie-list-bottom-content"> *@
+            @*                 <div> *@
+            @*                     <p class="section-label">Premiere</p> *@
+            @*                     <p class="movie-list-date">@play.Movie.Year</p> *@
+            @*                 </div> *@
+            @*             </div> *@
+            @*         </div> *@
+            @*         @play.Date *@
+            @*                         @play.Hall.Branch.City *@
+            @*     </div> *@
+            @*      *@
+            @* *@
+            @* } *@
         </div>
     </div>
     @selectedBranch
-    @selectedDay.ToString();
+    @selectedDay.ToString(dateFormat);
 </div>
 
 @code{
-    private DateTime today { get; set; }= DateTime.Today;
+    private DateTime today { get; set; } = DateTime.Today.Date;
     private string dateFormat = "dddd, dd/MM";
     
-    private string? selectedBranch;
-    private DateTime? selectedDay;
+    private string selectedBranch;
+    private DateTime selectedDay;
     
     private IList<Branch> branches = new List<Branch>();
     
@@ -124,68 +126,36 @@
     protected override async Task OnInitializedAsync()
     {
         branches = await BranchService.GetAllBranches();
-        selectedBranch = branches[0].City;
-        selectedDay = today;
-
-        plays = new List<Play>();
-        playsToShow = new List<Play>();
-        PopulatePlays();
+        plays = await PlayService.GetAllAsync();
         playsToShow = plays;
+        ExecuteFilter();
     }
-    
-
-    private void GoToMovie(int id)
-    {
-        NavigationManager.NavigateTo($"EditEmployee/{id}");
-    }
-
-    private void PopulatePlays()
-    {
-        foreach (var branch in branches)
-        {
-            foreach (var hall in branch.Halls)
-            {
-                foreach (var play in hall.Programme)
-                {
-                    plays.Add(play);
-                }
-            }
-        }
-    }
-
     private void FilterByDay(DateTime dateTime)
     {
-        selectedDay = DateTime.Today;
-        try
-        {
-            selectedDay = dateTime;
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.StackTrace);
-        }
+        selectedDay = dateTime;
+        ExecuteFilter();
     }
 
     private void FilterByBranch(ChangeEventArgs args)
     {
-        selectedBranch = "";
-        try
-        {
-            selectedBranch = args.Value.ToString();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.StackTrace);
-        }
+        selectedBranch = args.Value.ToString();
         ExecuteFilter();
     }
 
     private void ExecuteFilter()
     {
-        playsToShow = plays.Where(p =>
-            (selectedBranch != null && p.Hall.Branch.City.Equals(selectedBranch) || selectedBranch == null) &&
-            (selectedDay != null && p.Date.Equals(selectedDay) || selectedDay == null)
-            ).ToList();
+        // playsToShow = plays.Where(p =>
+        //     (selectedBranch.Equals(p.Hall.Branch.City)) &&
+        //     selectedDay.Equals(p.Date)
+        //     ).ToList();
     }
+    
+
+    private void GoToMovie(int id)
+    {
+        NavigationManager.NavigateTo($"movie/{id}");
+    }
+
+    
 
 }

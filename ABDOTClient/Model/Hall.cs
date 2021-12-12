@@ -22,7 +22,10 @@ namespace ABDOTClient.Model
         //generated in the constructor
         public List<Tuple<int, int>> Seats { get; set; }
 
-        
+        public Hall() {
+            Seats = new List<Tuple<int, int>>();
+            Programme = new List<Play>();
+        }
         public Hall(int hallSize)
         {
 

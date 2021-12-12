@@ -1,6 +1,8 @@
 ﻿@page "/premieres"
 @using ABDOTClient.Model
+@using ABDOTClient.Data
 @namespace PremieresComponent
+@inject IMovieService MovieService
 
 <style>
     .movie-list-item{
@@ -20,14 +22,16 @@
 </div>
 <div class="section">
     <div class="container">
+        <H1>@movies.Count</h1>
         <h2 class="">2021</h2>
         <h3 class="">November</h3>
         <span class="list--group row">
-            @foreach (var movie in movies)
-            {
-                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item">
+            @foreach (var movie in movies) {
+                <div class=" col-md-4 col-lg-3 col-sm-6 col-xl-3 movie-list-item">
                     <div class="movie-list">
-                        <div class="movie-list-poster movie-list-upcoming "><img src=@movie.PosterSrc/>
+                        <div class="movie-list-poster movie-list-upcoming " style="background-image: url(@movie.PosterSrc)">
+                            <div class="movie-list-poster-title">@movie.Title</div>
+                            <div class="movie-list-poster-date">@movie.Year</div>
                         </div>
                         <div class="movie-list-top-content">
                             <h4 class="movie-list-title">@movie.Title</h4>
@@ -69,7 +73,7 @@
                 LengthInMinutes = 200,
                 Year = 2005,
                 Title = "King Kong",
-                PosterSrc = "/images/king_kong.jpg",
+                PosterSrc = "css/images/default_poster.jpg"
                 // Cast = new List<Actor>(),
 
             },
@@ -83,7 +87,7 @@
                 Description = "The life story of Forrest, a boy with a low IQ with paralysis, who becomes a billionaire and a hero of the Vietnam War.",
                 Language = "English",
                 LengthInMinutes = 186,
-                PosterSrc = "/images/forrest_gump.jpg",
+                PosterSrc = "css/images/default_poster.jpg"
                 // Cast = new List<Actor>(),
             },
             new Movie
@@ -97,7 +101,7 @@
                 Language = "English",
                 LengthInMinutes = 110,
                 Year = 1994,
-                PosterSrc = "/images/shawshank.jpg"
+                PosterSrc = "css/images/default_poster.jpg"
             },
             new Movie
             {
@@ -110,7 +114,7 @@
                 Language = "English",
                 LengthInMinutes = 110,
                 Year= 1994,
-                PosterSrc = "/images/leon.jpg"
+                PosterSrc = "css/images/default_poster.jpg"
             },
             new Movie
             {
@@ -123,7 +127,7 @@
                 Language = "English, Danish",
                 LengthInMinutes = 90,
                 Year = 2001,
-                PosterSrc = "/images/shrek.jpg"
+                PosterSrc = "css/images/default_poster.jpg"
             },
             new Movie
             {
@@ -136,7 +140,7 @@
                 LengthInMinutes = 136,
                 Title = "The Matrix",
                 Year = 1999,
-                PosterSrc = "/images/matrix.jpg"
+                PosterSrc = "css/images/default_poster.jpg"
             }
         };
         movies = movieArray.ToList();
@@ -159,14 +163,11 @@
 
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
 
         movies = new List<Movie>();
-        if (!movies.Any())
-        {
-            Seed();
-        }
+        movies = await MovieService.GetAllAsync();
     }
 
 }

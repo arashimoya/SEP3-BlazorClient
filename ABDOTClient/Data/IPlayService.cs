@@ -6,9 +6,9 @@ namespace ABDOTClient.Data
 {
     public interface IPlayService
     {
-        Task<bool> AddPlayAsync(Play play);
-        Task<bool> UpdatePlayAsync(Play play);
-        Task<bool> RemovePlayAsync(Play play);
+        Task<Play> AddPlayAsync(Play play);
+        Task<Play> UpdatePlayAsync(Play play);
+        Task<bool> RemovePlayAsync(int playId);
         Task<Play> GetAsync(int id);
         Task<IList<Play>> GetAllAsync();
     }
