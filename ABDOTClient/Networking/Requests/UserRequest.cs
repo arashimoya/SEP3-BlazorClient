@@ -130,7 +130,7 @@ namespace ABDOTClient.Networking {
             var graphQLResponse = await graphQlClient.SendQueryAsync<LoginRoot>(graphQLRequest);
             //Return
             Console.WriteLine("YYYYYYYYY");
-            Console.WriteLine(graphQLResponse.Data.login.FirstName);
+            Console.WriteLine(graphQLResponse.Data.login);
             Console.WriteLine("ZZZZZZZZZ");
             return graphQLResponse.Data.login;
         }
@@ -231,7 +231,7 @@ namespace ABDOTClient.Networking {
             
             
             //Make request object out of content
-            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<UserRoot>(graphQLRequest);
             //Return
