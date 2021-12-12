@@ -7,20 +7,19 @@ namespace ABDOTClient.Data
 {
     public class PlayCloudService : IPlayService
     {
-        public async Task<bool> AddPlayAsync(Play play)
+        public async Task<Play> AddPlayAsync(Play play)
         {
-            play.TimeInMinutes = play.Movie.LengthInMinutes;
             return await ClientFactory.GetClient().AddPlay(play);
         }
 
-        public async Task<bool> UpdatePlayAsync(Play play)
+        public async Task<Play> UpdatePlayAsync(Play play)
         {
             return await ClientFactory.GetClient().EditPlay(play);
         }
 
-        public async Task<bool> RemovePlayAsync(Play play)
+        public async Task<bool> RemovePlayAsync(int playId)
         {
-            return await ClientFactory.GetClient().DeletePlay(play);
+            return await ClientFactory.GetClient().DeletePlay(playId);
         }
 
         public async Task<Play> GetAsync(int id)
@@ -30,6 +29,7 @@ namespace ABDOTClient.Data
 
         public async Task<IList<Play>> GetAllAsync()
         {
+            
             return await ClientFactory.GetClient().GetAllPlays();
         }
     }

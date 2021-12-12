@@ -1,9 +1,12 @@
-﻿@page "/SelectTicket"
+﻿
+@page "/SelectTicket"
 @namespace SelectTicket
 @using SeatSelectionComponent
 @using ABDOTClient.Model
 @using System.Text.Json
+@using ABDOTClient.Data
 @inject NavigationManager NavigationManager
+@inject IPlayService PlayService
 
 <style>
     .c--background {
@@ -92,7 +95,7 @@
                         <div class="section-text">
                             <p>we might want to put some text here, idk depends on the payment gate</p>
                         </div>
-                        <button class="btn btn--outline-white" @onclick="@goSomewhere">Next</button>
+                        <button class="btn btn--outline-white" @onclick="@GoSomewhere">Next</button>
                     </div>
                 </div>
             </div>
@@ -102,16 +105,15 @@
 
 @code {
     private Play play { get; set; }
-        private const string backgroundSrc = "/images/ticket-background.gif";
+        private const string backgroundSrc = "/css/images/ticket-background.gif";
     private IList<Tuple<int,int>> selectedSeats;
+    
+    [Parameter] public int Id { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
+        
         selectedSeats = new List<Tuple<int, int>>();
-        
-        Seed();
-        
-
     }
 
     private void ClickHandler(Tuple<int, int> newSeat)
@@ -126,43 +128,11 @@
         }
     }
 
-    private void goSomewhere()
+    private void GoSomewhere()
     {
         string selectedSeatsJson = JsonSerializer.Serialize(selectedSeats);
         NavigationManager.NavigateTo($"/checkoutInfo/{selectedSeatsJson}");
     }
 
-    private void Seed()
-    {
-        play = new Play()
-        {
-            Date = DateTime.Now,
-            Hall = new Hall(1),
-            Id = 1,
-            Movie = new Movie
-            {
-                Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
-                Director = "Peter Jackson",
-                Genre = "Adventure, Melodrama, Fantasy",
-                Language = "English",
-                LengthInMinutes = 200,
-                Year = 2005,
-                Title = "King Kong",
-                PosterSrc = "/images/king_kong.jpg",
-            },
-            Tickets = new List<Ticket>(),
-            TimeInMinutes = 200,
-        };
-        play.Hall.Branch = new Branch
-        {
-            Id = 1,
-            City = "Aarhus",
-            Employees = new List<Employee>(),
-            Halls = new List<Hall>()
-            {
-                new Hall(1),
-                new Hall(2),
-            },
-        };
-    }
+    
 }

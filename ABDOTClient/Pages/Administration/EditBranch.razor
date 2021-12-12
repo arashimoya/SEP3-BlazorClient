@@ -1,11 +1,12 @@
-﻿@page "/EditBranch/{id}"
+﻿@page "/EditBranch/{Id:int}"
 @using ABDOTClient.Model
 @using ABDOTClient.Pages.Administration
 @using Microsoft.AspNetCore.Components
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
+@inject IBranchService BranchService
 @namespace EditBranchComponent
-<h3>Edit employee</h3>
+<h3>Edit Branch</h3>
 <EditForm Model="@newBranchItem" OnValidSubmit="@EditABranch">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
@@ -19,28 +20,26 @@
         </p>
 </EditForm>
 @code {
+    [Parameter] public int Id { get; set; }
     private Branch newBranchItem = new Branch();
-    private IBranchService branchService = new BranchCloudService();
     private string confirmationMessage = "";
     
 
-    
+    protected override async Task OnInitializedAsync() {
+        newBranchItem = await BranchService.GetBranch(Id);
+    }
     
     
     private async Task EditABranch()
     {
-        if (await branchService.EditBranch(newBranchItem) !=null)
+        if (await BranchService.EditBranch(newBranchItem) !=null)
         {
-            confirmationMessage = "Success";
-            NavigationManager.NavigateTo($"/branches");
+            confirmationMessage = "Branch edited successfully";
+            NavigationManager.NavigateTo($"/branches/{confirmationMessage}");
             
         }
      
     }
-    protected override Task OnInitializedAsync()
-    {
-        
-        return base.OnInitializedAsync();
-    }
+    
 
 }

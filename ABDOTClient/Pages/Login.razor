@@ -1,6 +1,5 @@
 ﻿@page "/login"
 @using ABDOTClient.Authentication
-@using ABDOTClient.Model
 @namespace LoginComponent
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -25,7 +24,7 @@
     </NotAuthorized>
     <Authorized>
         <div>
-            Hello @name!
+            Hello 
         </div>
         <p class="actions">
         <button class="btn-outline-dark" @onclick="GoToProfilePage">My Profile</button>
@@ -45,7 +44,6 @@
     private string name;
     private int Id;
     
-
     public async Task Cancel()
     {
         NavigationManager.NavigateTo("/");
@@ -55,20 +53,15 @@
     {
         errorMessage = " ";
         Console.WriteLine("logging in");
-        try
-        {
-            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(email, password);
+        
+            var returnedUser = await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(email, password);
             email = "";
             password = "";
-            name = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser.FirstName;
-            Id = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser.Id;
+            
             
             Console.WriteLine("Success");
-        }
-        catch (Exception e)
-        {
-            errorMessage = e.Message;
-        }
+        
+        
     }
 
     public async Task PerformLogout()

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ABDOTClient.Authentication;
 using ABDOTClient.Data;
+using ABDOTClient.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -28,8 +29,9 @@ namespace ABDOTClient{
             services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<IMovieService, CloudMovieService>();
-
+            services.AddScoped<IEmployeeService, EmployeeCloudService>();
             services.AddScoped<IBranchService, BranchCloudService>();
+            services.AddScoped<IHallService, HallCloudService>();
             services.AddScoped<IPlayService, PlayCloudService>();
 
 

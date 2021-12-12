@@ -59,15 +59,17 @@ else
                 <td>@item.Date</td>
                 <td>@item.Hall.Id</td>
                 <td>
-                        <button @onclick="@(() => RemovePlay(item.Id))">
-                            <i class="oi oi-trash" style="color:red"/>
-                        </button>
-                    </td>
-                    <td>
-                        <button @onclick="@(() => Edit(item.Id))">
-                            <i class="oi oi-pencil" style="color:blue"/>
-                        </button>
-                    </td>
+                    <button @onclick="@(() => Edit(item.Id))">
+                        <i class="oi oi-pencil" style="color:blue"/>
+                    </button>
+                </td>
+                <td>
+                    <button @onclick="@(() => RemovePlay(item.Id))">
+                        <i class="oi oi-trash" style="color:red"/>
+                    </button>
+                </td>
+                
+                
                 
             </tr>
         }
@@ -79,100 +81,34 @@ else
     private IList<Play> plays;
     private IList<Play> playsToShow;
     [Parameter]public string confirmationMessage { get; set; }
-    private string success;
 
-    protected override async Task OnInitializedAsync()
-    {
-        plays = await PlayService.GetAllAsync();
-        if (!plays.Any())
-        {
-            Seed();
-        }
-        playsToShow = plays;
-    }
-    protected override async Task OnParametersSetAsync()
-    {
-
+    protected override async Task OnInitializedAsync() {
         plays = new List<Play>();
-        if (!plays.Any())
-        {
-            plays = await PlayService.GetAllAsync();
+        plays = await PlayService.GetAllAsync();
+        playsToShow = plays;
+        if (!confirmationMessage.Contains("success")) {
+            confirmationMessage = " ";
         }
     }
-    private async Task RemovePlay(int EmployeeId)
+    
+    private async Task RemovePlay(int Id)
     {
-        throw new NotImplementedException();
+        Play toRemove = plays.FirstOrDefault(p => p.Id == Id);
+        if (toRemove != null) {
+            plays.Remove(toRemove);
+            playsToShow.Remove(toRemove);
+            if (await PlayService.RemovePlayAsync(Id)) {
+                confirmationMessage = "Play deleted successfully";
+            }
+        }
     }
 
     private void Edit(int id)
     {
+        Console.WriteLine(id);
         NavigationManager.NavigateTo($"EditPlay/{id}");
+        
     }
-
-    private void Seed()
-    {
-        Play[] playArray =
-        {
-            new Play
-            {
-                Movie = new Movie
-                {
-                    Description = "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
-                    Director = "Peter Jackson",
-                    Genre = "Adventure, Melodrama, Fantasy",
-                    Language = "English",
-                    LengthInMinutes = 200,
-                    Year = 2005,
-                    Title = "King Kong",
-                    PosterSrc = "/images/king_kong.jpg",
-                },
-                Date = DateTime.Now,
-                Hall = new Hall(1),
-                Tickets = new List<Ticket>
-                {
-                    
-                },
-                TimeInMinutes = 200,
-            },
-            new Play
-            {
-                Date = DateTime.Now,
-                Hall = new Hall(2),
-                Movie = new Movie
-                {
-                    Title = "Forrest Gump",
-                    Director = "Robert Zemeckis",
-                    Genre = "Drama / Comedy",
-                    Year = 2004,
-                    Description = "The life story of Forrest, a boy with a low IQ with paralysis, who becomes a billionaire and a hero of the Vietnam War.",
-                    Language = "English",
-                    LengthInMinutes = 186,
-                    PosterSrc = "/images/forrest_gump.jpg",
-                },
-                Tickets = new List<Ticket>(),
-                TimeInMinutes = 186,
-            },
-            new Play
-            {
-                Date = DateTime.Now,
-                Hall = new Hall(3),
-                Movie = new Movie
-                {
-                    Description = "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
-                    Title = "Shrek",
-                    Director = "Andrew Adamson / Vicky Jenson",
-                    Genre = "Comedy, Animation, Family",
-                    Language = "English, Danish",
-                    LengthInMinutes = 90,
-                    Year = 2001,
-                    PosterSrc = "/images/shrek.jpg",
-                },
-                Tickets = new List<Ticket>(),
-                TimeInMinutes = 90,
-            }
-        };
-        plays = playArray.ToList();
-
-    }
+    
 
 }

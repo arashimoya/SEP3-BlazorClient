@@ -1,0 +1,61 @@
+﻿@page "/AddHall"
+@using Microsoft.AspNetCore.Components
+@using ABDOTClient.Model
+@using ABDOTClient.Data
+@inject NavigationManager NavigationManager
+@inject IHallService HallService
+@inject IBranchService BranchService;
+<div class="container">
+<h3>AddHall</h3>
+    <EditForm Model="@newHallItem" OnValidSubmit="@AddNewHall">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="form-group">
+                Branch:<br/>
+                <InputSelect @bind-Value="@selectedBranchId">
+                    @foreach (var branch in branches) {
+                        <option value="@branch.Id">@branch.City</option>
+                    }
+                </InputSelect>
+            </div>
+        <div class="form-group">
+            Hall Size:<br/>
+            <InputSelect @bind-Value="newHallItem.HallSize">
+                <option value="1">6x8</option>
+                <option value="2">12x14</option>
+                <option value="3">15x20</option>
+            </InputSelect>
+        </div>
+        
+        <p class="actions">
+                <button class="btn btn-dark" type="submit">Submit</button>
+            </p>
+    </EditForm>
+</div>
+
+@code {
+    private Hall newHallItem = new Hall(1);
+    private IList<Branch> branches = new List<Branch>();
+    private string confirmationMessage = "";
+
+    private int selectedBranchId {
+        get => newHallItem.Branch.Id;
+        set => newHallItem.Branch = branches.Single(b => b.Id == value);
+    }
+    private async Task AddNewHall() {
+        Hall hallToCreate = new Hall(newHallItem.HallSize);
+        hallToCreate.Branch = newHallItem.Branch;
+        Hall returnedHall = await HallService.CreateHall(hallToCreate);
+        if (returnedHall != null) {
+            confirmationMessage = "Hall created successfully";
+            NavigationManager.NavigateTo($"/HallList/{confirmationMessage}");
+        }
+    }
+
+    protected override async Task OnInitializedAsync() {
+        newHallItem.Branch = new Branch();
+        branches = await BranchService.GetAllBranches();
+        newHallItem.Branch = branches[0];
+    }
+
+}

@@ -1,0 +1,75 @@
+﻿@page "/EditMovie/{Id:int}"
+@using Microsoft.AspNetCore.Components
+@using ABDOTClient.Model
+@using ABDOTClient.Data
+@inject IMovieService MovieService 
+@inject NavigationManager NavigationManager
+
+<h3>EditMovie</h3>
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
+<div class="container">
+    <h3>Add Movie</h3>
+    <EditForm Model="@movieToEdit" OnValidSubmit="@EditAMovie">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="form-group">
+            Title:<br/>
+            <InputText @bind-Value="movieToEdit.Title"/>
+        </div>
+        <div class="form-group">
+            Director:<br/>
+            <InputText @bind-Value="movieToEdit.Director"/>
+        </div>
+        <div class="form-group">
+            Description:<br/>
+            <InputTextArea @bind-Value="movieToEdit.Description"/>
+        </div>
+        <div class="form-group">
+            Genre:<br/>
+            <InputText @bind-Value="movieToEdit.Genre"/>
+        </div>
+        <div class="form-group">
+            Language:<br/>
+            <InputText @bind-Value="movieToEdit.Language"/>
+        </div>
+        <div class="form-group">
+            SubtitleLanguage:<br/>
+            <InputText @bind-Value="movieToEdit.SubtitleLanguage"/>
+        </div>
+        <div class="form-group">
+            Year of release:<br/>
+            <InputNumber @bind-Value="movieToEdit.Year"/>
+        </div>
+        <div class="form-group">
+            Length:<br/>
+            <InputNumber @bind-Value="movieToEdit.LengthInMinutes"/>
+        </div>
+        <p class="actions">
+            <button  class="btn btn-dark" type="submit">Submit</button>
+        </p>
+    </EditForm>
+    @movieToEdit.ToString()
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private Movie movieToEdit = new Movie();
+    private string confirmationMessage = "";
+
+    protected override async Task OnInitializedAsync() {
+        movieToEdit = await MovieService.GetMovieAsync(Id);
+    }
+
+    private async Task EditAMovie() {
+        if (await MovieService.UpdateMovieAsync(movieToEdit) != null) {
+            confirmationMessage = "Movie edited successfully";
+            NavigationManager.NavigateTo($"/movielist/{confirmationMessage}");
+        }
+    }
+
+}

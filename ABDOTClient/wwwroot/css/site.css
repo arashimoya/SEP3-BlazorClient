@@ -1,7 +1,10 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
-html, body {
+
+
+  html, body {
     font-family: 'Be Vietnam Pro', sans-serif;
     background-color: #1e1e1e;
     border-color: #1e1e1e;
@@ -177,13 +180,46 @@ body {
     flex: 1;
 }
 .movie-list-poster {
-    display: block;
+    display: flex;
     position: relative;
-    -ms-flex-negative: 0;
     flex-shrink: 0;
-    width: fit-content;
-    box-sizing: inherit;
+    width: 100%;
+    box-sizing: content-box;
+    height: 500px;
+    font-family: 'VT323', monospace;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    flex-direction: column;
+    line-height: 3em;
 }
+.movie-list-poster-title {
+    
+    text-align: center;
+    width: 100%;
+}
+.movie-list-poster-date {
+    
+    text-align: center;
+}
+
+@media (min-width: 576px){
+    .movie-list-poster-date {
+        font-size: 1.875rem;
+    }
+    .movie-list-poster-title{
+        font-size:2.5rem;
+    }
+}
+@media (min-width: 1400px){
+    .movie-list-poster-date {
+        font-size: 3em;
+    }
+    .movie-list-poster-title{
+        font-size: 4em;
+    }
+}
+
 
 .movie-list-title {
     font-size: 1.125em;

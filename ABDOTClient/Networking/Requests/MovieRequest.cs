@@ -56,6 +56,7 @@ namespace ABDOTClient.Networking
 
         public async Task<Movie> CreateMovie(Movie movie)
         {
+            Console.WriteLine("we are here in MovieRequest.cs and thats the movie:" + movie.ToString());
             string query = @"mutation ($title : String!, $description: String!, $genre : String!, 
                 $director : String!, $language : String!, $subtitleLanguage : String, $year : Int!,
                  $lengthInMinutes : Int!, $posterSrc : String)
@@ -108,6 +109,7 @@ namespace ABDOTClient.Networking
 
         public async Task<Movie> EditMovie(Movie movie)
         {
+            Console.WriteLine("we here in movie request edit method and this the movie to edit: " + movie);
             string query = @"mutation ($id : Int!, $title : String!, $description: String!, $genre : String!, 
                 $director : String!, $language : String!, $subtitleLanguage : String, $year : Int!,
                  $lengthInMinutes : Int!, $posterSrc : String)
@@ -162,6 +164,7 @@ namespace ABDOTClient.Networking
 
         public async Task<bool> DeleteMovie(int id)
         {
+            
             // Movie toRemove = Movies.FirstOrDefault(m => m.Id == movie.Id);
             // if (toRemove == null) return false;
             // Movies.Remove(movie);
@@ -246,7 +249,7 @@ namespace ABDOTClient.Networking
             var graphQLResponse = await graphQlClient.SendQueryAsync<MoviesRoot>(graphQLRequest);
 
             return graphQLResponse.Data.movies;
-            // return Movies;
+            
         }
 
         private void Seed()

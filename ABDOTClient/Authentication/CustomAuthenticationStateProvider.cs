@@ -22,11 +22,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         this.jsRuntime = jsRuntime;
         this.userService = userService;
     }
-
-    public string GetCachedUserName()
-    {
-        return cachedUser.FirstName;
-    }
+    
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
         var identity = new ClaimsIdentity();
@@ -44,7 +40,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         return await Task.FromResult(new AuthenticationState(cachedClaimsPrincipal));
     }
 
-    public async Task ValidateLogin(string username, string password) {
+    public async Task<User> ValidateLogin(string username, string password) {
         Console.WriteLine("Validating log in");
         if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
         if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
@@ -63,6 +59,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         NotifyAuthenticationStateChanged(
             Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity))));
         
+        return cachedUser;
     }
 
     public async Task Logout() {
@@ -81,9 +78,10 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         //if (string.IsNullOrEmpty(confirmPassword)) throw new Exception("Confirm password");
         //if (userService.IsAlreadyInUse(email)) throw new Exception("This email is already in use");
         //if (!password.Equals(confirmPassword)) throw new Exception("Passwords do not match!");
-
-        if (await userService.RegisterUser(email, password, firstName, lastName, streetAndHouseNumber, city, postcode,
-            country))
+        User returnedUser = await userService.RegisterUser(email, password, firstName, lastName, streetAndHouseNumber,
+            city, postcode,
+            country);
+        if (returnedUser != null && returnedUser.GetType() == typeof(User))
         {
             return true;
         }
