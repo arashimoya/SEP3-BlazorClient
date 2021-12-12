@@ -45,7 +45,8 @@ namespace ABDOTClient.Networking.Requests {
                 new NewtonsoftJsonSerializer());
         }
 
-        public async Task<bool> CreateHall(Hall hall) {
+        public async Task<Hall> CreateHall(Hall hall) {
+            Console.WriteLine("we here in HallRequest in createHall and this the hall: "+  hall);
             var query =
                 @"mutation($branchId : Int!, $hallSize: Int!) {
                   createHall (input : {branchId : $branchId, hallSize:$hallSize}) {
@@ -78,10 +79,11 @@ namespace ABDOTClient.Networking.Requests {
 
             Console.WriteLine(graphQLResponse.Data.createHall.Id);
             //Return, possibly print
-            return graphQLResponse.Data.createHall != null;
+            return graphQLResponse.Data.createHall;
         }
 
-        public async Task<bool> EditHall(Hall hall) {
+        public async Task<Hall> EditHall(Hall hall) {
+            Console.WriteLine("we here in HallRequest in EditHall and this the hall: "+  hall);
             var query =
                 @"mutation($id:Int!,$branchId : Int!, $hallSize: Int!) {
                     editHall (input : {id:$id  ,branchId : $branchId, hallSize:$hallSize}) {
@@ -115,7 +117,7 @@ namespace ABDOTClient.Networking.Requests {
 
             Console.WriteLine(graphQLResponse.Data.editHall.Id);
             //Return, possibly print
-            return graphQLResponse.Data.editHall != null;
+            return graphQLResponse.Data.editHall;
         }
 
         public async Task<bool> DeleteHall(int hallId) {
@@ -191,7 +193,10 @@ namespace ABDOTClient.Networking.Requests {
                     id,
                     hallSize,
                     branch{
-                      id
+                      id,
+                        street,
+city,
+postcode
                     },
                     programme{
                       movie{

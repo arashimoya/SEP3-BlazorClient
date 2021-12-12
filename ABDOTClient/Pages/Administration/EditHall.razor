@@ -1,4 +1,4 @@
-@page "/AddHall"
+﻿@page "/EditHall/{Id:int}"
 @using Microsoft.AspNetCore.Components
 @using ABDOTClient.Model
 @using ABDOTClient.Data
@@ -7,9 +7,12 @@
 @inject IBranchService BranchService;
 <div class="container">
 <h3>AddHall</h3>
-    <EditForm Model="@newHallItem" OnValidSubmit="@AddNewHall">
+    <EditForm Model="@HallToEdit" OnValidSubmit="@EditAHall">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
+        <div class="form-group">
+            <InputNumber @bind-Value="HallToEdit.Id" class="disabled"/>
+        </div>
         <div class="form-group">
                 Branch:<br/>
                 <InputSelect @bind-Value="@selectedBranchId">
@@ -20,7 +23,7 @@
             </div>
         <div class="form-group">
             Hall Size:<br/>
-            <InputSelect @bind-Value="newHallItem.HallSize">
+            <InputSelect @bind-Value="HallToEdit.HallSize">
                 <option value="1">6x8</option>
                 <option value="2">12x14</option>
                 <option value="3">15x20</option>
@@ -34,28 +37,30 @@
 </div>
 
 @code {
-    private Hall newHallItem = new Hall(1);
+    [Parameter]public int Id { get; set; }
+    private Hall HallToEdit = new Hall(1);
     private IList<Branch> branches = new List<Branch>();
     private string confirmationMessage = "";
 
     private int selectedBranchId {
-        get => newHallItem.Branch.Id;
-        set => newHallItem.Branch = branches.Single(b => b.Id == value);
+        get => HallToEdit.Branch.Id;
+        set => HallToEdit.Branch = branches.Single(b => b.Id == value);
     }
-    private async Task AddNewHall() {
-        Hall hallToCreate = new Hall(newHallItem.HallSize);
-        hallToCreate.Branch = newHallItem.Branch;
-        Hall returnedHall = await HallService.CreateHall(hallToCreate);
+    private async Task EditAHall() {
+        Hall hallToCreate = new Hall(HallToEdit.HallSize);
+        hallToCreate.Branch = HallToEdit.Branch;
+        hallToCreate.Id = HallToEdit.Id;
+        Hall returnedHall = await HallService.EditHall(hallToCreate);
         if (returnedHall != null) {
-            confirmationMessage = "Hall created successfully";
+            confirmationMessage = "Hall updated successfully";
             NavigationManager.NavigateTo($"/HallList/{confirmationMessage}");
         }
     }
 
     protected override async Task OnInitializedAsync() {
-        newHallItem.Branch = new Branch();
+        HallToEdit.Branch = new Branch();
         branches = await BranchService.GetAllBranches();
-        newHallItem.Branch = branches[0];
+        HallToEdit = await HallService.GetHall(Id);
     }
 
 }

@@ -6,9 +6,9 @@ namespace ABDOTClient.Networking.Requests
 {
     public interface IHallRequest
     {
-        Task<bool> CreateHall(Hall hall);
+        Task<Hall> CreateHall(Hall hall);
 
-        Task<bool> EditHall(Hall hall);
+        Task<Hall> EditHall(Hall hall);
 
         Task<bool> DeleteHall(int hallId);
 

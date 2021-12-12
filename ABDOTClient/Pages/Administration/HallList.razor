@@ -1,0 +1,116 @@
+﻿@page "/HallList/{confirmationMessage}"
+@page "/HallList/{confirmationMessage}/{BranchId:int}"
+@using ABDOTClient.Model
+@using ABDOTClient.Data
+@inject IHallService HallService
+@inject NavigationManager NavigationManager
+<style>
+    html, body {
+        background-color: white;
+    }
+</style>
+
+<p style="color: green;">@confirmationMessage</p>
+@if (hallsToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+} else if (!hallsToShow.Any()){
+    <p>
+        <em>No Hall items exist. Please add some</em>
+    </p>
+}
+else
+{
+    <div class="container " style="background-color: white">
+        <div class="section-separate" style="padding-top:40px">
+            <button style="border-color: transparent; background-color:transparent">
+                <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
+            </button>
+        </div>
+        <h3 style="color:black">HallList</h3>
+        <p style="color:black">for personel only</p>
+        <div class="row">
+            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addHall"))"><button>
+                <i class="oi oi-plus"/>
+            </button>
+                </div>
+        </div>
+        <table class="table" style="color:black; border-color: black">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Hall Size</th>
+                <th>Branch</th>
+                <th>Programme</th>
+                <th>Remove</th>
+                <th>Edit</th>
+            
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in hallsToShow)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.HallSize</td>
+                    <td>@item.Branch.Id</td>
+                    <td><a href="/playlist/{confirmationMessage}">programme</a></td>
+                    <td>
+                        <button @onclick="@(() => RemoveHall(item.Id))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => Edit(item.Id))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                
+                </tr>
+            }
+            </tbody>
+        </table>
+        <p style="color:black">@BranchId</p>
+    </div>
+}
+
+@code {
+    private IList<Hall> allHalls;
+    private IList<Hall> hallsToShow;
+    [Parameter]public string confirmationMessage { get; set; }
+    [Parameter]public int BranchId { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        allHalls = new List<Hall>();
+        allHalls = await HallService.GetAllHalls();
+        hallsToShow = allHalls;
+        // if (!confirmationMessage.Contains("success")) {
+        //     confirmationMessage = " ";
+        // }
+        ExecuteFilter();
+    }
+
+    private async Task RemoveHall(int hallId) {
+        Hall toRemove = allHalls.FirstOrDefault(h => h.Id == hallId);
+        if (toRemove != null) {
+            allHalls.Remove(toRemove);
+            hallsToShow.Remove(toRemove);
+            if (await HallService.DeleteHall(hallId))
+                confirmationMessage = "Hall removed successfully";
+        }
+    }
+
+    private void Edit(int id) {
+        NavigationManager.NavigateTo($"EditHall/{id}");
+    }
+
+    private void ExecuteFilter() {
+        if (BranchId!= 0) {
+            hallsToShow = allHalls.Where(h =>
+                BranchId == h.Branch.Id
+                ).ToList();
+        }
+    }
+}

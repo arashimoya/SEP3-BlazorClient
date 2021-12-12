@@ -6,14 +6,14 @@ namespace ABDOTClient.Networking.Requests
 {
     public interface ITicketRequest
     {
-        Task<Ticket> CreateTicketAsync(Ticket ticket);
+        Task<Ticket> CreateTicket(Ticket ticket);
 
-        Task<Ticket> EditTicketAsync(Ticket ticket);
+        Task<Ticket> EditTicket(Ticket ticket);
 
-        Task<bool> DeleteTicketAsync(int ticketId);
+        Task<bool> DeleteTicket(int ticketId);
 
-        Task<Ticket> GetTicketAsync(int ticketId);
+        Task<Ticket> GetTicket(int ticketId);
 
-        Task<IList<Ticket>> GetAllTicketsAsync();
+        Task<IList<Ticket>> GetAllTickets();
     }
 }

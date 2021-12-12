@@ -3,34 +3,26 @@ using System.Threading.Tasks;
 using ABDOTClient.Factories;
 using ABDOTClient.Model;
 
-namespace ABDOTClient.Data
-{
-    public class HallCloudService : IHallService
-    {
-        public Task<bool> CreateHall(Hall hall)
-        {
-            return ClientFactory.GetClient().AddHall(hall);
+namespace ABDOTClient.Data {
+    public class HallCloudService : IHallService{
+        public async Task<Hall> CreateHall(Hall hall) {
+            return await ClientFactory.GetClient().AddHall(hall);
         }
 
-        public Task<bool> EditHall(Hall hall)
-        {
-            return ClientFactory.GetClient().EditHall(hall);
+        public async Task<Hall> EditHall(Hall hall) {
+            return await ClientFactory.GetClient().EditHall(hall);
         }
 
-        public Task<bool> DeleteHall(int branchId)
-        {
-          //  return ClientFactory.GetClient().DeleteHall(branchId);
-          throw new System.NotImplementedException();
+        public async Task<bool> DeleteHall(int hallId) {
+            return await ClientFactory.GetClient().DeleteHall(hallId);
         }
 
-        public Task<Hall> Get(int hallId)
-        {
-            return ClientFactory.GetClient().GetHall(hallId);
+        public async Task<Hall> GetHall(int hallId) {
+            return await ClientFactory.GetClient().GetHall(hallId);
         }
 
-        public Task<IList<Hall>> GetAllHalls()
-        {
-            return ClientFactory.GetClient().GetAllHalls();
+        public async Task<IList<Hall>> GetAllHalls() {
+            return await ClientFactory.GetClient().GetAllHalls();
         }
     }
 }

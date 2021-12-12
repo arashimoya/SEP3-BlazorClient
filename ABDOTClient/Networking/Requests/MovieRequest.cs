@@ -56,6 +56,7 @@ namespace ABDOTClient.Networking
 
         public async Task<Movie> CreateMovie(Movie movie)
         {
+            Console.WriteLine("we are here in MovieRequest.cs and thats the movie:" + movie.ToString());
             string query = @"mutation ($title : String!, $description: String!, $genre : String!, 
                 $director : String!, $language : String!, $subtitleLanguage : String, $year : Int!,
                  $lengthInMinutes : Int!, $posterSrc : String)
@@ -64,6 +65,7 @@ namespace ABDOTClient.Networking
                   genre : $genre, director : $director, language : $language, subtitleLanguage : $subtitleLanguage, 
                   year : $year, lengthInMinutes : $lengthInMinutes, posterSrc : $posterSrc})
                   {
+                    id,
                     title,
                     description,
                     genre,
@@ -107,6 +109,7 @@ namespace ABDOTClient.Networking
 
         public async Task<Movie> EditMovie(Movie movie)
         {
+            Console.WriteLine("we here in movie request edit method and this the movie to edit: " + movie);
             string query = @"mutation ($id : Int!, $title : String!, $description: String!, $genre : String!, 
                 $director : String!, $language : String!, $subtitleLanguage : String, $year : Int!,
                  $lengthInMinutes : Int!, $posterSrc : String)
@@ -131,6 +134,7 @@ namespace ABDOTClient.Networking
             var variables = new
             {
                 id = movie.Id,
+                title = movie.Title,
                 description = movie.Description,
                 genre = movie.Genre,
                 director = movie.Director,
@@ -160,6 +164,7 @@ namespace ABDOTClient.Networking
 
         public async Task<bool> DeleteMovie(int id)
         {
+            
             // Movie toRemove = Movies.FirstOrDefault(m => m.Id == movie.Id);
             // if (toRemove == null) return false;
             // Movies.Remove(movie);
@@ -244,7 +249,7 @@ namespace ABDOTClient.Networking
             var graphQLResponse = await graphQlClient.SendQueryAsync<MoviesRoot>(graphQLRequest);
 
             return graphQLResponse.Data.movies;
-            // return Movies;
+            
         }
 
         private void Seed()
@@ -253,7 +258,7 @@ namespace ABDOTClient.Networking
             {
                 new Movie
                 {
-                    //Id = 1,
+                    Id = 1,
                     Description =
                         "The 1930s. A bankrupt director and a starving actress travel to the mysterious Skull Island to shoot a movie of their life, as New York is in a great crisis. ",
                     Director = "Peter Jackson",
@@ -267,7 +272,7 @@ namespace ABDOTClient.Networking
                 },
                 new Movie
                 {
-                    //Id = 2,
+                    Id = 2,
                     Title = "Forrest Gump",
                     Director = "Robert Zemeckis",
                     Genre = "Drama / Comedy",
@@ -281,7 +286,7 @@ namespace ABDOTClient.Networking
                 },
                 new Movie
                 {
-                    //Id = 3,
+                    Id = 3,
                     Title = "Shawshank Redemption",
                     // Cast = new List<Actor>(),
                     Description =
@@ -295,7 +300,7 @@ namespace ABDOTClient.Networking
                 },
                 new Movie
                 {
-                    //Id = 4,
+                    Id = 4,
                     Title = "Leon",
                     // Cast = new List<Actor>(),
                     Description =
@@ -309,7 +314,7 @@ namespace ABDOTClient.Networking
                 },
                 new Movie
                 {
-                    //Id=5,
+                    Id=5,
                     // Cast = new List<Actor>(),
                     Description =
                         "To get his home back, an ugly ogre with a talkative donkey sets off to free the beautiful princess.",
@@ -323,7 +328,7 @@ namespace ABDOTClient.Networking
                 },
                 new Movie
                 {
-                    //Id = 6,
+                    Id = 6,
                     // Cast = new List<Actor>(),
                     Description =
                         "Computer hacker Neo learns from mysterious rebels that the world he lives in is just an image sent to his brain by robots.",

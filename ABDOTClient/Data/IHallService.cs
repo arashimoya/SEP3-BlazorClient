@@ -2,17 +2,15 @@
 using System.Threading.Tasks;
 using ABDOTClient.Model;
 
-namespace ABDOTClient.Data
-{
-    public interface IHallService
-    {
-        Task<bool> CreateHall(Hall hall);
-     
-        Task<bool> EditHall(Hall hall);
-     
-        Task<bool> DeleteHall(int branchId);
-        
-        Task<Hall> Get(int hallId);
+namespace ABDOTClient.Data {
+    public interface IHallService {
+        Task<Hall> CreateHall(Hall hall);
+
+        Task<Hall> EditHall(Hall hall);
+
+        Task<bool> DeleteHall(int hallId);
+
+        Task<Hall> GetHall(int hallId);
 
         Task<IList<Hall>> GetAllHalls();
     }

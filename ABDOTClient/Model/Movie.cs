@@ -34,6 +34,15 @@ namespace ABDOTClient.Model
         public int LengthInMinutes { get; set; }
         
         public string PosterSrc { get; set; }
-        
+
+        public override string ToString()
+        {
+            string returnString = "Movie{\nId : " + Id + "\nTitle : " + Title + "\nDescription : " + Description + "\nGenre : " +
+                                  Genre
+                                  + "\nDirector : " + Director + "\nLanguage : " + Language + "\nSubtitleLanguage : " +
+                                  SubtitleLanguage + "\nYear : " + Year
+                                  + "\nLengthInMinutes : " + LengthInMinutes + "\nPosterSrc : " + PosterSrc  + "\n}";
+            return returnString;
+        }
     }
 }

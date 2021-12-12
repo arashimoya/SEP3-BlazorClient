@@ -50,18 +50,33 @@ namespace ABDOTClient.Networking.Requests
             Tickets = new List<Ticket>();
         }
 
-        public async Task<Ticket> CreateTicketAsync(Ticket ticket)
+        public async Task<Ticket> CreateTicket(Ticket ticket)
         {
-            string query = @"";
+            string query = @"  mutation ($column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
+    createTicket(ticket: {column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
+    id,
+    row,
+    column,
+    play {
+      id
+    }
+    user {
+      id
+    },
+    employee {
+      id
+    } 
+    }
+  }";
             
             // Might get changed
             var variables = new
             {
-                play = ticket.Play,
-                user = ticket.User,
-                employee = ticket.Employee,
-                row = ticket.row,
-                column = ticket.column
+                playId = ticket.Play.Id,
+                userId = ticket.User.Id,
+                employeeId = ticket.Employee.Id,
+                row = ticket.Row,
+                column = ticket.Column
             };
 
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
@@ -73,26 +88,40 @@ namespace ABDOTClient.Networking.Requests
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
 
             return graphQLResponse.Data.createTicket;
         }
 
-        public async Task<Ticket> EditTicketAsync(Ticket ticket)
+        public async Task<Ticket> EditTicket(Ticket ticket)
         {
-            string query = @"";
+            string query = @" mutation ($id : Long!, $column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
+    editTicket(ticket: {id : $id, column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
+    id,
+    row,
+    column,
+    play {
+      id
+    }
+    user {
+      id
+    },
+    employee {
+      id
+    } 
+    }
+  }";
             
-            // Might get changed
+            
             var variables = new
             {
                 id = ticket.Id,
-                play = ticket.Play,
-                user = ticket.User,
-                employee = ticket.Employee,
-                row = ticket.row,
-                column = ticket.column
+                playId = ticket.Play.Id,
+                userId = ticket.User.Id,
+                employeeId = ticket.Employee.Id,
+                row = ticket.Row,
+                column = ticket.Column
             };
             
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
@@ -104,22 +133,23 @@ namespace ABDOTClient.Networking.Requests
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
 
-            // Console.WriteLine(graphQLResponse.Data.editTicket.Id);
+            
             return graphQLResponse.Data.editTicket;  
         }
 
-        public async Task<bool> DeleteTicketAsync(int ticketId)
+        public async Task<bool> DeleteTicket(int id)
         {
-            string query = @"";
+            string query = @"  mutation ($ticketId : Long!) {
+    deleteTicket(ticketId : $ticketId)
+  }";
             
-            // Might get changed
+            
             var variables = new
             {
-                id = ticketId
+                ticketId = id
             };
             
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
@@ -131,35 +161,83 @@ namespace ABDOTClient.Networking.Requests
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
             
             return graphQLResponse.Data.deleteTicket;
         }
 
-        public async Task<Ticket> GetTicketAsync(int ticketId)
+        public async Task<Ticket> GetTicket(int ticketId)
         {
-            string query = @"";
+            string query = @"query ($id : Int!) {
+  ticket (id : $id) {
+    id,
+    row,
+    column,
+    play {
+      id
+    }
+    user {
+      id
+    },
+    employee {
+      id
+    } 
+  }
+}";
             
-            // Might get changed
+            
             var variables = new
             {
                 id = ticketId
             };
             
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
-            var graphQLResponse = await graphQlClient.SendQueryAsync<TicketRoot>(graphQLRequest);
+
+            var graphQLResponse = new GraphQLResponse<TicketRoot>();
+            try
+            { 
+                graphQLResponse = await graphQlClient.SendQueryAsync<TicketRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
 
             return graphQLResponse.Data.ticket;
         }
 
-        public async Task<IList<Ticket>> GetAllTicketsAsync()
+        public async Task<IList<Ticket>> GetAllTickets()
         {
-            string query = @"";
+            string query = @"query {
+  tickets {
+    id,
+    row,
+    column,
+    play {
+      id
+    }
+    user {
+      id
+    },
+    employee {
+      id
+    } 
+  }
+}";
         
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
-            var graphQLResponse = await graphQlClient.SendQueryAsync<TicketsRoot>(graphQLRequest);
+            var graphQLResponse = new GraphQLResponse<TicketsRoot>();
+            try
+            {
+                graphQLResponse = await graphQlClient.SendQueryAsync<TicketsRoot>(graphQLRequest);
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
 
             return graphQLResponse.Data.tickets;
         }

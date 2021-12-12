@@ -109,6 +109,7 @@ namespace ABDOTClient.Networking {
 
         public async Task<User> Login(User user)
         {
+            Console.WriteLine(user.ToString());
             //Create content of the query
             string query = @"
                   mutation ($email : String!, $password: String!) {
@@ -122,12 +123,15 @@ namespace ABDOTClient.Networking {
                 email = user.Email,
                 password = user.Password
             };
+            Console.WriteLine("XXXXXX");
             //Make request object out of content
-            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<LoginRoot>(graphQLRequest);
             //Return
-            Console.WriteLine(graphQLResponse.Data.login.FirstName);
+            Console.WriteLine("YYYYYYYYY");
+            Console.WriteLine(graphQLResponse.Data.login);
+            Console.WriteLine("ZZZZZZZZZ");
             return graphQLResponse.Data.login;
         }
 
@@ -172,7 +176,7 @@ namespace ABDOTClient.Networking {
             return graphQLResponse.Data.editUser;
         }
 
-        public async Task<bool> DeleteUser(User user)
+        public async Task<bool> DeleteUser(int id)
         {
             //set query
             string query = @"
@@ -184,7 +188,7 @@ namespace ABDOTClient.Networking {
             //Set variables
             var variables = new
             {
-                userId = user.Id
+                userId = id
             };
             //Make request object out of content
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
@@ -227,7 +231,7 @@ namespace ABDOTClient.Networking {
             
             
             //Make request object out of content
-            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<UserRoot>(graphQLRequest);
             //Return

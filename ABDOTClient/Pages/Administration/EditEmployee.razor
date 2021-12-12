@@ -5,114 +5,87 @@
 @using Microsoft.AspNetCore.Components
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
+@inject IEmployeeService EmployeeService
 @namespace EditEmployeeComponent
-<h3>Edit employee</h3>
-<EditForm Model="@newEmployeeItem" OnValidSubmit="@EditAnEmployee">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
-<div class="form-group">
-    First name:<br/>
-    <InputText @bind-Value="newEmployeeItem.FirstName"/>
+<div class="container">
+    <h3>Edit employee</h3>
+    <EditForm Model="@newEmployeeItem" OnValidSubmit="@EditAnEmployee">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+    <div class="form-group">
+        First name:<br/>
+        <InputText @bind-Value="newEmployeeItem.FirstName"/>
+    </div>
+        <div class="form-group">
+            Last name:<br/>
+            <InputText @bind-Value="newEmployeeItem.LastName"/>
+        </div>
+        <div class="form-group">
+            Birthday:<br/>
+            <InputDate @bind-Value="date" @bind-Value:format="yyyy-MM-dd"/>
+        </div>
+    <div class="form-group">
+        Password:<br/>
+        <InputText @bind-Value="newEmployeeItem.Password"/>
     </div>
     <div class="form-group">
-    Last name:<br/>
-    <InputText @bind-Value="newEmployeeItem.LastName"/>
-    </div>
-    <div class="form-group">
-    Password:<br/>
-    <InputText @bind-Value="newEmployeeItem.Password"/>
-    </div>
-    <div class="form-group">
-    Email:<br/>
-    <InputText @bind-Value="newEmployeeItem.Email"/>
-    </div>
-    <div class="form-group">
-        Country:<br/>
-        <InputText @bind-Value="newEmployeeItem.Country"/>
-    </div>
-    <div class="form-group">
-        City:<br/>
-        <InputText @bind-Value="newEmployeeItem.City"/>
+        Email:<br/>
+        <InputText @bind-Value="newEmployeeItem.Email"/>
     </div>
     <div class="form-group">
         Street:<br/>
         <InputText @bind-Value="newEmployeeItem.Street"/>
     </div>
     <div class="form-group">
-            Postcode:<br/>
-            <InputText @bind-Value="newEmployeeItem.Postcode"/>
+        Postcode:<br/>
+        <InputText @bind-Value="newEmployeeItem.Postcode"/>
+    </div>
+        <div class="form-group">
+            City:<br/>
+            <InputText @bind-Value="newEmployeeItem.City"/>
         </div>
-    <div class="form-group">
-        Date of birth:<br/>
-        <InputDate @bind-Value="newEmployeeItem.Birthday"/>
-    </div>
-    <div class="form-group">
-        CPR Number:<br/>
-        <InputText @bind-Value="newEmployeeItem.CPR"/>
-    </div>
-    <div class="form-group">
-        Role:<br/>
-        <CustomInputSelect @bind-Value="newEmployeeItem.Role">
-            <option value="0">Owner</option>
-            <option value="1">Manager</option>
-            <option value="2">Operator</option>
-        </CustomInputSelect>
-    </div>
-    <div class="form-group">
-                Branch:<br/>
-                <InputSelect @bind-Value="branchid">
-                    @if (branches != null)
-                    {
-                        @foreach (var item in branches)
-                        {
-                            <option value="@item.Id">@item.City</option>
-                        }
-                    }
-                </InputSelect>
-            </div>
-    <p class="actions">
-            <button class="btn btn-dark" type="submit">Submit</button>
-        </p>
-</EditForm>
+        <div class="form-group">
+            Country:<br/>
+            <InputText @bind-Value="newEmployeeItem.Country"/>
+        </div>
+        <div class="form-group">
+            CPR Number:<br/>
+            <InputText @bind-Value="newEmployeeItem.CPR"/>
+        </div>
+        <div class="form-group">
+            Role:<br/>
+            <CustomInputSelect @bind-Value="newEmployeeItem.Role">
+                <option value="0">Manager</option>
+                <option value="1">Owner</option>
+                <option value="2">Operator</option>
+            </CustomInputSelect>
+        </div>
+        
+        <p class="actions">
+                <button class="btn btn-dark" type="submit">Submit</button>
+            </p>
+    </EditForm>
+</div>
 @code {
-    private Employee newEmployeeItem;
-    private IEmployeeService employeeService = new EmployeeCloudService();
+    
+    [Parameter] public int Id { get; set; }
+    private Employee newEmployeeItem = new Employee();
+    private DateTime date = DateTime.Today;
+   
     private string confirmationMessage = "";
-    private IBranchService BranchService = new BranchCloudService();
-    private IList<Branch> branches;
 
-    [Parameter]
-    public int Id { get; set; }
-
-    private int branchid
-    {
-        get => newEmployeeItem.Branch.Id;
-
-        set => newEmployeeItem.Branch = branches.Single(c => c.Id == value);
-    }
-    
-    
-    private async Task EditAnEmployee()
-    {
-        if (await employeeService.EditEmployee(newEmployeeItem))
+    private async Task EditAnEmployee() {
+        newEmployeeItem.Birthday = date.Year + "-" + date.Month + "-" + date.Day;
+        if (await EmployeeService.EditEmployee(newEmployeeItem) !=null)
         {
-            confirmationMessage = "Success";
-            NavigationManager.NavigateTo($"/personel");
+            confirmationMessage = "Employee edited successfully";
+            NavigationManager.NavigateTo($"/personel/{confirmationMessage}");
             
         }
      
     }
-    protected override async Task OnInitializedAsync()
-    {
-        newEmployeeItem = await employeeService.GetEmployee(Id);
-        newEmployeeItem.Branch = new Branch();
-
-        branches = new List<Branch>();
-        if (!branches.Any())
-        {
-            branches =  await BranchService.GetAllBranches();
-        }
-    }
+    protected override async Task OnInitializedAsync() {
+        newEmployeeItem = await EmployeeService.GetEmployee(Id);
     }
 
 }

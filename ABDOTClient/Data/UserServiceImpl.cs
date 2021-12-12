@@ -22,12 +22,12 @@ namespace ABDOTClient.Data {
             var user = new User();
             user.Email = email;
             user.Password = password;
-            Console.WriteLine(email + password);
+            Console.WriteLine(email +" " + password);
             var loggedUser = await ClientFactory.GetClient().LoginUser(user);
             return loggedUser;
         }
 
-        public async Task<bool> RegisterUser(string email, string password, string firstName, string lastName,
+        public async Task<User> RegisterUser(string email, string password, string firstName, string lastName,
             string street, string city, string postcode, string country) {
             Console.WriteLine("creating...");
             var freshUser = new User {
@@ -36,7 +36,7 @@ namespace ABDOTClient.Data {
                 FirstName = firstName,
                 LastName = lastName
             };
-            return await ClientFactory.GetClient().RegisterUser( freshUser) == null;
+            return await ClientFactory.GetClient().RegisterUser( freshUser);
         }
 
         public bool IsAlreadyInUse(string email) {

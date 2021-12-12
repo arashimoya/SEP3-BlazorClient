@@ -4,46 +4,47 @@
 @using ABDOTClient.Pages.Administration
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager NavigationManager
+@inject IBranchService BranchService
 @namespace AddEmployeeComponent
 <h3>Add new employee</h3>
 <EditForm Model="@newEmployeeItem" OnValidSubmit="@AddNewEmployee">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-    <div class="form-group">
+<div class="form-group">
     First name:<br/>
     <InputText @bind-Value="newEmployeeItem.FirstName"/>
+</div>
+    <div class="form-group">
+        Last name:<br/>
+        <InputText @bind-Value="newEmployeeItem.LastName"/>
     </div>
     <div class="form-group">
-    Last name:<br/>
-    <InputText @bind-Value="newEmployeeItem.LastName"/>
+            Birthdate:<br/>
+            <InputDate @bind-Value="today" @bind-Value:format="yyyy-MM-dd"/>
     </div>
-    <div class="form-group">
+<div class="form-group">
     Password:<br/>
     <InputText @bind-Value="newEmployeeItem.Password"/>
-    </div>
-    <div class="form-group">
+</div>
+<div class="form-group">
     Email:<br/>
     <InputText @bind-Value="newEmployeeItem.Email"/>
-    </div>
-    <div class="form-group">
-        Country:<br/>
-        <InputText @bind-Value="newEmployeeItem.Country"/>
-    </div>
+</div>
+<div class="form-group">
+    Street:<br/>
+    <InputText @bind-Value="newEmployeeItem.Street"/>
+</div>
+<div class="form-group">
+    Postcode:<br/>
+    <InputText @bind-Value="newEmployeeItem.Postcode"/>
+</div>
     <div class="form-group">
         City:<br/>
         <InputText @bind-Value="newEmployeeItem.City"/>
     </div>
     <div class="form-group">
-            Postcode:<br/>
-            <InputText @bind-Value="newEmployeeItem.Postcode"/>
-        </div>
-    <div class="form-group">
-        Street:<br/>
-        <InputText @bind-Value="newEmployeeItem.Street"/>
-    </div>
-    <div class="form-group">
-        Date of birth:<br/>
-        <InputDate @bind-Value="newEmployeeItem.Birthday"/>
+        Country:<br/>
+        <InputText @bind-Value="newEmployeeItem.Country"/>
     </div>
     <div class="form-group">
         CPR Number:<br/>
@@ -58,17 +59,13 @@
         </CustomInputSelect>
     </div>
     <div class="form-group">
-                Branch:<br/>
-                <InputSelect @bind-Value="branchid">
-                    @if (branches != null)
-                    {
-                        @foreach (var item in branches)
-                        {
-                            <option value="@item.Id">@item.City</option>
-                        }
-                    }
-                </InputSelect>
-            </div>
+        Branch:<br/>
+        <InputSelect @bind-Value="@selectedBranchId">
+            @foreach (var branch in branches) {
+                <option value="@branch.Id">@branch.City</option>
+            }
+        </InputSelect>
+    </div>
     
     <p class="actions">
             <button class="btn btn-dark" type="submit">Submit</button>
@@ -77,37 +74,33 @@
 @code {
     private Employee newEmployeeItem = new Employee();
     private IEmployeeService employeeService = new EmployeeCloudService();
+    private IList<Branch> branches = new List<Branch>();
     private string confirmationMessage = "";
-    private IBranchService BranchService = new BranchCloudService();
-    private IList<Branch> branches;
-    
-    
-    private int branchid
-    {
-        get => newEmployeeItem.Branch.Id;
+    private DateTime today = DateTime.Today;
 
-        set => newEmployeeItem.Branch = branches.Single(c => c.Id == value);
+    private int selectedBranchId {
+        get => newEmployeeItem.Branch.Id;
+        set => newEmployeeItem.Branch = branches.Single(b => b.Id == value);
     }
     
-    private async Task AddNewEmployee()
-    {
-        if (await employeeService.CreateEmployee(newEmployeeItem))
+    
+    
+    private async Task AddNewEmployee() {
+        newEmployeeItem.Birthday = today.Year + "-" + today.Month + "-" + today.Day;
+        Employee returnedEmployee = await employeeService.CreateEmployee(newEmployeeItem);
+        if (returnedEmployee != null && returnedEmployee.GetType() == typeof(Employee)) 
         {
-            confirmationMessage = "Success";
-            NavigationManager.NavigateTo($"/personel");
-            
+            confirmationMessage = "Employee created successfully";
+            NavigationManager.NavigateTo($"/personel/{confirmationMessage}");
         }
      
     }
-    protected override async Task OnInitializedAsync()
-    {
-        
+    protected override async Task OnInitializedAsync() {
         newEmployeeItem.Branch = new Branch();
-        branches = new List<Branch>();
-        if (!branches.Any())
-        {
-            branches =  await BranchService.GetAllBranches();
-        }
+        branches = await BranchService.GetAllBranches();
+        newEmployeeItem.Branch = branches[0];
+
+        newEmployeeItem.Birthday = today.Year + "-" + today.Month + "-" + today.Day;
     }
 
 }
