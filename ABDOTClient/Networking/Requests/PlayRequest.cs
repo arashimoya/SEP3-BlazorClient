@@ -12,12 +12,12 @@ namespace ABDOTClient.Networking.Requests {
     public class PlayRequest : IPlayRequest
     {
         private GraphQLHttpClient graphQlClient;
-        private IList<Play> Plays;
+        
 
         public PlayRequest()
         {
             graphQlClient = new GraphQLHttpClient("https://abdot-middleware.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
-            Plays = new List<Play>();
+            
         }
         
         private class PlaysRoot
@@ -133,7 +133,6 @@ namespace ABDOTClient.Networking.Requests {
     }
   }
 }
-
          
                         ";
             
@@ -147,6 +146,12 @@ namespace ABDOTClient.Networking.Requests {
                 hall = play.Hall.Id,
                 price = play.Price
             };
+            Console.WriteLine(variables.id);
+            Console.WriteLine(variables.date);
+            Console.WriteLine(variables.timeInMinutes);
+            Console.WriteLine(variables.movieId);
+            Console.WriteLine(variables.hall);
+            Console.WriteLine(variables.price);
             //Make request object out of content using custom method wrote by #me
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
             //Send request, keep wrapped in try catch otherwise u wont get exception
@@ -157,7 +162,6 @@ namespace ABDOTClient.Networking.Requests {
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 throw;
             }
             //Return, possibly print
@@ -235,7 +239,7 @@ namespace ABDOTClient.Networking.Requests {
             
             
             //Make request object out of content
-            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
+            var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<PlayRoot>(graphQLRequest);
             //Return
