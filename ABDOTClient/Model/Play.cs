@@ -31,8 +31,8 @@ namespace ABDOTClient.Model
 
         public override string ToString()
         {
-            string returnString = "Play{\nId : " + Id + "\nDate" + Date + "\nTimeInMinutes" + TimeInMinutes + "\nMovie" + Movie
-                                  + "\nHall: " + Hall + "\nTickets" + Tickets + "\n}";
+            string returnString = "Play{\nId : " + Id + "\nDate : " + Date + "\nTimeInMinutes : "  + TimeInMinutes + "\nMovie : " + Movie.Id
+                                  + "\nHall ID :  " + Hall.Id + "\nTickets" + Tickets + "\n}";
             return returnString;
         }
     }
