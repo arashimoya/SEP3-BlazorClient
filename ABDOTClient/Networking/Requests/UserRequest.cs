@@ -113,17 +113,19 @@ namespace ABDOTClient.Networking {
             Console.WriteLine(user.ToString());
             //Create content of the query
             string query = @"
-                  mutation ($email : String!, $password: String!) {{
-                      login (login : {email: $email, password: $password}) {
-                        id,
-                        firstName,
-                        lastName,
-                        email,
-                        purchasedTickets {
-                           id,
-                           row,
-                           column
-}         
+                  mutation ($email : String!, $password: String!) {
+                                        login (login : {email: $email, password: $password}) {
+                                          id,
+                                          firstName,
+                                          lastName,
+                                          email,
+                                          ticketsPurchased {
+                                             id,
+                                             row,
+                                             column
+                                          }
+                                        }
+                                      }   
                         ";
             var variables = new
             {
