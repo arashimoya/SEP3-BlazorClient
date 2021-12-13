@@ -1,4 +1,4 @@
-﻿@page "/branches"
+﻿@page "/branches/{confirmationMessage}"
 @using ABDOTClient.Model
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
@@ -38,7 +38,7 @@ else
     <h3 style="color:black">BranchList</h3>
         <p style="color:black">for owners only //or give authentication for edit/remove actions</p>
         <div class="row">
-            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addmovie"))"><button>
+            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addbranch"))"><button>
                 <i class="oi oi-plus"/>
             </button>
                 </div>
@@ -61,10 +61,11 @@ else
             <tr>
                 <td>@item.Id</td>
                 <td>@item.City</td>
-                <td>@foreach (var hall in @item.Halls)
-                    {
-                        <a href="/hall/{hall.id}">Hall @hall.Id</a><br/>
-                    }</td>
+                <td>
+                    <button @onclick="@(() => GoToBranch(item.Id))">
+                        <i class="oi oi-eye" style="color:blue"/>
+                    </button>
+                </td>
                 
                     <td>
                         <button @onclick="@(() => RemoveBranch(item.Id))">
@@ -87,29 +88,37 @@ else
     private IList<Branch> branches;
     private IList<Branch> branchesToShow;
     private IBranchService BranchService = new BranchCloudService();
-    private string confirmationMessage="";
+    [Parameter] public string confirmationMessage { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         
         branches = new List<Branch>();
-        if (!branches.Any())
-        {
-            branches = await BranchService.GetAllBranches();
-        }
+        branches = await BranchService.GetAllBranches();
         branchesToShow = branches;
+        if (!confirmationMessage.Contains("success")) {
+            confirmationMessage = " ";
+        }
     }
 
-    private async Task RemoveBranch(long branchId)
-    {
-        if (await BranchService.DeleteBranch(branchId))
-            confirmationMessage = "Branch deleted successfully";
+    private async Task RemoveBranch(long branchId) {
+        Branch toRemove = branches.FirstOrDefault(b => b.Id == branchId);
+        if (toRemove != null) {
+            branchesToShow.Remove(toRemove);
+            branches.Remove(toRemove);
+            if (await BranchService.DeleteBranch(branchId))
+                confirmationMessage = "Branch deleted successfully";
+        }
 
     }
 
     private void Edit(int id)
     {
         NavigationManager.NavigateTo($"EditBranch/{id}");
+    }
+
+    private void GoToBranch(int id) {
+        NavigationManager.NavigateTo($"/HallList/{confirmationMessage}/{id}");
     }
 
     

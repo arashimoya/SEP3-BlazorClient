@@ -22,7 +22,7 @@ namespace ABDOTClient.Data {
             var user = new User();
             user.Email = email;
             user.Password = password;
-            Console.WriteLine(email + password);
+            Console.WriteLine(email +" " + password);
             var loggedUser = await ClientFactory.GetClient().LoginUser(user);
             return loggedUser;
         }
@@ -36,7 +36,7 @@ namespace ABDOTClient.Data {
                 FirstName = firstName,
                 LastName = lastName
             };
-            return await ClientFactory.GetClient().RegisterUser( freshUser) == null;
+            return await ClientFactory.GetClient().RegisterUser( freshUser);
         }
 
         public bool IsAlreadyInUse(string email) {

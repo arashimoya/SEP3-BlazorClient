@@ -46,19 +46,8 @@
     Length:<br/>
     <InputNumber @bind-Value="newMovieItem.LengthInMinutes"/>
 </div>
-
-    <h4>Cast</h4>
-    @* <button @onclick="AddValue" class="btn btn--black btn--outline-white">Add actor</button> *@
-    @* @for (int i = 0; i < newMovieItem.Cast.Count; i++) *@
-    @* { *@
-    @*     int index = i; *@
-    @*     <div> *@
-    @*         <InputText @bind-Value="newMovieItem.Cast[index].Name"/> *@
-    @*         <button @onclick="()=>RemoveValue(index)" class="btn btn--outline-white btn--black">-</button> *@
-    @*     </div> *@
-    @* } *@
     <p class="actions">
-            <button @onclick="()=>AddNewMovie()" class="btn btn-dark" type="submit">Submit</button>
+            <button  class="btn btn-dark" type="submit">Submit</button>
         </p>
 </EditForm>
 @code {
@@ -66,22 +55,13 @@
     private IMovieService CloudMovieService = new CloudMovieService();
     private string confirmationMessage = "";
 
-    // private void AddValue()
-    // {
-    //     newMovieItem.Cast.Add(new Actor(""));
-    // }
-    //
-    // private void RemoveValue(int i)
-    // {
-    //     newMovieItem.Cast.RemoveAt(i);
-    // }
-
+    
     private async Task AddNewMovie()
     {
         if (await CloudMovieService.AddMovieAsync(newMovieItem) != null)
         {
-            confirmationMessage = "Success";
-            NavigationManager.NavigateTo($"/movielist");
+            confirmationMessage = "Movie added successfully";
+            NavigationManager.NavigateTo($"/movielist/{confirmationMessage}");
         }
     }
     protected override Task OnInitializedAsync()

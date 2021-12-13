@@ -25,7 +25,12 @@
 else
 {
     <div class="container " style="background-color: white">
-    <h3 style="color:black">MovieList</h3>
+        <div class="section-separate" style="padding-top:40px">
+            <button style="border-color: transparent; background-color:transparent">
+                <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
+            </button>
+        </div>
+        <h3 style="color:black">MovieList</h3>
         <p style="color:black">for personel only</p>
         <div class="row">
             <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addmovie"))"><button>
@@ -50,7 +55,7 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in movies)
+        @foreach (var item in moviesToShow)
         {
             <tr>
                 <td>@item.Id</td>
@@ -60,15 +65,7 @@ else
                 <td>@item.LengthInMinutes</td>
                 <td>@item.Year</td>
                 <td>@item.Language</td>
-                @* <td> *@
-                @*     @foreach (var actor in item.Cast) *@
-                @*     { *@
-                @*         @actor.Name *@
-                @*         <br/> *@
-                @*     } *@
-                @* </td> *@
-                
-                    <td>
+                <td>
                         <button @onclick="@(() => RemoveMovie(item.Id))">
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
@@ -88,27 +85,29 @@ else
 @code {
     private IList<Movie> movies;
     private IList<Movie> moviesToShow;
-    [Parameter]public string confirmationMessage { get; set; }
-    private string success;
-    
 
-    protected override async Task OnParametersSetAsync()
-    {
+    [Parameter]
+    public string confirmationMessage { get; set; }
 
+
+    protected override async Task OnInitializedAsync() {
         movies = new List<Movie>();
-        if (!movies.Any())
-        {
-            movies = await CloudMovieService.GetAllAsync();
-        }
+        movies = await CloudMovieService.GetAllAsync();
         moviesToShow = movies;
+        if (!confirmationMessage.Contains("success")) {
+            confirmationMessage = " ";
+        }
     }
 
-    
 
-    private async Task RemoveMovie(int movieId)
-    {
-        if (await CloudMovieService.RemoveMovieAsync(movieId))
-            confirmationMessage = "Movie deleted successfully";
+    private async Task RemoveMovie(int movieId) {
+        Movie toRemove = movies.FirstOrDefault(m => m.Id == movieId);
+        if (toRemove != null) {
+            movies.Remove(toRemove);
+            moviesToShow.Remove(toRemove);
+            if(await CloudMovieService.RemoveMovieAsync(movieId))
+                confirmationMessage = "Movie deleted successfully";
+        }
     }
 
     private void Edit(int id)

@@ -4,40 +4,46 @@
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager NavigationManager
 <h3>AddBranch</h3>
-<EditForm Model="@newBranchItem" OnValidSubmit="@AddNewBranch">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
-<div class="form-group">
-    Name of the city:<br/>
-    <InputText @bind-Value="newBranchItem.City"/>
+<div class="container">
+    <EditForm Model="@newBranchItem" OnValidSubmit="@AddNewBranch">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="form-group">
+            Street:<br/>
+            <InputText @bind-Value="newBranchItem.Street"/>
+        </div>
+        <div class="form-group">
+            Postcode:<br/>
+            <InputText @bind-Value="newBranchItem.Postcode"/>
+        </div>
+        <div class="form-group">
+            City:<br/>
+            <InputText @bind-Value="newBranchItem.City"/>
+        </div>
+        <div class="form-group">
+                Country:<br/>
+                <InputText @bind-Value="newBranchItem.Country"/>
+            </div>
+        <p class="actions">
+                <button class="btn btn-dark" type="submit">Submit</button>
+            </p>
+    </EditForm>
 </div>
-    <p class="actions">
-            <button class="btn btn-dark" type="submit">Submit</button>
-        </p>
-</EditForm>
 @code {
     private Branch newBranchItem = new Branch();
     private IBranchService branchService = new BranchCloudService();
     private string confirmationMessage = "";
     
-
     
-    
-    
-    private async Task AddNewBranch()
-    {
-        if (await branchService.CreateBranch(newBranchItem) != null)
+    private async Task AddNewBranch() {
+        Branch returnedBranch = await branchService.CreateBranch(newBranchItem);
+        if (returnedBranch != null)
         {
-            confirmationMessage = "Success";
-            NavigationManager.NavigateTo($"/branches");
+            confirmationMessage = "Branch created successfully";
+            NavigationManager.NavigateTo($"/branches/{confirmationMessage}");
             
         }
      
-    }
-    protected override Task OnInitializedAsync()
-    {
-        
-        return base.OnInitializedAsync();
     }
 
 }

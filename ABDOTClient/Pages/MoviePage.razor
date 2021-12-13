@@ -1,0 +1,93 @@
+﻿@page "/movie/{Id:int}" 
+@using ABDOTClient.Data
+@using ABDOTClient.Model
+@inject NavigationManager NavigationManager
+@inject IMovieService MovieService
+@inject IPlayService PlayService
+
+@namespace MoviePage
+
+@* This page is directed to the movie page, although it is redirected upon play.Id, but it has the chosen branch and movie *@
+
+<div class="container">
+    <div class="movie">
+        <div class="movie-top">
+            <div class="row">
+                <div class="movie-poster-container">
+                    <div class="movie-list-poster"><img src="@play.Movie.PosterSrc" alt="king kong"/></div>
+                </div>
+                <div class="movie-date-select">
+                    <h1 class="movie-list-title">@play.Movie.Title</h1>
+                    <h3 class="section-label">Choose a day</h3>
+                    <select class="selectpicker">
+                        @foreach (var _play in allPlays)
+                        {
+                            @if (_play.Movie == play.Movie)
+                            {
+                                <option>
+                                    @* @_play.Date.ToString(format:"dd-MM H:m")    *@
+                                    @_play.Date
+                                </option>
+                            }
+                        }
+                    </select>
+                    @* <h3 class="section-label">Choose time</h3> *@
+                    @* <select class="selectpicker" @onchange="@GoToCheckout"> *@
+                    @*     <option> *@
+                    @*         Choose time *@
+                    @*     </option> *@
+                    @* </select> *@
+                    <button class="btn btn--outline-white" @onclick="@GoToCheckout">Next</button>
+                </div>
+            </div>
+        </div>
+        <div class="row movie-content">
+            <div class="col-sm-6 col-xl-8 ">
+                <div class="movie-facts">
+                    <div class="movie-fact">
+                        <p class="section-label">Title</p>
+                        <p class="movie-fact-value">@play.Movie.Title</p>
+                    </div>
+                    <div class="movie-fact">
+                        <p class="section-label">Length</p>
+                        <p class="movie-fact-value">@play.Movie.LengthInMinutes</p>
+                    </div>
+                    <div class="movie-fact">
+                        <p class="section-label">Premiere</p>
+                        <p class="movie-fact-value">@play.Movie.Year</p>
+                    </div>
+                    <div class="movie-fact">
+                        <p class="section-label">Genre</p>
+                        <p class="movie-fact-value">@play.Movie.Genre</p>
+                    </div>
+                    
+                </div> 
+            </div>
+            <div class="col-sm-6 col-xl-5">
+                <p class="movie-description">
+                    @play.Movie.Description
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]public int Id { get; set; }
+    private Play play { get; set; }
+
+    private IList<Play> allPlays;
+
+    protected override async Task OnInitializedAsync()
+    {
+        play = await PlayService.GetAsync(Id);
+        allPlays = await PlayService.GetAllAsync();
+
+    }
+
+    public void GoToCheckout()
+    {
+        NavigationManager.NavigateTo($"/selectticket/{play.Id}");
+    }
+}
