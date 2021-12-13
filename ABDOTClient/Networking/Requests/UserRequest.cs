@@ -68,6 +68,7 @@ namespace ABDOTClient.Networking {
             string query = @"
                         mutation ($firstName : String!, $lastName : String!, $email: String!, $password: String!) {
                           createUser(user: {firstName: $firstName, email: $email, lastName: $lastName, password: $password}) {
+                            id,
                             firstName,
                             lastName,
                             email,
@@ -112,17 +113,19 @@ namespace ABDOTClient.Networking {
             Console.WriteLine(user.ToString());
             //Create content of the query
             string query = @"
-                  mutation ($email : String!, $password: String!) {{
-                      login (login : {email: $email, password: $password}) {
-                        id,
-                        firstName,
-                        lastName,
-                        email,
-                        purchasedTickets {
-                           id,
-                           row,
-                           column
-}         
+                  mutation ($email : String!, $password: String!) {
+                                        login (login : {email: $email, password: $password}) {
+                                          id,
+                                          firstName,
+                                          lastName,
+                                          email,
+                                          ticketsPurchased {
+                                             id,
+                                             row,
+                                             column
+                                          }
+                                        }
+                                      }   
                         ";
             var variables = new
             {
@@ -146,6 +149,7 @@ namespace ABDOTClient.Networking {
             string query = @"
                         mutation ($id : Long!, $firstName : String!, $lastName : String!, $email: String!, $password: String!) {
                           editUser(user: {id : $id, firstName: $firstName, email: $email, lastName: $lastName, password: $password}) {
+                            id,
                             firstName,
                             lastName,
                             email,
