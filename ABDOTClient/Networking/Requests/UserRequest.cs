@@ -111,10 +111,16 @@ namespace ABDOTClient.Networking {
         {
             //Create content of the query
             string query = @"
-                  mutation ($email : String!, $password: String!) {
+                  mutation ($email : String!, $password: String!) {{
                       login (login : {email: $email, password: $password}) {
+                        id,
                         firstName,
-                        lastName
+                        lastName,
+                        email,
+                        purchasedTickets {
+                           id,
+                           row,
+                           column
 }         
                         ";
             var variables = new
