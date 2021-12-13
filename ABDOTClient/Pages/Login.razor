@@ -56,6 +56,8 @@
 
         try {
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(email, password);
+            returnedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+            Console.WriteLine(returnedUser + "this is returned user in login");
         }
         catch (Exception e) {
             Console.WriteLine(e);
@@ -74,6 +76,7 @@
         {
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
             NavigationManager.NavigateTo("/");
+            
         }
         catch (Exception e)
         {

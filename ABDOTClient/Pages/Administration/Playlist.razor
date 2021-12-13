@@ -19,6 +19,10 @@
 } else if (!playsToShow.Any()){
     <p>
         <em>No Play items exist. Please add some</em>
+        <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addplay"))"><button>
+                        <i class="oi oi-plus"/>
+                    </button>
+                        </div>
     </p>
 }
 else

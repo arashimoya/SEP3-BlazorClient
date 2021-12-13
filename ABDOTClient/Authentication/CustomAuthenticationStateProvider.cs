@@ -53,10 +53,12 @@ namespace ABDOTClient.Authentication {
             try
             {
                 User user = await userService.ValidateUser(username, password);
+                Console.WriteLine(user);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
                 cachedUser = user;
+                Console.WriteLine(cachedUser);
             }
             catch (Exception e)
             {
