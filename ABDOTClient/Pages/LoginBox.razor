@@ -1,0 +1,63 @@
+﻿@using ABDOTClient.Model
+@using ABDOTClient.Authentication
+@using LoginComponent
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@namespace LoginBoxComponent
+<style>
+    .login-box {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        position: relative;
+        top: 0;
+        right: 0;
+        height: 100%;
+        z-index: 1;
+    }
+</style>
+@if(user!=null){
+<div class="login-box">
+    <a class="nav-link text-light" style="color:orange" @onclick="@(() => NavigationManager.NavigateTo($"/profile/{user.Id}"))">Hello, @user.FirstName!</a>
+    <span class="breadcrumbs-separator">|</span>
+    <a class="nav-link text-light" @onclick="@(PerformLogout)" style="color:orange">Logout</a>
+</div>
+}
+else if(employee!=null) {
+    <a class="nav-link text-light" style="color:orange" @onclick="@(() => NavigationManager.NavigateTo($"/profile/{employee.Id}"))">Hello, @employee.FirstName!</a>
+    <span class="breadcrumbs-separator">|</span>
+    <a class="nav-link text-light" @onclick="@(PerformLogout)" style="color:orange">Logout</a>
+}
+@code{
+    private User user;
+    private Employee employee;
+    private Login login;
+    protected override void OnInitialized() {
+        login = new Login();
+        user = new User();
+        employee = new Employee();
+        user  = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        employee = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedEmployee;
+
+    }
+    public async Task PerformLogout()
+    {
+        
+        try
+        {
+            await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();
+            NavigationManager.NavigateTo("/");
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Source);
+            throw;
+        }
+        
+    }
+
+}
