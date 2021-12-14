@@ -15,12 +15,14 @@ namespace ABDOTClient.Authentication {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         public readonly IJSRuntime jsRuntime;
         private readonly IUserService userService;
+        private readonly IEmployeeService employeeService;
         public User cachedUser { get; set; }
 
-        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserService userService)
+        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserService userService, IEmployeeService employeeService)
         {
             this.jsRuntime = jsRuntime;
             this.userService = userService;
+            this.employeeService = employeeService;
         }
         
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -53,6 +55,10 @@ namespace ABDOTClient.Authentication {
             try
             {
                 User user = await userService.ValidateUser(username, password);
+                if (user == null) {
+                    
+                    throw new Exception("Incorrect credentials");
+                }
                 Console.WriteLine(user);
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);

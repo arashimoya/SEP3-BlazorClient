@@ -45,6 +45,7 @@
     private string errorMessage;
     private int Id;
     private User returnedUser;
+    public NavMenu NavMenu = new NavMenu();
     
     
 
@@ -58,6 +59,8 @@
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(email, password);
             returnedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
             Console.WriteLine(returnedUser + "this is returned user in login");
+            
+            NavigationManager.NavigateTo("/",true);
         }
         catch (Exception e) {
             Console.WriteLine(e);

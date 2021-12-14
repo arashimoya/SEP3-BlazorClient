@@ -1,5 +1,4 @@
-﻿
-@page "/SelectTicket"
+﻿@page "/SelectTicket/{Id:int}"
 @namespace SelectTicket
 @using SeatSelectionComponent
 @using ABDOTClient.Model
@@ -15,11 +14,12 @@
 </style>
 <section>
     <div style="margin-left:100px">
-        <p>1. Choose tickets > 2. Payment > 3. Invoice</p>
+        <span><text style="font-weight: 700">1. Choose Seats </text>> 2. Payment > 3. Invoice</span>
     </div>
 </section>
 <div class="position-relative">
-    <section class="header" >
+    @play.Id
+    <section class="header">
         <div class=" c--background" style="">
             <div class="header-top">
                 <div class="header-title">
@@ -29,10 +29,10 @@
             <div class="header-text row">
                 <div class="header-info col-12">
                     <div class="header-topic">
-                        Date: 
+                        Date:
                     </div>
                     <div class="header-description">
-                         @play.Date 
+                        @play.Date
                     </div>
                 </div>
                 <div class="header-info col-12">
@@ -48,14 +48,14 @@
                         Location:
                     </div>
                     <div class="header-description">
-                        @play.Hall.Branch.City HorizonXX, Hall Id
+                         HorizonXX, @play.Hall.Id
                     </div>
                 </div>
             </div>
         </div>
     </section>
-     <div class="inner-container"> 
-    
+    <div class="inner-container">
+
         <div class="seat-selection">
             <div class="container">
                 <div class="section-separate">
@@ -65,8 +65,7 @@
                                 Selected seats:
                             </div>
                             <div class="section-text">
-                                @foreach (var item in selectedSeats)
-                                {
+                                @foreach (var item in selectedSeats) {
                                     <div class="seat-select-choice">
                                         <div class="seat-select-choice-key">
                                             Seat:
@@ -104,16 +103,27 @@
 </div>
 
 @code {
-    private Play play { get; set; }
-        private const string backgroundSrc = "/css/images/ticket-background.gif";
+    private Play play = new Play();
+    private const string backgroundSrc = "/css/images/ticket-background.gif";
     private IList<Tuple<int,int>> selectedSeats;
     
     [Parameter] public int Id { get; set; }
 
-    protected override async Task OnInitializedAsync()
-    {
+    protected override async Task OnInitializedAsync() {
+        play = new Play();
+        play.Movie = new Movie();
+        play.Hall = new Hall();
+        play.Hall.Branch = new Branch();
         
         selectedSeats = new List<Tuple<int, int>>();
+        try {
+            play = await PlayService.GetAsync(Id);
+        }
+        catch (Exception e) {
+            Console.WriteLine(e.Source);
+            throw;
+        }
+        
     }
 
     private void ClickHandler(Tuple<int, int> newSeat)
@@ -131,7 +141,7 @@
     private void GoSomewhere()
     {
         string selectedSeatsJson = JsonSerializer.Serialize(selectedSeats);
-        NavigationManager.NavigateTo($"/checkoutInfo/{selectedSeatsJson}");
+        NavigationManager.NavigateTo($"/checkoutInfo/{play.Id}/{selectedSeatsJson}");
     }
 
     
