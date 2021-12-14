@@ -166,6 +166,7 @@ namespace ABDOTClient.Networking.Requests {
             }
             catch (Exception e)
             {
+                Console.WriteLine(e);
                 throw;
             }
             //Return, possibly print
