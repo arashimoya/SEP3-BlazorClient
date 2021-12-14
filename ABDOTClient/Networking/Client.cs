@@ -637,6 +637,18 @@ namespace ABDOTClient.Networking {
             }
         }
 
+        public async Task<Employee> LoginEmployee(Employee employee)
+        {
+            try
+            {
+                return await employeeRequest.LoginEmployee(employee);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         public async Task<Employee> EditEmployee(Employee employee) {
             try {
                 return await employeeRequest.EditEmployee(employee);

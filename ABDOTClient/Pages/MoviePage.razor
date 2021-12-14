@@ -1,4 +1,5 @@
 ﻿@page "/movie/{Id:int}" 
+
 @using ABDOTClient.Data
 @using ABDOTClient.Model
 @inject NavigationManager NavigationManager
@@ -8,7 +9,7 @@
 @namespace MoviePage
 
 @* This page is directed to the movie page, although it is redirected upon play.Id, but it has the chosen branch and movie *@
-
+@play.Id
 <div class="container">
     <div class="movie">
         <div class="movie-top">
@@ -19,18 +20,18 @@
                 <div class="movie-date-select">
                     <h1 class="movie-list-title">@play.Movie.Title</h1>
                     <h3 class="section-label">Choose a day</h3>
-                    <select class="selectpicker">
-                        @foreach (var _play in allPlays)
-                        {
-                            @if (_play.Movie == play.Movie)
-                            {
-                                <option>
-                                    @* @_play.Date.ToString(format:"dd-MM H:m")    *@
-                                    @_play.Date
-                                </option>
-                            }
-                        }
-                    </select>
+                    @* <select class="selectpicker"> *@
+                    @*     @foreach (var _play in allPlays) *@
+                    @*     { *@
+                    @*         @if (_play.Movie == play.Movie) *@
+                    @*         { *@
+                    @*             <option> *@
+                    @*                 $1$ @_play.Date.ToString(format:"dd-MM H:m")    #1# *@
+                    @*                 @_play.Date *@
+                    @*             </option> *@
+                    @*         } *@
+                    @*     } *@
+                    @* </select> *@
                     @* <h3 class="section-label">Choose time</h3> *@
                     @* <select class="selectpicker" @onchange="@GoToCheckout"> *@
                     @*     <option> *@
@@ -75,12 +76,13 @@
 @code {
 
     [Parameter]public int Id { get; set; }
-    private Play play { get; set; }
+    private Play play = new Play();
 
     private IList<Play> allPlays;
 
     protected override async Task OnInitializedAsync()
     {
+        play.Movie = new Movie();
         play = await PlayService.GetAsync(Id);
         allPlays = await PlayService.GetAllAsync();
 

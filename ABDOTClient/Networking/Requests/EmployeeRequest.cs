@@ -19,6 +19,11 @@ namespace ABDOTClient.Networking.Requests {
             }
         }
 
+        private class LoginEmployeeRoot
+        {
+            public Employee loginEmployee { get; set; }
+        }
+        
         private class EmployeeRoot {
             public Employee Employee { get; set; }
         }
@@ -104,6 +109,7 @@ namespace ABDOTClient.Networking.Requests {
                  graphQlResponse = await graphQlClient.SendMutationAsync<CreateEmployeeRoot>(graphQlRequest);
              }
              catch (Exception e) {
+                 Console.WriteLine(e);
                  throw;
              }
              
@@ -173,11 +179,58 @@ id,
                 graphQlResponse = await graphQlClient.SendMutationAsync<EditEmployeeRoot>(graphQlRequest);
             }
             catch (Exception e) {
+                Console.WriteLine(e);
                 throw;
             }
 
             return graphQlResponse.Data.editEmployee;
 
+        }
+
+
+        public async Task<Employee> LoginEmployee(Employee employee)
+        {
+            string query = @"
+mutation ($email : String, $password: String){
+  loginEmployee(loginEmployee: {email: $email, password: $password}) {
+    id,
+    email,
+    firstName,
+    lastName,
+    password,
+    role,
+    cPR,
+    street,
+    city,
+    postcode,
+    country,
+    birthday,
+    ticketsSold{
+      id
+    },
+    branch{
+      id
+    }
+  }
+}  ";
+            
+            
+            var variables = new {
+                email = employee.Email,
+                password = employee.Password
+            };
+            
+            var graphQlRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
+            var graphQlResponse = new GraphQLResponse<LoginEmployeeRoot>();
+            try {
+                graphQlResponse = await graphQlClient.SendMutationAsync<LoginEmployeeRoot>(graphQlRequest);
+            }
+            catch (Exception e) {
+                Console.WriteLine(e);
+                throw;
+            }
+
+            return graphQlResponse.Data.loginEmployee;
         }
 
         public async Task<bool> DeleteEmployee(int employeeId) {
@@ -290,6 +343,7 @@ id,
             Console.WriteLine(graphQlResponse.Data.Employees.Count);
             return graphQlResponse.Data.Employees;
         }
-        
+
+
     }
 }

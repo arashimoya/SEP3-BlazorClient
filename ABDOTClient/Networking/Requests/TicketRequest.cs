@@ -52,7 +52,8 @@ namespace ABDOTClient.Networking.Requests
 
         public async Task<Ticket> CreateTicket(Ticket ticket)
         {
-            string query = @"  mutation ($column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
+            Console.WriteLine("TICKET CREATE " + "\n" + ticket.ToString());
+            string query = @"mutation ($column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
     createTicket(ticket: {column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
     id,
     row,
@@ -211,21 +212,25 @@ namespace ABDOTClient.Networking.Requests
         public async Task<IList<Ticket>> GetAllTickets()
         {
             string query = @"query {
-  tickets {
-    id,
-    row,
-    column,
-    play {
-      id
-    }
-    user {
-      id
-    },
-    employee {
-      id
+ tickets {
+   id,
+   row,
+   column,
+   user {
+     id
+   },
+   employee {
+     id
+   }
+   play{
+     id,
+     movie {
+       id,
+       title
+     }
+   }
     } 
-  }
-}";
+  }";
         
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query);
             var graphQLResponse = new GraphQLResponse<TicketsRoot>();
