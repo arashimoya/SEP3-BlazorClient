@@ -112,6 +112,7 @@
     {
         newPlayItem.Date = today.Year + "-" + today.Month + "-" + today.Day + ", " + time;
         newPlayItem.TimeInMinutes = newPlayItem.Movie.LengthInMinutes;
+        
         Console.WriteLine(newPlayItem);
         Play returnedPlay = await PlayService.AddPlayAsync(newPlayItem);
         if (returnedPlay != null && returnedPlay.GetType() == typeof(Play))
