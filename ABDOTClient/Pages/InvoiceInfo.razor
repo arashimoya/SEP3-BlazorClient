@@ -1,0 +1,24 @@
+﻿@page "/InvoiceInfo/{InvoiceJson}"
+@using System.Text.Json
+@using ABDOTClient.Model
+<section>
+    <div style="margin-left:100px">
+        <span>1. Choose Seats > 2. Payment > <text style="font-weight: 700">3. Invoice</text></span>
+    </div>
+</section>
+
+@InvoiceJson
+@code {
+    [Parameter] public string InvoiceJson { get; set; }
+    private IList<Ticket> selectedTickets => JsonSerializer.Deserialize<IList<Ticket>>(InvoiceJson);
+
+    internal class Invoice {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public IList<Tuple<int,int>> Seats { get; set; }
+        public string Date { get; set; }
+        public string Movie { get; set; }
+        public string Hall { get; set; }
+    }
+}

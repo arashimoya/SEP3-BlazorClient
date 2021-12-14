@@ -19,7 +19,13 @@
     </p>
 } else if (!moviesToShow.Any()){
     <p>
-        <em>No Movie items exist. Please add some</em>
+        <em style="color:black">No Movie items exist. Please add some</em>
+        <div class="col-sm-4" @onclick="@(() => NavigationManager.NavigateTo("/addmovie"))">
+            <button>
+                <i class="oi oi-plus"/>
+            </button>
+        </div>
+        
     </p>
 }
 else

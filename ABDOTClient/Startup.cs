@@ -33,6 +33,7 @@ namespace ABDOTClient{
             services.AddScoped<IBranchService, BranchCloudService>();
             services.AddScoped<IHallService, HallCloudService>();
             services.AddScoped<IPlayService, PlayCloudService>();
+            services.AddScoped<ITicketService, TicketCloudService>();
 
 
 
