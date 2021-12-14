@@ -130,6 +130,7 @@
     public IList<Ticket> tickets;
     private Play play = new Play();
     private User user;
+    private Employee cachedEmployee;
     private string firstName;
     private string lastName;
     private string email;
@@ -144,9 +145,11 @@
         play.Movie = new Movie();
         play.Hall = new Hall();
         user = new User();
+        cachedEmployee = new Employee();
         play = await PlayService.GetAsync(Id);
         user = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
-        
+        cachedEmployee = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedEmployee;
+
     }
 
 
@@ -162,6 +165,20 @@
                 invoice.Email = user.Email;
                 invoice.FirstName = user.FirstName;
                 invoice.LastName = user.LastName;
+                
+                Ticket ticket = new Ticket()
+                {
+                    Column = item.Item2,
+                    Row = item.Item1,
+                    Employee = employee,
+                    Play = play,
+                    User = user,
+                };
+                await TicketService.AddTicket(ticket);
+            } else if (cachedEmployee != null) {
+                invoice.Email = cachedEmployee.Email;
+                invoice.FirstName = cachedEmployee.FirstName;
+                invoice.LastName = cachedEmployee.LastName;
                 
                 Ticket ticket = new Ticket()
                 {

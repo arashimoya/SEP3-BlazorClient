@@ -27,5 +27,14 @@ namespace ABDOTClient.Data
         public async Task<IList<Employee>> GetAllEmployees() {
             return await ClientFactory.GetClient().GetAllEmployees();
         }
+
+        public async Task<Employee> LoginEmployee(string username, string password) {
+            var employee = new Employee();
+            employee.Email = username;
+            employee.Password = password;
+            var loggedEmployee = await ClientFactory.GetClient().LoginEmployee(employee);
+            
+            return loggedEmployee;
+        }
     }
 }

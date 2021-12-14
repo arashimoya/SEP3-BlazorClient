@@ -15,5 +15,7 @@ namespace ABDOTClient.Data
         Task<Employee> GetEmployee(int employeeId);
 
         Task<IList<Employee>> GetAllEmployees();
+
+        Task<Employee> LoginEmployee(string username, string password);
     }
 }
