@@ -42,7 +42,7 @@ namespace ABDOTClient.Data
                 Hall hall = await _hallService.GetHall(play.Hall.Id);
                 Branch branch = await _branchService.GetBranch(hall.Id);
                 play.Hall.Branch = branch;
-                Console.WriteLine(play.ToString());
+                
             }
             
             return plays;

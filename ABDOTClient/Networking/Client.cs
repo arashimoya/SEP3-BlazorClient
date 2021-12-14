@@ -39,42 +39,44 @@ namespace ABDOTClient.Networking {
             //TEST OBJECTS
             //***********
             
-            // Branch branch = new Branch()
-            // {
-            //     Id = 1,
-            //     City = "chujowo2",
-            //     Street = "pica",
-            //     Postcode = "694202137",
-            //     Country = "jebane"
-            // };
-            //
-            // Hall hall = new Hall(1)
-            // {
-            //     Id = 1,
-            //     Branch = branch,
-            //     Programme = null
-            // };
-            // Movie movie = new Movie()
-            // {
-            //     Id = 1,
-            //     Title =  "Whatever 2",
-            //     Description = "Chuj w dupe",
-            //     Genre = "Hardcore Erotica",
-            //     Director = "Adam Sandler",
-            //     Language = "Arabic",
-            //     SubtitleLanguage = "asda",
-            //     Year = 1992,
-            //     LengthInMinutes = 132,
-            //     PosterSrc = "pornhub.com"
-            // };
-            // Play play = new Play()
-            // {
-            //     Id = 1,
-            //     Date = new DateTime(2021 - 12 - 21),
-            //     Hall = hall,
-            //     Movie = movie,
-            //     TimeInMinutes = 260
-            // };
+            Branch branch = new Branch()
+            {
+                Id = 1,
+                City = "chujowo2",
+                Street = "pica",
+                Postcode = "694202137",
+                Country = "jebane"
+            };
+            
+            Hall hall = new Hall(1)
+            {
+                Id = 1,
+                Branch = branch,
+                Programme = null
+            };
+            Movie movie = new Movie()
+            {
+                Id = 9,
+                Title =  "Whatever 2",
+                Description = "Chuj w dupe",
+                Genre = "Hardcore Erotica",
+                Director = "Adam Sandler",
+                Language = "Arabic",
+                SubtitleLanguage = "asda",
+                Year = 1992,
+                LengthInMinutes = 132,
+                PosterSrc = "pornhub.com"
+            };
+            Play play = new Play()
+            {
+                Id = 1,
+                Date = "2020-12-12",
+                Hall = hall,
+                Movie = movie,
+                TimeInMinutes = 260,
+                Price = 200,
+            };
+            playRequest.CreatePlay(play);
             //
             //
             // Employee employee = new Employee()

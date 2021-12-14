@@ -86,11 +86,7 @@ namespace ABDOTClient.Networking.Requests {
                 hallId = play.Hall.Id,
                 price = play.Price
             };
-            Console.WriteLine(variables.date);
-            Console.WriteLine(variables.timeInMinutes);
-            Console.WriteLine(variables.movieId);
-            Console.WriteLine(variables.hallId);
-            Console.WriteLine(variables.price);
+            
             //Make request object out of content using custom method wrote by #me
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
             //Send request, keep wrapped in try catch otherwise u wont get exception
@@ -150,12 +146,7 @@ namespace ABDOTClient.Networking.Requests {
                 hall = play.Hall.Id,
                 price = play.Price
             };
-            Console.WriteLine(variables.id);
-            Console.WriteLine(variables.date);
-            Console.WriteLine(variables.timeInMinutes);
-            Console.WriteLine(variables.movieId);
-            Console.WriteLine(variables.hall);
-            Console.WriteLine(variables.price);
+            
             //Make request object out of content using custom method wrote by #me
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query,variables);
             //Send request, keep wrapped in try catch otherwise u wont get exception
