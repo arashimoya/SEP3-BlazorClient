@@ -19,6 +19,10 @@
 } else if (!playsToShow.Any()){
     <p>
         <em>No Play items exist. Please add some</em>
+        <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addplay"))"><button>
+                        <i class="oi oi-plus"/>
+                    </button>
+                        </div>
     </p>
 }
 else
@@ -44,6 +48,7 @@ else
             <th>ID</th>
             <th>Movie</th>
             <th>Date</th>
+            <th>Branch</th>
             <th>Hall</th>
             <th>Edit</th>
             <th>Remove</th>
@@ -57,6 +62,7 @@ else
                 <td>@item.Id</td>
                 <td>@item.Movie.Title</td>
                 <td>@item.Date</td>
+                <td>@item.Hall.Branch.City</td>
                 <td>@item.Hall.Id</td>
                 <td>
                     <button @onclick="@(() => Edit(item.Id))">
@@ -84,6 +90,7 @@ else
 
     protected override async Task OnInitializedAsync() {
         plays = new List<Play>();
+        
         plays = await PlayService.GetAllAsync();
         playsToShow = plays;
         if (!confirmationMessage.Contains("success")) {

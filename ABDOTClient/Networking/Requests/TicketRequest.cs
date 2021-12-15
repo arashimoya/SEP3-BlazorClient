@@ -52,6 +52,7 @@ namespace ABDOTClient.Networking.Requests
 
         public async Task<Ticket> CreateTicket(Ticket ticket)
         {
+           
             string query = @"mutation ($column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
     createTicket(ticket: {column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
     id,

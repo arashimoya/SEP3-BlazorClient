@@ -154,7 +154,7 @@ namespace ABDOTClient.Networking
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine(e.Data);
                 throw;
             }
             // Console.WriteLine(graphQLResponse.Data.editMovie.Director);

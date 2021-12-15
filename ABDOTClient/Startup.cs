@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ABDOTClient.Authentication;
 using ABDOTClient.Data;
@@ -33,6 +34,7 @@ namespace ABDOTClient{
             services.AddScoped<IBranchService, BranchCloudService>();
             services.AddScoped<IHallService, HallCloudService>();
             services.AddScoped<IPlayService, PlayCloudService>();
+            services.AddScoped<ITicketService, TicketCloudService>();
 
 
 
@@ -44,6 +46,8 @@ namespace ABDOTClient{
                     builder.RequireAuthenticatedUser().RequireClaim("Role", "Manager"));
                 options.AddPolicy("MustBeEmployee", builder =>
                     builder.RequireAuthenticatedUser().RequireClaim("Role", "Employee"));
+                options.AddPolicy("SecurityLevel2", a=>
+                    a.RequireAuthenticatedUser().RequireClaim("Role","2","1","0"));
                 
             });
 

@@ -1,27 +1,230 @@
-﻿@page "/checkoutInfo/{selectedSeatsJson}"
+﻿@page "/checkoutInfo/{Id:int}/{selectedSeatsJson}"
 @using System.Text.Json
+@using ABDOTClient.Authentication
+@using ABDOTClient.Data
+@using ABDOTClient.Model
+@inject IPlayService PlayService
+@inject ITicketService TicketService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using LoginComponent
 
+<style>
+    .c--background {
+        background: #000 center/cover url(@backgroundSrc) no-repeat;
+    }
+</style>
+<section>
+    <div style="margin-left:100px">
+        <span>1. Choose Seats > <text style="font-weight: 700">2. Payment </text> 3. Invoice</span>
+    </div>
+</section>
+    <section class="header">
+        <div class=" c--background" style="">
+            <div class="header-top">
+                <div class="header-title">
+                    @play.Movie.Title
+                </div>
+            </div>
+            <div class="header-text row">
+                <div class="header-info col-12">
+                    <div class="header-topic">
+                        Date:
+                    </div>
+                    <div class="header-description">
+                        @play.Date
+                    </div>
+                </div>
+                <div class="header-info col-12">
+                    <div class="header-topic">
+                        Tickets:
+                    </div>
+                    <div class="header-description">
+                        @selectedSeats.Count
+                    </div>
+                </div>
+                <div class="header-info col-12">
+                    <div class="header-topic">
+                        Location:
+                    </div>
+                    <div class="header-description">
+                         HorizonXX, @play.Hall.Id
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 <div class="container">
     <h3>CheckoutInfo</h3>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="row">
+                <div class="col-sm-12 col-lg-5" style="border: 1px solid #505050; margin:5px">
+                    <Login/>
+                </div>
+                <div class="col-sm-12 col-lg-5" style="border: 1px solid #505050; margin:5px">
+                    Continue without login
+                </div>
+            </div>
+            <div class="section-separate">
+                <div class="form-group">
+                    Email:<br/><input type="text" @bind-value="email"/>
+                </div>
+                <div class="form-group">
+                    First Name:<br/><input type="text" @bind-value="firstName"/>
+                </div>
+                <div class="form-group">
+                    Last Name:<br/><input type="text" @bind-value="lastName"/>
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
     
-    @foreach (var item in selectedSeats)
-                                    {
-                                        <div class="seat-select-choice">
-                                            <div class="seat-select-choice-key">
-                                                Seat:
-                                            </div>
-                                            <div class="seat-select-choice-value">
-                                                Row: @item.Item1 Column: @item.Item2
-                                            </div>
-                                        </div>
-                                    }
-    
+    @foreach (var item in selectedSeats) 
+    {
+        <div class="seat-select-choice">
+            <div class="seat-select-choice-key">
+                Seat:
+            </div>
+            <div class="seat-select-choice-value">
+                Row: @item.Item1 Column: @item.Item2
+            </div>
+        </div>
+    }
+    <AuthorizeView>
+        <Authorized>
+            <div class="header-info col-12">
+                <div class="header-topic">
+                    FirstName:
+                </div>
+                <div class="header-description">
+                    @user.FirstName;
+                </div>
+            </div>
+            <div class="header-info col-12">
+                <div class="header-topic">
+                    LastName:
+                </div>
+                <div class="header-description">
+                    @user.LastName;
+                </div>
+            </div>
+            <div class="header-info col-12">
+                <div class="header-topic">
+                    E-mail:
+                </div>
+                <div class="header-description">
+                    @user.Email;
+                </div>
+            </div>
+
+        </Authorized>
+        
+    </AuthorizeView>
 </div>
+<button class="btn btn--outline-white" @onclick="@GoToInvoice">Next</button>
 
 @code {
     [Parameter] public string selectedSeatsJson { get; set; }
+    [Parameter] public int Id { get; set; }
+    public IList<Ticket> tickets;
+    private Play play = new Play();
+    private User user;
+    private Employee cachedEmployee;
+    private string firstName;
+    private string lastName;
+    private string email;
+    private Invoice invoice;
+    private const string backgroundSrc = "/css/images/ticket-background.gif";
+    
     private IList<Tuple<int, int>> selectedSeats => JsonSerializer.Deserialize<IList<Tuple<int,int>>>(selectedSeatsJson);
 
-    
-    
+    protected override async Task OnInitializedAsync() {
+        invoice = new Invoice();
+        tickets = new List<Ticket>();
+        play.Movie = new Movie();
+        play.Hall = new Hall();
+        user = new User();
+        cachedEmployee = new Employee();
+        play = await PlayService.GetAsync(Id);
+        user = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+        cachedEmployee = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedEmployee;
+
+    }
+
+
+    private async Task GoToInvoice() {
+        invoice.Seats = selectedSeats;
+        foreach (var item in selectedSeats) {
+            invoice.Date = play.Date;
+            invoice.Hall = play.Hall.Id.ToString();
+            invoice.Movie = play.Movie.Title;
+            Employee employee= new Employee();
+            employee.Id = 0;
+            if (user != null) {
+                invoice.Email = user.Email;
+                invoice.FirstName = user.FirstName;
+                invoice.LastName = user.LastName;
+                
+                Ticket ticket = new Ticket()
+                {
+                    Column = item.Item2,
+                    Row = item.Item1,
+                    Employee = employee,
+                    Play = play,
+                    User = user,
+                };
+                await TicketService.AddTicket(ticket);
+            } else if (cachedEmployee != null) {
+                invoice.Email = cachedEmployee.Email;
+                invoice.FirstName = cachedEmployee.FirstName;
+                invoice.LastName = cachedEmployee.LastName;
+                
+                Ticket ticket = new Ticket()
+                {
+                    Column = item.Item2,
+                    Row = item.Item1,
+                    Employee = employee,
+                    Play = play,
+                    User = user,
+                };
+                await TicketService.AddTicket(ticket);
+            }
+            else {
+                invoice.Email = email;
+                invoice.LastName = lastName;
+                invoice.FirstName = firstName;
+                Ticket ticket = new Ticket()
+                {
+                    Column = item.Item2,
+                    Row = item.Item1,
+                    Employee = employee,
+                    Play = play,
+                    User = new User()
+                    {
+                        Id = 0,
+                        Email = email,
+                        FirstName = firstName,
+                        LastName = lastName,
+                    },
+                };
+                await TicketService.AddTicket(ticket);
+            }
+        }
+        string InvoiceJson = JsonSerializer.Serialize(invoice);
+        NavigationManager.NavigateTo($"/InvoiceInfo/{InvoiceJson}");
+    }
+
+    private class Invoice {
+        public Invoice() {
+            Seats = new List<Tuple<int, int>>();
+        }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public IList<Tuple<int,int>> Seats { get; set; }
+        public string Date { get; set; }
+        public string Movie { get; set; }
+        public string Hall { get; set; }
+    }
 }

@@ -5,6 +5,8 @@
 @using Data
 
 @inject ITicketService TicketService
+@inject IHallService HallService
+@inject IPlayService PlayService
 
 <style>
     html, body {
@@ -20,18 +22,26 @@
     </p>
 } else if (!ticketsToShow.Any()){
     <p>
-        <em>No Movie items exist. Please add some</em>
+        <em>No Tickets items exist. Please add some</em>
     </p>
+    <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addTicket"))"><button>
+            <i class="oi oi-plus"/>
+        </button>
+    </div>
 }
 else
 {
     <div class="container " style="background-color: white">
-    <h3 style="color:black">TicketList</h3>
+        <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addTicket"))"><button>
+                        <i class="oi oi-plus"/>
+                    </button>
+                </div>
+        <h3 style="color:black">TicketList</h3>
         <p style="color:black">for personel only</p>
         <div class="row">
-           
+
         </div>
-        </div>
+    </div>
     <table class="table" style="color:black; border-color: black">
         <thead>
         <tr>
@@ -42,27 +52,29 @@ else
             <th>Branch</th>
             <th>Hall</th>
             <th>Seat</th>
-            <th>Customer's name</th>
-            
-                <th>Remove</th>
+            @* <th>Customer's name</th> *@
+            <th>Remove</th>
                 <th>Edit</th>
             
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in ticketsAll)
+        @foreach (var item in ticketsToShow)
         {
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Play.Id</td>
                 <td>@item.Play.Movie.Title</td>
-                @* <td>@item.Play.DateTime</td> *@
-                @* <td>@item.Branch.City</td> *@
-                @* <td>@item.Hall</td> *@
-                @* <td>@item.Seat</td> *@
-                
-                
-                    <td>
+                <td>@plays.Single(p=>p.Id == item.Play.Id).Date</td>
+                @* <td>@item.Play.Hall.Branch.City</td> *@
+                <td>@plays.Single(p=>p.Id==item.Play.Id).Hall.Branch.City</td>
+                <td>@plays.Single(p=>p.Id == item.Play.Id).Hall.Id</td>
+
+                <td>R: @item.Row, C: @item.Column</td>
+                @* <td>@item.User.FirstName @item.User.LastName</td> *@
+
+
+                <td>
                         <button @onclick="@(() => RemoveTicket(item.Id))">
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
@@ -82,17 +94,22 @@ else
 @code {
     private IList<Ticket> ticketsAll;
     private IList<Ticket> ticketsToShow;
-    
-    
+
+    private IList<Hall> halls;
+    private IList<Play> plays;
+
 
     protected override async Task OnInitializedAsync()
     {
         
         ticketsAll = new List<Ticket>();
+        ticketsToShow = new List<Ticket>();
+        halls = new List<Hall>();
+        plays = new List<Play>();
         ticketsAll = await TicketService.GetAllTickets();
         ticketsToShow = ticketsAll;
-
-
+        halls = await HallService.GetAllHalls();
+        plays = await PlayService.GetAllAsync();
     }
 
     private void Edit(int id)

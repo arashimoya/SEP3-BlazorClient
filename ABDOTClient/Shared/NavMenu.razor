@@ -1,8 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Filters
 @using ABDOTClient.Model
 @using ABDOTClient.Data
+@using ABDOTClient.Authentication
 @inject NavigationManager NavigationManager
 @inject IBranchService BranchService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using LoginBoxComponent
+@page "/navbar"
 <style>
     .header-selectpicker{
         border: none;
@@ -35,22 +39,26 @@
                 <li class="nav-item">
                     <a class="nav-link text-light" href="/premieres">Premieres</a>
                 </li>
+                <AuthorizeView>
                 <li class="nav-item">
                     <a class="nav-link text-light" href="/admin">Administration</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/profile">testprofile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/">Anotherlink</a>
-                </li>
+                </AuthorizeView>
+                
                 
             </ul>
-            <div class="login-box">
-                <a class="nav-link text-light" href="/login" style="color:orange">Login</a>
-                <span class="breadcrumbs-separator">|</span>
-                <a class="nav-link text-light" href="/register" style="color:orange">Register</a>
-            </div>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <div class="login-box">
+                        <a class="nav-link text-light" href="/login" style="color:orange">Login</a>
+                        <span class="breadcrumbs-separator">|</span>
+                        <a class="nav-link text-light" href="/register" style="color:orange">Register</a>
+                    </div>
+                </NotAuthorized>
+                <Authorized>
+                    <LoginBox/>
+                </Authorized>
+            </AuthorizeView>
             
         </div>
         
@@ -60,12 +68,7 @@
 
 @code {
     private IList<Branch> branches;
-
-    protected override async Task OnInitializedAsync()
-    {
-        
-    }
-
+    public User user;
     
     bool collapseNavMenu = true;
 

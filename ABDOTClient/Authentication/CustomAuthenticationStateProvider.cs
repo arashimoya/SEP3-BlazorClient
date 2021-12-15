@@ -15,12 +15,15 @@ namespace ABDOTClient.Authentication {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
         public readonly IJSRuntime jsRuntime;
         private readonly IUserService userService;
+        private readonly IEmployeeService employeeService;
         public User cachedUser { get; set; }
+        public Employee cachedEmployee { get; set; }
 
-        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserService userService)
+        public CustomAuthenticationStateProvider(IJSRuntime jsRuntime, IUserService userService, IEmployeeService employeeService)
         {
             this.jsRuntime = jsRuntime;
             this.userService = userService;
+            this.employeeService = employeeService;
         }
         
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -28,6 +31,17 @@ namespace ABDOTClient.Authentication {
             var identity = new ClaimsIdentity();
             if (cachedUser == null)
             {
+                if (cachedEmployee == null) {
+                    string employeeAsJson = await jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "currentEmployee");
+                    if (!string.IsNullOrEmpty(employeeAsJson))
+                    {
+                        cachedEmployee = JsonSerializer.Deserialize<Employee>(employeeAsJson);
+                        identity = SetupClaimsForEmployee(cachedEmployee);
+                    }
+                }
+                else {
+                    identity = SetupClaimsForEmployee(cachedEmployee);
+                }
                 string userAsJson = await jsRuntime.InvokeAsync<string>("sessionStorage.getItem", "currentUser");
                 if (!string.IsNullOrEmpty(userAsJson))
                 {
@@ -53,10 +67,25 @@ namespace ABDOTClient.Authentication {
             try
             {
                 User user = await userService.ValidateUser(username, password);
-                identity = SetupClaimsForUser(user);
-                string serialisedData = JsonSerializer.Serialize(user);
-                await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
-                cachedUser = user;
+                if (user == null) {
+                    Employee employee = await employeeService.LoginEmployee(username, password);
+                    if (employee == null) {
+                        throw new Exception("Incorrect credentials");
+                    }
+                        Console.WriteLine(employee);
+                        identity = SetupClaimsForEmployee(employee);
+                        string serialisedData = JsonSerializer.Serialize(employee);
+                        await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentEmployee", serialisedData);
+                        cachedEmployee = employee;
+                        Console.WriteLine(cachedEmployee);
+                } else {
+                    Console.WriteLine(user);
+                    identity = SetupClaimsForUser(user);
+                    string serialisedData = JsonSerializer.Serialize(user);
+                    await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
+                    cachedUser = user;
+                    Console.WriteLine(cachedUser);
+                }
             }
             catch (Exception e)
             {
@@ -72,11 +101,24 @@ namespace ABDOTClient.Authentication {
             var user = new ClaimsPrincipal(new ClaimsIdentity());
             await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", "");
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+            
+            cachedEmployee = null;
+            var employee = new ClaimsPrincipal(new ClaimsIdentity());
+            await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentEmployee", "");
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(employee)));
         }
         
         private ClaimsIdentity SetupClaimsForUser(User user)
         {
             List<Claim> claims = new List<Claim>();
+            ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
+            return identity;
+        }
+        private ClaimsIdentity SetupClaimsForEmployee(Employee employee)
+        {
+            
+            List<Claim> claims = new List<Claim>();
+            
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }

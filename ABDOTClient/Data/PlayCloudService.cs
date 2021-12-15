@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using ABDOTClient.Factories;
 using ABDOTClient.Model;
+using ABDOTClient.Networking.Requests;
+
 
 namespace ABDOTClient.Data
 {
-    public class PlayCloudService : IPlayService
-    {
+    public class PlayCloudService : IPlayService {
+        private IHallService _hallService = new HallCloudService();
+        private IBranchService _branchService = new BranchCloudService();
         public async Task<Play> AddPlayAsync(Play play)
         {
             return await ClientFactory.GetClient().AddPlay(play);
@@ -24,13 +28,24 @@ namespace ABDOTClient.Data
 
         public async Task<Play> GetAsync(int id)
         {
-            return await ClientFactory.GetClient().GetPlay(id);
+            Play play = await ClientFactory.GetClient().GetPlay(id);
+            Hall hall = await _hallService.GetHall(play.Hall.Id);
+            Branch branch = await _branchService.GetBranch(hall.Branch.Id);
+            play.Hall.Branch = branch;
+            return play;
         }
 
         public async Task<IList<Play>> GetAllAsync()
         {
+            IList<Play> plays = await ClientFactory.GetClient().GetAllPlays();
+            foreach (var play in plays) {
+                Hall hall = await _hallService.GetHall(play.Hall.Id);
+                Branch branch = await _branchService.GetBranch(hall.Id);
+                play.Hall.Branch = branch;
+                
+            }
             
-            return await ClientFactory.GetClient().GetAllPlays();
+            return plays;
         }
     }
 }

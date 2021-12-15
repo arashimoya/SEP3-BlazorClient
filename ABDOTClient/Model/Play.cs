@@ -20,7 +20,7 @@ namespace ABDOTClient.Model
         [Required]
         public Hall Hall { get; set; }
         
-        public double Price { get; set; }
+        public int Price { get; set; }
 
         public IList<Ticket> Tickets { get; set; }
 
