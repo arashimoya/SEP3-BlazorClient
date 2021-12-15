@@ -101,8 +101,8 @@ namespace ABDOTClient.Networking.Requests
                         birthday
                         },
                             halls{
-                              id,
-                              hallSize
+                              id
+                     
                             }
                           }
                         }          
@@ -157,8 +157,7 @@ namespace ABDOTClient.Networking.Requests
                         birthday
                         },
                             halls{
-                              id,
-                              hallSize
+                              id
                             }
                           }
                         }          
@@ -234,8 +233,7 @@ namespace ABDOTClient.Networking.Requests
                             postcode,
                             country,
                             halls{
-                              id,
-                              hallSize
+                              id
                             },
                             employees{
                             id,
@@ -281,8 +279,7 @@ namespace ABDOTClient.Networking.Requests
                         postcode,
                         country,
                         halls{
-                         id,
-                         hallSize
+                         id
                         },
                         employees{
                         id,

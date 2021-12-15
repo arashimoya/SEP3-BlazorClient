@@ -69,9 +69,7 @@ namespace ABDOTClient.Networking.Requests {
                               posterSrc
                             }
                             hall {
-                              id,
-                              hallSize
-
+                              id
                             }
                           }
                         }
@@ -127,8 +125,7 @@ namespace ABDOTClient.Networking.Requests {
       posterSrc
     }
     hall {
-      id,
-      hallSize,
+      id
 
     }
   }
@@ -221,8 +218,7 @@ namespace ABDOTClient.Networking.Requests {
       posterSrc
     }
     hall {
-      id,
-      hallSize
+      id
 
     }
   }
@@ -266,8 +262,7 @@ namespace ABDOTClient.Networking.Requests {
       posterSrc
     }
     hall {
-      id,
-      hallSize,
+      id
 
     }
   }
