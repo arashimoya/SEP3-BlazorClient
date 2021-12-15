@@ -4,22 +4,12 @@ using System.Threading.Tasks;
 using ABDOTClient.Factories;
 using ABDOTClient.Model;
 using ABDOTClient.Networking;
-using ABDOTClient.Persistence;
 
 namespace ABDOTClient.Data
 {
     public class CloudMovieService : IMovieService
     {
         private IList<Movie> movies;
-        private ServerContext ServerContext;
-        private Client client;
-
-        public CloudMovieService()
-        {
-            ServerContext = new ServerContext();
-            client = new Client();
-            
-        }
 
         public async Task<Movie> AddMovieAsync(Movie movie) {
             movie.PosterSrc = "css/images/default_poster.jpg";

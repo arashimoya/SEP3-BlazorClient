@@ -2,6 +2,8 @@
 @namespace ABDOTClient.Pages.Administration
 @inject NavigationManager NavigationManager
 @inject IPlayService PlayService
+@inject IBranchService BranchService
+@inject IHallService HallService
 @using ABDOTClient.Model
 @using Data
 
@@ -62,7 +64,7 @@ else
                 <td>@item.Id</td>
                 <td>@item.Movie.Title</td>
                 <td>@item.Date</td>
-                <td>@item.Hall.Branch.City</td>
+                <td>@branches.Single(b=>b.Id == halls.Single(h=>h.Id == item.Hall.Id).Id).City</td>
                 <td>@item.Hall.Id</td>
                 <td>
                     <button @onclick="@(() => Edit(item.Id))">
@@ -74,9 +76,6 @@ else
                         <i class="oi oi-trash" style="color:red"/>
                     </button>
                 </td>
-                
-                
-                
             </tr>
         }
         </tbody>
@@ -86,11 +85,18 @@ else
 @code {
     private IList<Play> plays;
     private IList<Play> playsToShow;
+    private IList<Hall> halls;
+    private IList<Branch> branches;
     [Parameter]public string confirmationMessage { get; set; }
 
     protected override async Task OnInitializedAsync() {
         plays = new List<Play>();
-        
+        playsToShow = new List<Play>();
+        halls = new List<Hall>();
+        branches = new List<Branch>();
+
+        halls = await HallService.GetAllHalls();
+        branches = await BranchService.GetAllBranches();
         plays = await PlayService.GetAllAsync();
         playsToShow = plays;
         if (!confirmationMessage.Contains("success")) {

@@ -1,4 +1,4 @@
-﻿@page "/ticketlist"
+﻿@page "/ticketlist/{confirmationMessage}"
 @namespace ABDOTClient.Pages.Administration
 @inject NavigationManager NavigationManager
 @using ABDOTClient.Model
@@ -7,6 +7,7 @@
 @inject ITicketService TicketService
 @inject IHallService HallService
 @inject IPlayService PlayService
+@inject IBranchService BranchService
 
 <style>
     html, body {
@@ -14,7 +15,7 @@
         color: black;
     }
 </style>
-
+@confirmationMessage
 @if (ticketsToShow == null)
 {
     <p>
@@ -67,7 +68,7 @@ else
                 <td>@item.Play.Movie.Title</td>
                 <td>@plays.Single(p=>p.Id == item.Play.Id).Date</td>
                 @* <td>@item.Play.Hall.Branch.City</td> *@
-                <td>@plays.Single(p=>p.Id==item.Play.Id).Hall.Branch.City</td>
+                <td>@branches.Single(b=>b.Id == plays.Single(p=>p.Id == item.Play.Id).Hall.Id).City</td>
                 <td>@plays.Single(p=>p.Id == item.Play.Id).Hall.Id</td>
 
                 <td>R: @item.Row, C: @item.Column</td>
@@ -92,9 +93,14 @@ else
     
 }
 @code {
+
+    [Parameter]
+    public string confirmationMessage { get; set; }
+
     private IList<Ticket> ticketsAll;
     private IList<Ticket> ticketsToShow;
 
+    private IList<Branch> branches;
     private IList<Hall> halls;
     private IList<Play> plays;
 
@@ -106,10 +112,12 @@ else
         ticketsToShow = new List<Ticket>();
         halls = new List<Hall>();
         plays = new List<Play>();
+        branches = new List<Branch>();
         ticketsAll = await TicketService.GetAllTickets();
         ticketsToShow = ticketsAll;
         halls = await HallService.GetAllHalls();
         plays = await PlayService.GetAllAsync();
+        branches = await BranchService.GetAllBranches();
     }
 
     private void Edit(int id)
