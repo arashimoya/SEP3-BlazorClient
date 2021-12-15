@@ -45,7 +45,6 @@ else if(employee!=null) {
     }
     public async Task PerformLogout()
     {
-        
         try
         {
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();

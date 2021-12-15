@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -63,19 +64,26 @@ namespace ABDOTClient.Authentication {
             Console.WriteLine("Validating log in");
             if (string.IsNullOrEmpty(username)) throw new Exception("Enter username");
             if (string.IsNullOrEmpty(password)) throw new Exception("Enter password");
+            
             ClaimsIdentity identity = new ClaimsIdentity();
             try
             {
                 User user = await userService.ValidateUser(username, password);
-                if (user == null) {
+                Debug.WriteLine("Here 1");
+                if (user.GetType() != typeof(User)) {
+                    Console.WriteLine("Here 2");
                     Employee employee = await employeeService.LoginEmployee(username, password);
-                    if (employee == null) {
+                    Console.WriteLine("Here 3");
+                    
+                    if (employee == null) 
                         throw new Exception("Incorrect credentials");
-                    }
+                    
+                    Console.WriteLine("Here 4");
                         Console.WriteLine(employee);
                         identity = SetupClaimsForEmployee(employee);
                         string serialisedData = JsonSerializer.Serialize(employee);
                         await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentEmployee", serialisedData);
+                        Console.WriteLine("Here 5");
                         cachedEmployee = employee;
                         Console.WriteLine(cachedEmployee);
                 } else {
@@ -111,13 +119,19 @@ namespace ABDOTClient.Authentication {
         private ClaimsIdentity SetupClaimsForUser(User user)
         {
             List<Claim> claims = new List<Claim>();
+            // Working prototype
+            claims.Add(new Claim("Email", user.Id.ToString()));
+
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }
         private ClaimsIdentity SetupClaimsForEmployee(Employee employee)
         {
-            
             List<Claim> claims = new List<Claim>();
+            // claims.Add(new Claim("Email", employee.Email));
+            // claims.Add(new Claim("Role", employee.Role.ToString()));
+            // claims.Add(new Claim("Role", Convert.ToString(employee.Role)));
+
             
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
