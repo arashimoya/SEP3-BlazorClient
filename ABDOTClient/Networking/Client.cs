@@ -15,7 +15,6 @@ using ABDOTClient.Networking.Requests.Interfaces;
 namespace ABDOTClient.Networking {
     public class Client
     {
-        private IUserRequest userRequest;
         private IMovieRequest movieRequest;
         private IPlayRequest playRequest;
         private IProgramRequest programRequest;
@@ -26,7 +25,6 @@ namespace ABDOTClient.Networking {
 
         public Client()
         {
-            userRequest = new UserRequest();
             movieRequest = new MovieRequest();
             playRequest = new PlayRequest();
             ticketRequest = new TicketRequest();
@@ -48,7 +46,7 @@ namespace ABDOTClient.Networking {
             //     Country = "jebane"
             // };
             //
-            // Hall hall = new Hall(1)
+            // Hall hall = new Hall()
             // {
             //     Id = 1,
             //     Branch = branch,
@@ -92,25 +90,7 @@ namespace ABDOTClient.Networking {
             //     TicketsSold = null
             // };
             //
-            // User user = new User()
-            // {
-            //     Id = 1,
-            //     Email = "jebo.jebowski@kokot.com",
-            //     FirstName = "Jebo",
-            //     LastName = "Jebowski",
-            //     Password = "Pojebane123",
-            //     TicketsPurchased = null
-            // };
             //
-            // Ticket ticket = new Ticket()
-            // {
-            //     Id = 1,
-            //     Column = 6,
-            //     Row = 4,
-            //     Employee = employee,
-            //     Play = play,
-            //     User = user
-            // };
             //
             // //***********
             // //API TESTING
@@ -232,28 +212,7 @@ namespace ABDOTClient.Networking {
             //
             // Console.WriteLine(deleteTicket);
             //
-            // //***********
-            // //USER
-            // //***********
-            //
-            //
-            //
-            // Task<User> createUser = userRequest.RegisterUser(user);
-            // Task<User> editUser = userRequest.EditUser(user);
-            // Task<User> getUser = userRequest.GetUser(1);
-            // Task<IList<User>> getUsers = userRequest.GetAllUsers();
-            // Task<bool> deleteUser = userRequest.DeleteUser(1);
-            // Task<User> loginUser = userRequest.Login(user);
-            //
-            // Console.WriteLine(createUser);
-            // Console.WriteLine(editUser);
-            // Console.WriteLine(getUser);
-            // foreach (User forUser in getUsers.Result) {
-            //     Console.WriteLine(forUser);
-            // }
-            //
-            // Console.WriteLine(deleteUser);
-            // Console.WriteLine(loginUser);
+
 
         }
 
@@ -323,65 +282,8 @@ namespace ABDOTClient.Networking {
                 return null;
             }
         }
-        public async Task<User> RegisterUser(User user) {
-            try {
-                return await userRequest.RegisterUser(user);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<User> LoginUser(User user) {
-            try {
-                return await userRequest.Login(user);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<User> EditUser(User user) {
-            try {
-                return await userRequest.EditUser(user);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<bool> DeleteUser(int id) {
-            try {
-                return await userRequest.DeleteUser(id);
-            }
-            catch (Exception e) {
-                ;
-                return false;
-            }
-        }
-
-        public async Task<User> GetUser(int id) {
-            try {
-                return await userRequest.GetUser(id);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<IList<User>> GetAllUsers() {
-            try {
-                return await userRequest.GetAllUsers();
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
+       
+        
 
 
         public async Task<Movie> AddMovie(Movie movie) {

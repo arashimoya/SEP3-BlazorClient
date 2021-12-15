@@ -59,9 +59,6 @@ namespace ABDOTClient.Networking.Requests
     column,
     play {
       id
-    }
-    user {
-      id
     },
     employee {
       id
@@ -73,7 +70,6 @@ namespace ABDOTClient.Networking.Requests
             var variables = new
             {
                 playId = ticket.Play.Id,
-                userId = ticket.User.Id,
                 employeeId = ticket.Employee.Id,
                 row = ticket.Row,
                 column = ticket.Column
@@ -104,9 +100,6 @@ namespace ABDOTClient.Networking.Requests
     play {
       id
     }
-    user {
-      id
-    },
     employee {
       id
     } 
@@ -118,7 +111,6 @@ namespace ABDOTClient.Networking.Requests
             {
                 id = ticket.Id,
                 playId = ticket.Play.Id,
-                userId = ticket.User.Id,
                 employeeId = ticket.Employee.Id,
                 row = ticket.Row,
                 column = ticket.Column
@@ -177,9 +169,6 @@ namespace ABDOTClient.Networking.Requests
     play {
       id
     }
-    user {
-      id
-    },
     employee {
       id
     } 
@@ -215,9 +204,6 @@ namespace ABDOTClient.Networking.Requests
    id,
    row,
    column,
-   user {
-     id
-   },
    employee {
      id
    }
