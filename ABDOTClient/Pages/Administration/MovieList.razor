@@ -5,6 +5,9 @@
 @using Data
 
 @inject IMovieService CloudMovieService
+
+@attribute [Authorize(Roles = "1, 2")]
+
 <style>
     html, body {
         background-color: white;
