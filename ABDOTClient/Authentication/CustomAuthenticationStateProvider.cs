@@ -116,7 +116,9 @@ namespace ABDOTClient.Authentication {
         }
         private ClaimsIdentity SetupClaimsForEmployee(Employee employee)
         {
+            
             List<Claim> claims = new List<Claim>();
+            
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }
