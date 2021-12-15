@@ -53,15 +53,12 @@ namespace ABDOTClient.Networking.Requests
         public async Task<Ticket> CreateTicket(Ticket ticket)
         {
            
-            string query = @"mutation ($column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
-    createTicket(ticket: {column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
+            string query = @"mutation ($column : Int!, $row : Int!, $playId : Long!, $employeeId : Long!) {
+    createTicket(ticket: {column : $column, row : $row, playId : $playId, employeeId : $employeeId}) {
     id,
     row,
     column,
     play {
-      id
-    }
-    user {
       id
     },
     employee {
@@ -74,7 +71,6 @@ namespace ABDOTClient.Networking.Requests
             var variables = new
             {
                 playId = ticket.Play.Id,
-                userId = ticket.User.Id,
                 employeeId = ticket.Employee.Id,
                 row = ticket.Row,
                 column = ticket.Column
@@ -97,17 +93,14 @@ namespace ABDOTClient.Networking.Requests
 
         public async Task<Ticket> EditTicket(Ticket ticket)
         {
-            string query = @" mutation ($id : Long!, $column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
-    editTicket(ticket: {id : $id, column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
+            string query = @" mutation ($id : Long!, $column : Int!, $row : Int!, $playId : Long!, $employeeId : Long!) {
+    editTicket(ticket: {id : $id, column : $column, row : $row, playId : $playId, employeeId : $employeeId}) {
     id,
     row,
     column,
     play {
       id
     }
-    user {
-      id
-    },
     employee {
       id
     } 
@@ -119,7 +112,6 @@ namespace ABDOTClient.Networking.Requests
             {
                 id = ticket.Id,
                 playId = ticket.Play.Id,
-                userId = ticket.User.Id,
                 employeeId = ticket.Employee.Id,
                 row = ticket.Row,
                 column = ticket.Column
@@ -178,9 +170,6 @@ namespace ABDOTClient.Networking.Requests
     play {
       id
     }
-    user {
-      id
-    },
     employee {
       id
     } 
@@ -216,9 +205,6 @@ namespace ABDOTClient.Networking.Requests
    id,
    row,
    column,
-   user {
-     id
-   },
    employee {
      id
    }
