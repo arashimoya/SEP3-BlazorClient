@@ -38,29 +38,40 @@
             <InputNumber @bind-Value="ticketToEdit.Play.Hall.Id"/>
         </div>
         <div class="form-group">
-            Seat:<br/>
-            @* <InputText @bind-Value="ticketToEdit."/> *@
+            Column:
+            <InputText @bind-Value="Column"/>
+        </div>
+        <div class="form-group">
+            Row:
+            <InputText @bind-Value="Row"/>
         </div>
         <p class="actions">
-            <button  class="btn btn-dark" type="submit">Submit</button>
+            <button class="btn btn-dark" type="submit">Submit</button>
         </p>
     </EditForm>
     @ticketToEdit.ToString()
 </div>
 
-@code 
+@code
 {
-    [Parameter] public int Id { get; set; }
+    [Parameter]
+    public int Id { get; set; }
 
-    private Ticket ticketToEdit = new ();
+    private Ticket ticketToEdit = new();
+    private Play newPlayItem = new();
     private DateTime today = DateTime.Today;
     private string confirmationMessage = "";
 
+    private string Column;
+    private string Row;
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         ticketToEdit = await TicketService.GetTicket(Id);
+        Column = ticketToEdit.Column.ToString();
+        Row = ticketToEdit.Row.ToString();
     }
-    
+
     private async Task editTicket()
     {
         if (await TicketService.EditTicket(ticketToEdit) != null)
