@@ -48,10 +48,9 @@ namespace ABDOTClient.Networking.Requests {
         public async Task<Hall> CreateHall(Hall hall) {
             Console.WriteLine("we here in HallRequest in createHall and this the hall: "+  hall);
             var query =
-                @"mutation($branchId : Int!, $hallSize: Int!) {
-                  createHall (input : {branchId : $branchId, hallSize:$hallSize}) {
+                @"mutation($branchId : Int!) {
+                  createHall (input : {branchId : $branchId}) {
                     id,
-                    hallSize,
                     branch{
                       id,
                       street,
@@ -62,8 +61,7 @@ namespace ABDOTClient.Networking.Requests {
                   }
                  }";
             var variables = new {
-                branchId = hall.Branch.Id,
-                hallSize = hall.HallSize
+                branchId = hall.Branch.Id
             };
 
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
@@ -85,10 +83,9 @@ namespace ABDOTClient.Networking.Requests {
         public async Task<Hall> EditHall(Hall hall) {
             Console.WriteLine("we here in HallRequest in EditHall and this the hall: "+  hall);
             var query =
-                @"mutation($id:Int!,$branchId : Int!, $hallSize: Int!) {
-                    editHall (input : {id:$id  ,branchId : $branchId, hallSize:$hallSize}) {
+                @"mutation($id:Int!,$branchId : Int!) {
+                    editHall (input : {id:$id  ,branchId : $branchId}) {
                     id,
-                    hallSize,
                     branch{
                       id,
                       street,
@@ -100,8 +97,7 @@ namespace ABDOTClient.Networking.Requests {
                  }";
             var variables = new {
                 id = hall.Id,
-                branchId = hall.Branch.Id,
-                hallSize = hall.HallSize
+                branchId = hall.Branch.Id
             };
 
             var graphQLRequest = GraphQLUtility.MakeGraphQLRequest(query, variables);
@@ -153,8 +149,7 @@ namespace ABDOTClient.Networking.Requests {
             string query = @"
                   query($id:Int!){
                   hall(id:$id){
-                    id,
-                    hallSize,
+                    id
                     branch{
                       id
                     },
@@ -191,7 +186,6 @@ namespace ABDOTClient.Networking.Requests {
                 query{
                   halls{
                     id,
-                    hallSize,
                     branch{
                       id,
                         street,

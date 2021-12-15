@@ -44,7 +44,6 @@
    
     
 </style>
-
 <Carousel/>
 <div class="section" >
     <div class="container">
@@ -64,22 +63,28 @@
             </div>
             <div class="col-sm-4">
                 <div>
-                    <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch">
-                        @foreach (var branch in branches)
-                        {
-                            <option>@branch.City</option>
-                        }
-                    </select>
+                    <h3 style="text-align: right">Choose city:</h3>
+                    @if (branches.Any()) {
+                        <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch">
+
+                            @foreach (var branch in branches) {
+                                <option>@branch.City</option>
+                            }
+
+                        </select>
+                    }
                 </div>
             </div>
         </div>
         <div class="section row">
-            @if(playsToShow !=null || !playsToShow.Any()){
+            @if(playsToShow !=null){
             @foreach (var play in playsToShow)
             {
-                <div class="col-md-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id))">
+                <div class="col-md-4 col-lg-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(play.Id))">
                     <div class="movie-list">
-                        <div class="movie-list-poster movie-list-upcoming "><img src=@play.Movie.PosterSrc/>
+                        <div class="movie-list-poster movie-list-upcoming" style="background-image: url(@play.Movie.PosterSrc)">
+                            <div class="movie-list-poster-title">@play.Movie.Title</div>
+                            <div class="movie-list-poster-date">@play.Movie.Year</div>
                         </div>
                         <div class="movie-list-top-content">
                             <h4 class="movie-list-title">@play.Movie.Title</h4>
@@ -95,10 +100,15 @@
                                 <p class="section-label">Premiere</p>
                                 <p class="movie-list-date">@play.Movie.Year</p>
                             </div>
+                            <div>
+                                @foreach (var _play in playsToShow) {
+                                    <a class="section-label">@_play.Date | </a>
+                                }
+                            </div>
                         </div>
                     </div>
-                    @play.Date
-                                    @* @play.Hall.Branch.City *@
+                    
+                    
                 </div>
                 
             }
@@ -115,16 +125,14 @@
     
     private string selectedBranch;
     private DateTime selectedDay;
-    
-    private IList<Branch> branches = new List<Branch>();
-    
-    private IList<Play> plays = new List<Play>();
-    private IList<Play> playsToShow = new List<Play>();
-    
-    
+    private IList<Branch> branches;
+    private IList<Play> plays;
+    private IList<Play> playsToShow;
     
     protected override async Task OnInitializedAsync() {
+        plays = new List<Play>();
         playsToShow = new List<Play>();
+        branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
         plays = await PlayService.GetAllAsync();
         playsToShow = plays;

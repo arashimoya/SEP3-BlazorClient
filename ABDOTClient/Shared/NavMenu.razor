@@ -42,8 +42,13 @@
                     <a class="nav-link text-light" href="/premieres">Premieres</a>
                 </li>
                 <AuthorizeView>
-                <li class="nav-item">
-                    <a class="nav-link text-light" href="/admin">Administration</a>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="/admin">Administration</a>
+                    </li>
+                </AuthorizeView>
+                <AuthorizeView>
+                <li>
+                    <a class="nav-link text-light">you are employee</a>
                 </li>
                 </AuthorizeView>
                 
@@ -58,7 +63,7 @@
                     </div>
                 </NotAuthorized>
                 <Authorized>
-                    <LoginBox/>
+                    @* <LoginBox/> *@
                 </Authorized>
             </AuthorizeView>
             
@@ -70,8 +75,7 @@
 
 @code {
     private IList<Branch> branches;
-    public User user;
-    
+
     bool collapseNavMenu = true;
 
     string NavMenuCssClass => collapseNavMenu ? "collapse" : null;

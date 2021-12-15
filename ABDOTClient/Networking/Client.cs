@@ -15,7 +15,6 @@ using ABDOTClient.Networking.Requests.Interfaces;
 namespace ABDOTClient.Networking {
     public class Client
     {
-        private IUserRequest userRequest;
         private IMovieRequest movieRequest;
         private IPlayRequest playRequest;
         private IProgramRequest programRequest;
@@ -26,7 +25,6 @@ namespace ABDOTClient.Networking {
 
         public Client()
         {
-            userRequest = new UserRequest();
             movieRequest = new MovieRequest();
             playRequest = new PlayRequest();
             ticketRequest = new TicketRequest();
@@ -39,44 +37,42 @@ namespace ABDOTClient.Networking {
             //TEST OBJECTS
             //***********
             
-            Branch branch = new Branch()
-            {
-                Id = 1,
-                City = "chujowo2",
-                Street = "pica",
-                Postcode = "694202137",
-                Country = "jebane"
-            };
-            
-            Hall hall = new Hall(1)
-            {
-                Id = 1,
-                Branch = branch,
-                Programme = null
-            };
-            Movie movie = new Movie()
-            {
-                Id = 9,
-                Title =  "Whatever 2",
-                Description = "Chuj w dupe",
-                Genre = "Hardcore Erotica",
-                Director = "Adam Sandler",
-                Language = "Arabic",
-                SubtitleLanguage = "asda",
-                Year = 1992,
-                LengthInMinutes = 132,
-                PosterSrc = "pornhub.com"
-            };
-            Play play = new Play()
-            {
-                Id = 1,
-                Date = "2020-12-12",
-                Hall = hall,
-                Movie = movie,
-                TimeInMinutes = 260,
-                Price = 200,
-            };
-            playRequest.CreatePlay(play);
+            // Branch branch = new Branch()
+            // {
+            //     Id = 1,
+            //     City = "chujowo2",
+            //     Street = "pica",
+            //     Postcode = "694202137",
+            //     Country = "jebane"
+            // };
+            //
+            // Hall hall = new Hall()
+            // {
+            //     Id = 1,
+            //     Branch = branch,
+            //     Programme = null
+            // };
+            // Movie movie = new Movie()
+            // {
+            //     Id = 1,
+            //     Title =  "Whatever 2",
+            //     Description = "Chuj w dupe",
+            //     Genre = "Hardcore Erotica",
+            //     Director = "Adam Sandler",
+            //     Language = "Arabic",
+            //     SubtitleLanguage = "asda",
+            //     Year = 1992,
+            //     LengthInMinutes = 132,
+            //     PosterSrc = "pornhub.com"
+            // };
+            // Play play = new Play()
+            // {
+            //     Id = 1,
+            //     Date = new DateTime(2021 - 12 - 21),
+            //     Hall = hall,
+            //     Movie = movie,
+            //     TimeInMinutes = 260
+            // };
             //
             //
             // Employee employee = new Employee()
@@ -94,25 +90,7 @@ namespace ABDOTClient.Networking {
             //     TicketsSold = null
             // };
             //
-            // User user = new User()
-            // {
-            //     Id = 1,
-            //     Email = "jebo.jebowski@kokot.com",
-            //     FirstName = "Jebo",
-            //     LastName = "Jebowski",
-            //     Password = "Pojebane123",
-            //     TicketsPurchased = null
-            // };
             //
-            // Ticket ticket = new Ticket()
-            // {
-            //     Id = 1,
-            //     Column = 6,
-            //     Row = 4,
-            //     Employee = employee,
-            //     Play = play,
-            //     User = user
-            // };
             //
             // //***********
             // //API TESTING
@@ -234,28 +212,7 @@ namespace ABDOTClient.Networking {
             //
             // Console.WriteLine(deleteTicket);
             //
-            // //***********
-            // //USER
-            // //***********
-            //
-            //
-            //
-            // Task<User> createUser = userRequest.RegisterUser(user);
-            // Task<User> editUser = userRequest.EditUser(user);
-            // Task<User> getUser = userRequest.GetUser(1);
-            // Task<IList<User>> getUsers = userRequest.GetAllUsers();
-            // Task<bool> deleteUser = userRequest.DeleteUser(1);
-            // Task<User> loginUser = userRequest.Login(user);
-            //
-            // Console.WriteLine(createUser);
-            // Console.WriteLine(editUser);
-            // Console.WriteLine(getUser);
-            // foreach (User forUser in getUsers.Result) {
-            //     Console.WriteLine(forUser);
-            // }
-            //
-            // Console.WriteLine(deleteUser);
-            // Console.WriteLine(loginUser);
+
 
         }
 
@@ -325,65 +282,8 @@ namespace ABDOTClient.Networking {
                 return null;
             }
         }
-        public async Task<User> RegisterUser(User user) {
-            try {
-                return await userRequest.RegisterUser(user);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<User> LoginUser(User user) {
-            try {
-                return await userRequest.Login(user);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<User> EditUser(User user) {
-            try {
-                return await userRequest.EditUser(user);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<bool> DeleteUser(int id) {
-            try {
-                return await userRequest.DeleteUser(id);
-            }
-            catch (Exception e) {
-                ;
-                return false;
-            }
-        }
-
-        public async Task<User> GetUser(int id) {
-            try {
-                return await userRequest.GetUser(id);
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
-
-        public async Task<IList<User>> GetAllUsers() {
-            try {
-                return await userRequest.GetAllUsers();
-            }
-            catch (Exception e) {
-                ;
-                return null;
-            }
-        }
+       
+        
 
 
         public async Task<Movie> AddMovie(Movie movie) {
