@@ -53,8 +53,8 @@ namespace ABDOTClient.Networking.Requests
         public async Task<Ticket> CreateTicket(Ticket ticket)
         {
            
-            string query = @"mutation ($column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
-    createTicket(ticket: {column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
+            string query = @"mutation ($column : Int!, $row : Int!, $playId : Long!, $employeeId : Long!) {
+    createTicket(ticket: {column : $column, row : $row, playId : $playId, employeeId : $employeeId}) {
     id,
     row,
     column,
@@ -93,8 +93,8 @@ namespace ABDOTClient.Networking.Requests
 
         public async Task<Ticket> EditTicket(Ticket ticket)
         {
-            string query = @" mutation ($id : Long!, $column : Int!, $row : Int!, $playId : Long!, $userId: Long!, $employeeId : Long!) {
-    editTicket(ticket: {id : $id, column : $column, row : $row, playId : $playId, userId : $userId, employeeId : $employeeId}) {
+            string query = @" mutation ($id : Long!, $column : Int!, $row : Int!, $playId : Long!, $employeeId : Long!) {
+    editTicket(ticket: {id : $id, column : $column, row : $row, playId : $playId, employeeId : $employeeId}) {
     id,
     row,
     column,
