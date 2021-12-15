@@ -34,4 +34,8 @@
       <Content Remove="wwwroot\images\ticket-background.png" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Include="wwwroot\js\saveAsFile.js" />
+    </ItemGroup>
+
 </Project>

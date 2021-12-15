@@ -36,8 +36,9 @@
             InvoiceRpt invoiceRpt = new InvoiceRpt();
             js.InvokeAsync<Invoice>(
                 "saveAsFile",
-                "TicketInfo.pdf",
-                Convert.ToBase64String(invoiceRpt.Report(this)));
+                "Ticket.pdf",
+                Convert.ToBase64String(invoiceRpt.Report(this))
+                );
         }
 
         public override string ToString() {
