@@ -42,9 +42,9 @@ namespace ABDOTClient{
                 options.AddPolicy("MustBeOwner", builder =>
                     builder.RequireAuthenticatedUser().RequireClaim("Role", "1"));
                 options.AddPolicy("MustBeManager", builder =>
-                    builder.RequireAuthenticatedUser().RequireClaim("Role", "2"));
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "2", "1"));
                 options.AddPolicy("MustBeEmployee", builder =>
-                    builder.RequireAuthenticatedUser().RequireClaim("Role", "3"));
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "3", "2", "1"));
             });
 
         }
