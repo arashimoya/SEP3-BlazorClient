@@ -65,20 +65,28 @@
                                 Selected seats:
                             </div>
                             <div class="section-text">
-                                @foreach (var item in selectedSeats) {
-                                    <div class="seat-select-choice">
-                                        <div class="seat-select-choice-key">
-                                            Seat:
+                                @if (selectedSeats == null) {
+                                    <p>Please choose seats!</p>
+                                }
+                                else {
+                                    @foreach (var item in selectedSeats) {
+                                        <div class="seat-select-choice">
+                                            <div class="seat-select-choice-key">
+                                                Seat:
+                                            </div>
+                                            <div class="seat-select-choice-value">
+                                                Row: @item.Item1 Column: @item.Item2
+                                            </div>
                                         </div>
-                                        <div class="seat-select-choice-value">
-                                            Row: @item.Item1 Column: @item.Item2
-                                        </div>
-                                    </div>
+                                    }
                                 }
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <SeatSelection OnClick="ClickHandler"/>
+                            <CascadingValue Value="@Id">
+                                <SeatSelection OnClick="ClickHandler"/>
+                            </CascadingValue>
+                            
                         </div>
                     </div>
                 </div>
@@ -103,7 +111,7 @@
 </div>
 
 @code {
-    private Play play = new Play();
+    private Play play;
     private const string backgroundSrc = "/css/images/ticket-background.gif";
     private IList<Tuple<int,int>> selectedSeats;
     
@@ -114,7 +122,6 @@
         play.Movie = new Movie();
         play.Hall = new Hall();
         play.Hall.Branch = new Branch();
-        
         selectedSeats = new List<Tuple<int, int>>();
         try {
             play = await PlayService.GetAsync(Id);
