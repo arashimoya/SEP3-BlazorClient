@@ -58,14 +58,6 @@
     <h3>CheckoutInfo</h3>
     <AuthorizeView>
         <NotAuthorized>
-            <div class="row">
-                <div class="col-sm-12 col-lg-5" style="border: 1px solid #505050; margin:5px">
-                    <Login/>
-                </div>
-                <div class="col-sm-12 col-lg-5" style="border: 1px solid #505050; margin:5px">
-                    Continue without login
-                </div>
-            </div>
             <div class="section-separate">
                 <div class="form-group">
                     Email:<br/><input type="text" @bind-value="email"/>
@@ -91,36 +83,36 @@
             </div>
         </div>
     }
-    <AuthorizeView>
-        <Authorized>
-            <div class="header-info col-12">
-                <div class="header-topic">
-                    FirstName:
-                </div>
-                <div class="header-description">
-                    @user.FirstName;
-                </div>
-            </div>
-            <div class="header-info col-12">
-                <div class="header-topic">
-                    LastName:
-                </div>
-                <div class="header-description">
-                    @user.LastName;
-                </div>
-            </div>
-            <div class="header-info col-12">
-                <div class="header-topic">
-                    E-mail:
-                </div>
-                <div class="header-description">
-                    @user.Email;
-                </div>
-            </div>
-
-        </Authorized>
-        
-    </AuthorizeView>
+    @* <AuthorizeView> *@
+    @*     <Authorized> *@
+    @*         <div class="header-info col-12"> *@
+    @*             <div class="header-topic"> *@
+    @*                 FirstName: *@
+    @*             </div> *@
+    @*             <div class="header-description"> *@
+    @*                 @user.FirstName; *@
+    @*             </div> *@
+    @*         </div> *@
+    @*         <div class="header-info col-12"> *@
+    @*             <div class="header-topic"> *@
+    @*                 LastName: *@
+    @*             </div> *@
+    @*             <div class="header-description"> *@
+    @*                 @user.LastName; *@
+    @*             </div> *@
+    @*         </div> *@
+    @*         <div class="header-info col-12"> *@
+    @*             <div class="header-topic"> *@
+    @*                 E-mail: *@
+    @*             </div> *@
+    @*             <div class="header-description"> *@
+    @*                 @user.Email; *@
+    @*             </div> *@
+    @*         </div> *@
+    @* *@
+    @*     </Authorized> *@
+    @*      *@
+    @* </AuthorizeView> *@
 </div>
 <button class="btn btn--outline-white" @onclick="@GoToInvoice">Next</button>
 
@@ -129,8 +121,6 @@
     [Parameter] public int Id { get; set; }
     public IList<Ticket> tickets;
     private Play play = new Play();
-    private User user;
-    private Employee cachedEmployee;
     private string firstName;
     private string lastName;
     private string email;
@@ -144,72 +134,30 @@
         tickets = new List<Ticket>();
         play.Movie = new Movie();
         play.Hall = new Hall();
-        user = new User();
-        cachedEmployee = new Employee();
         play = await PlayService.GetAsync(Id);
-        user = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
-        cachedEmployee = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedEmployee;
-
     }
 
 
     private async Task GoToInvoice() {
         invoice.Seats = selectedSeats;
-        foreach (var item in selectedSeats) {
-            invoice.Date = play.Date;
-            invoice.Hall = play.Hall.Id.ToString();
-            invoice.Movie = play.Movie.Title;
-            Employee employee= new Employee();
-            employee.Id = 0;
-            if (user != null) {
-                invoice.Email = user.Email;
-                invoice.FirstName = user.FirstName;
-                invoice.LastName = user.LastName;
-                
-                Ticket ticket = new Ticket()
+        invoice.Email = email;
+        invoice.Date = play.Date;
+        invoice.Hall = play.Hall.Id.ToString();
+        invoice.Movie = play.Movie.Title;
+        invoice.FirstName = firstName;
+        invoice.LastName = lastName;
+        foreach (var seat in selectedSeats) {
+            TicketService.AddTicket(
+                new Ticket()
                 {
-                    Column = item.Item2,
-                    Row = item.Item1,
-                    Employee = employee,
-                    Play = play,
-                    User = user,
-                };
-                await TicketService.AddTicket(ticket);
-            } else if (cachedEmployee != null) {
-                invoice.Email = cachedEmployee.Email;
-                invoice.FirstName = cachedEmployee.FirstName;
-                invoice.LastName = cachedEmployee.LastName;
-                
-                Ticket ticket = new Ticket()
-                {
-                    Column = item.Item2,
-                    Row = item.Item1,
-                    Employee = employee,
-                    Play = play,
-                    User = user,
-                };
-                await TicketService.AddTicket(ticket);
-            }
-            else {
-                invoice.Email = email;
-                invoice.LastName = lastName;
-                invoice.FirstName = firstName;
-                Ticket ticket = new Ticket()
-                {
-                    Column = item.Item2,
-                    Row = item.Item1,
-                    Employee = employee,
-                    Play = play,
-                    User = new User()
+                    Column = seat.Item2,
+                    Row = seat.Item2,
+                    Employee = new Employee()
                     {
                         Id = 0,
-                        Email = email,
-                        FirstName = firstName,
-                        LastName = lastName,
                     },
-                };
-                await TicketService.AddTicket(ticket);
-            }
+                    Play = play,
+                });
         }
         string InvoiceJson = JsonSerializer.Serialize(invoice);
         NavigationManager.NavigateTo($"/InvoiceInfo/{InvoiceJson}");

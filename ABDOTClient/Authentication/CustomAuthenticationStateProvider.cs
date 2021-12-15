@@ -45,6 +45,7 @@ namespace ABDOTClient.Authentication{
             ClaimsIdentity identity = new ClaimsIdentity();
             try{
                 Employee user = await employeeService.LoginEmployee(username, password);
+                if (user == null) throw new Exception("Incorrect credentials");
                 identity = SetupClaimsForUser(user);
                 string serialisedData = JsonSerializer.Serialize(user);
                 await jsRuntime.InvokeVoidAsync("sessionStorage.setItem", "currentUser", serialisedData);
