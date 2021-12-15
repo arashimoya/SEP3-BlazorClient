@@ -21,6 +21,7 @@
         <div style="color:red">@errorMessage</div>
         <p class="actions">
             <button class="btn-outline-dark" @onclick="PerformLogin">Login</button>
+            <button class="btn-outline-dark" @onclick="@(()=> NavigationManager.NavigateTo("/employeelogin"))">Employees</button>
             <button class="btn-outline-dark" @onclick="Cancel">Cancel</button>
         </p>
     </NotAuthorized>
@@ -44,9 +45,8 @@
     private string confirmationMessage;
     private string errorMessage;
     private int Id;
-    private User returnedUser;
     private Employee returnedEmployee;
-    public NavMenu NavMenu = new NavMenu();
+    
     
     
 
@@ -58,9 +58,9 @@
 
         try {
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).ValidateLogin(email, password);
-            returnedUser = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
-            returnedEmployee = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedEmployee;
-            Console.WriteLine(returnedUser + "this is returned user in login");
+            returnedEmployee = ((CustomAuthenticationStateProvider) AuthenticationStateProvider).cachedUser;
+            
+            Console.WriteLine(returnedEmployee + "this is returned user in login");
             
             NavigationManager.NavigateTo("/",true);
         }
@@ -98,7 +98,7 @@
     }
     public void GoToProfilePage()
     {
-        NavigationManager.NavigateTo($"/profile/{returnedUser.Id}");
+        NavigationManager.NavigateTo($"/profile/{returnedEmployee.Id}");
     }
     
     

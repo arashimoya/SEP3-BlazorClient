@@ -35,15 +35,29 @@
         <div class="form-group">
             Play: <br/>
             
-                <InputSelect @bind-Value="@SelectedPlayId">
-                    @foreach (var play in playsToShow)
-                    {
-                        <option value="@play.Id">@play.Movie.Title @play.Date</option>
-                    }
-                </InputSelect>
+            <InputSelect @bind-Value="@SelectedPlayId">
+                @foreach (var play in playsToShow)
+                {
+                    <option value="@play.Id">@play.Movie.Title @play.Date</option>
+                }
+            </InputSelect>
         </div>
-        
-        
+        <div class="form-group">
+            Row: <br/>
+            <InputSelect @bind-Value="@newTicketItem.Row">
+                @for (int i = 1; i <= 6; i++) {
+                    <option>@i</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+                    Column: <br/>
+                    <InputSelect @bind-Value="@newTicketItem.Column">
+                        @for (int i = 1; i <= 8; i++) {
+                            <option>@i</option>
+                        }
+                    </InputSelect>
+                </div>
         <p class="actions">
             <button class="btn btn-dark" type="submit">Submit</button>
         </p>
@@ -59,7 +73,10 @@
     private IList<Play> plays = new List<Play>();
     private IList<Branch> branches = new List<Branch>();
     private IList<Play> playsToShow = new List<Play>();
+    private IList<Ticket> ticketsAll = new List<Ticket>();
+    private IList<Ticket> ticketsAvailable = new List<Ticket>();
 
+    private IList<Tuple<int, int>>  selectedSeats;
     private int SelectedBranchId {
         get => newTicketItem.Play.Hall.Branch.Id;
         set => newTicketItem.Play.Hall.Branch = branches.Single(b => b.Id == value);
@@ -71,7 +88,6 @@
     }
     protected override async Task OnInitializedAsync() {
         newTicketItem.Play = new Play();
-        newTicketItem.User = new User();
         newTicketItem.Play.Hall = new Hall();
         newTicketItem.Play.Movie = new Movie();
         newTicketItem.Play.Hall.Branch = new Branch();
@@ -83,29 +99,41 @@
         branches = await BranchService.GetAllBranches();
         newTicketItem.Play.Hall.Branch = branches[0];
         plays = await PlayService.GetAllAsync();
+
+        ticketsAll = await TicketService.GetAllTickets();
+        
+        foreach (var play in plays) {
+            play.Hall = await HallService.GetHall(play.Hall.Id);
+            play.Hall.Branch = await BranchService.GetBranch(play.Hall.Branch.Id);
+        }
         playsToShow = plays;
-        ExecuteFilter();
+        
+        ExecutePlayFilter();
     }
 
     private async Task AddNewTicket() {
         newTicketItem.Employee.Id = 1;
-        newTicketItem.Column = 1;
-        newTicketItem.Row = 1;
-        newTicketItem.Play = plays[0];
         Ticket returnedTicket = await TicketService.AddTicket(newTicketItem);
         if (returnedTicket != null && returnedTicket.GetType() == typeof(Ticket)) {
             confirmationMessage = "New ticket added successfully";
-            NavigationManager.NavigateTo($"/ticketlist/");
+            NavigationManager.NavigateTo($"/ticketlist/{confirmationMessage}");
         }
     }
     private void FilterByBranch() {
-        ExecuteFilter();
+        ExecutePlayFilter();
     }
-    private void ExecuteFilter()
+    private void ExecutePlayFilter()
     {
     playsToShow = plays.Where(p =>
         (SelectedBranchId == p.Hall.Branch.Id) 
         ).ToList();
     }
+
+    private void ExecuteTicketFilter() {
+        IList<Ticket> ticketsTaken = ticketsAll.Where(t =>
+            (t.Play.Id == SelectedPlayId)).ToList();
+
+    }
+    
 
 }

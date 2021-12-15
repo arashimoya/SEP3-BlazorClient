@@ -2,9 +2,9 @@
 @using ABDOTClient.Model
 @using ABDOTClient.Data
 @using ABDOTClient.Authentication
-@inject IUserService UserService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject IEmployeeService EmployeeService
 <style>
     .profile-pic{
     width: 50%;
@@ -63,9 +63,9 @@
             
             <img class="profile-pic" src="css/images/prof-pic.svg" alt="prof-pic"/>
             <div class="profile-name">
-                <text>@user.FirstName @user.LastName</text>
+                <text>@userEmployee.FirstName @userEmployee.LastName</text>
             </div>
-            <button @onclick="@(() => Edit(user.Id))">
+            <button @onclick="@(() => Edit(userEmployee.Id))">
                 <i class="oi oi-pencil" style="color:white"/>
             </button>
             
@@ -84,10 +84,10 @@
             </div>
             <div class="row">
                 <div class="col-6 profile-info">
-                    @user.Email
+                    @userEmployee.Email
                 </div>
                 <div class="col-6 profile-info">
-                    <span class="password"> @user.Password</span>
+                    <span class="password"> @userEmployee.Password</span>
                 </div>
             </div>
             <div class="row">
@@ -139,11 +139,11 @@
 
 
 @code {
-    private User user = new User();
+    private Employee userEmployee = new Employee();
     [Parameter] public int Id { get; set; }
 
     protected override async Task OnInitializedAsync() {
-        user = await UserService.GetUser(Id);
+        userEmployee = await EmployeeService.GetEmployee(Id);
     }
 
     private void Edit(int id)

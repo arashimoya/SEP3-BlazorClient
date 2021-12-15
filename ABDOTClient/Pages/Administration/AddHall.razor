@@ -18,15 +18,7 @@
                     }
                 </InputSelect>
             </div>
-        <div class="form-group">
-            Hall Size:<br/>
-            <InputSelect @bind-Value="newHallItem.HallSize">
-                <option value="1">6x8</option>
-                <option value="2">12x14</option>
-                <option value="3">15x20</option>
-            </InputSelect>
-        </div>
-        
+
         <p class="actions">
                 <button class="btn btn-dark" type="submit">Submit</button>
             </p>
@@ -34,7 +26,7 @@
 </div>
 
 @code {
-    private Hall newHallItem = new Hall(1);
+    private Hall newHallItem = new Hall();
     private IList<Branch> branches = new List<Branch>();
     private string confirmationMessage = "";
 
@@ -43,7 +35,7 @@
         set => newHallItem.Branch = branches.Single(b => b.Id == value);
     }
     private async Task AddNewHall() {
-        Hall hallToCreate = new Hall(newHallItem.HallSize);
+        Hall hallToCreate = new Hall();
         hallToCreate.Branch = newHallItem.Branch;
         Hall returnedHall = await HallService.CreateHall(hallToCreate);
         if (returnedHall != null) {
