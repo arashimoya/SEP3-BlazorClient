@@ -27,7 +27,6 @@ namespace ABDOTClient{
         public void ConfigureServices(IServiceCollection services){
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<IUserService, UserServiceImpl>();
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddScoped<IMovieService, CloudMovieService>();
             services.AddScoped<IEmployeeService, EmployeeCloudService>();
@@ -41,14 +40,11 @@ namespace ABDOTClient{
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MustBeOwner", builder =>
-                    builder.RequireAuthenticatedUser().RequireClaim("Role", "Owner"));
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "1"));
                 options.AddPolicy("MustBeManager", builder =>
-                    builder.RequireAuthenticatedUser().RequireClaim("Role", "Manager"));
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "2"));
                 options.AddPolicy("MustBeEmployee", builder =>
-                    builder.RequireAuthenticatedUser().RequireClaim("Role", "Employee"));
-                options.AddPolicy("SecurityLevel2", a=>
-                    a.RequireAuthenticatedUser().RequireClaim("Role","2","1","0"));
-                
+                    builder.RequireAuthenticatedUser().RequireClaim("Role", "3"));
             });
 
         }
