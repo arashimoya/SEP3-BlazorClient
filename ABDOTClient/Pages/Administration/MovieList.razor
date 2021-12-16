@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @using ABDOTClient.Model
 @using Data
+@using GraphQL.Client.Abstractions.Utilities
 @attribute [Authorize(Policy = "MustBeManager")]
 @inject IMovieService CloudMovieService
 <style>
@@ -103,7 +104,7 @@ else
         movies = new List<Movie>();
         movies = await CloudMovieService.GetAllAsync();
         moviesToShow = movies;
-        if (!confirmationMessage.Contains("success")) {
+        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
             confirmationMessage = " ";
         }
     }
@@ -112,14 +113,17 @@ else
     private async Task RemoveMovie(int movieId) {
         Movie toRemove = movies.FirstOrDefault(m => m.Id == movieId);
         if (toRemove != null) {
-            movies.Remove(toRemove);
-            moviesToShow.Remove(toRemove);
-            if(await CloudMovieService.RemoveMovieAsync(movieId))
+            if (await CloudMovieService.RemoveMovieAsync(movieId))
+            {
+                movies.Remove(toRemove);
+                moviesToShow.Remove(toRemove);
                 confirmationMessage = "Movie deleted successfully";
+            }
+            else {
+                confirmationMessage = "Failed to delete movie";
+            }
         }
-        else {
-            confirmationMessage = "Failed to delete movie";
-        }
+     
     }
 
     private void Edit(int id)

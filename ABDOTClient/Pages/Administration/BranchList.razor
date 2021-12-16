@@ -1,6 +1,7 @@
 ﻿@page "/branches/{confirmationMessage}"
 @using ABDOTClient.Model
 @using ABDOTClient.Data
+@using GraphQL.Client.Abstractions.Utilities
 @inject NavigationManager NavigationManager
 @attribute [Authorize(Policy = "MustBeOwner")]
 <style>
@@ -101,7 +102,7 @@ else
         branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
         branchesToShow = branches;
-        if (!confirmationMessage.Contains("success")) {
+        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
             confirmationMessage = " ";
         }
     }
@@ -109,12 +110,15 @@ else
     private async Task RemoveBranch(long branchId) {
         Branch toRemove = branches.FirstOrDefault(b => b.Id == branchId);
         if (toRemove != null) {
-            branchesToShow.Remove(toRemove);
-            branches.Remove(toRemove);
             if (await BranchService.DeleteBranch(branchId))
+            {
+                branchesToShow.Remove(toRemove);
+                branches.Remove(toRemove);
                 confirmationMessage = "Branch deleted successfully";
-        }else {
-            confirmationMessage = "Failed to delete branch";
+            }
+            else {
+                confirmationMessage = "Failed to delete branch";
+            }
         }
 
     }

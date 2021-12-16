@@ -5,6 +5,7 @@
 @using ABDOTClient.Model
 @using Data
 @using ABDOTClient.Factories
+@using GraphQL.Client.Abstractions.Utilities
 
 @attribute [Authorize(Policy = "MustBeManager")]
 
@@ -114,16 +115,16 @@ else
         personel = new List<Employee>();
         personel = await EmployeeService.GetAllEmployees();
         personelToShow = personel;
-        if (!confirmationMessage.Contains("success")) {
+        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
             confirmationMessage = " ";
         }
     }
     private async Task RemoveEmployee(int employeeId) {
         Employee toRemove = personel.FirstOrDefault(e => e.Id == employeeId);
         if (toRemove != null) {
-            personel.Remove(toRemove);
-            personelToShow.Remove(toRemove);
             if (await EmployeeService.DeleteEmployee(employeeId)) {
+                personel.Remove(toRemove);
+                personelToShow.Remove(toRemove);
                 confirmationMessage = "Employee deleted successfully";
             }else {
                 confirmationMessage = "Failed to delete operator";

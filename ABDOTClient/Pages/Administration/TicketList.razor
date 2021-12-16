@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @using ABDOTClient.Model
 @using Data
+@using GraphQL.Client.Abstractions.Utilities
 
 @inject ITicketService TicketService
 @inject IHallService HallService
@@ -112,9 +113,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (!confirmationMessage.Contains("success")) {
+        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
             confirmationMessage = " ";
-        }   
+        }
         ticketsAll = new List<Ticket>();
         ticketsToShow = new List<Ticket>();
         halls = new List<Hall>();
@@ -136,14 +137,18 @@ else
     {
          Ticket ticketToRemove = ticketsAll.FirstOrDefault(m => m.Id == ticketId);
         if (ticketToRemove != null) {
-            ticketsAll.Remove(ticketToRemove);
-            ticketsToShow.Remove(ticketToRemove);
-            if(await TicketService.DeleteTicket(ticketId))
+
+            if (await TicketService.DeleteTicket(ticketId))
+            {
+                ticketsAll.Remove(ticketToRemove);
+                ticketsToShow.Remove(ticketToRemove);
                 confirmationMessage = "Ticket deleted successfully";
+            }
+            else {
+                confirmationMessage = "Failed to delete ticket";
+            }
         }
-        else {
-            confirmationMessage = "Failed to delete ticket";
-        }
+        
 
     }
 

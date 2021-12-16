@@ -6,6 +6,7 @@
 @inject IHallService HallService
 @using ABDOTClient.Model
 @using Data
+@using GraphQL.Client.Abstractions.Utilities
 
 @attribute [Authorize(Policy = "MustBeManager")]
 
@@ -110,7 +111,7 @@ else
         playsToShow = plays;
 
         
-        if (!confirmationMessage.Contains("success")) {
+        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
             confirmationMessage = " ";
         }
     }
@@ -119,10 +120,11 @@ else
     {
         Play toRemove = plays.FirstOrDefault(p => p.Id == Id);
         if (toRemove != null) {
-            plays.Remove(toRemove);
-            playsToShow.Remove(toRemove);
             if (await PlayService.RemovePlayAsync(Id)) {
+                plays.Remove(toRemove);
+                playsToShow.Remove(toRemove);
                 confirmationMessage = "Play deleted successfully";
+                
             }else {
                 confirmationMessage = "Failed to delete play";
             }

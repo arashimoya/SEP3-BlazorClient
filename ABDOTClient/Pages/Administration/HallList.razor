@@ -2,6 +2,7 @@
 @page "/HallList/{confirmationMessage}/{BranchId:int}"
 @using ABDOTClient.Model
 @using ABDOTClient.Data
+@using GraphQL.Client.Abstractions.Utilities
 @inject IHallService HallService
 @inject NavigationManager NavigationManager
 
@@ -92,7 +93,7 @@ else
         allHalls = new List<Hall>();
         allHalls = await HallService.GetAllHalls();
         hallsToShow = allHalls;
-        if (!confirmationMessage.Contains("success")) {
+        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
             confirmationMessage = " ";
         }
         ExecuteFilter();
@@ -101,12 +102,15 @@ else
     private async Task RemoveHall(int hallId) {
         Hall toRemove = allHalls.FirstOrDefault(h => h.Id == hallId);
         if (toRemove != null) {
-            allHalls.Remove(toRemove);
-            hallsToShow.Remove(toRemove);
             if (await HallService.DeleteHall(hallId))
+            {
+                allHalls.Remove(toRemove);
+                hallsToShow.Remove(toRemove);
                 confirmationMessage = "Hall removed successfully";
-        }else {
-            confirmationMessage = "Failed to remove hall";
+            }
+            else {
+                confirmationMessage = "Failed to remove hall";
+            }
         }
     }
 
