@@ -1,0 +1,107 @@
+﻿@page "/halls"
+@using ABDOTClient.Model
+@using ABDOTClient.Data
+@inject NavigationManager NavigationManager
+
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
+
+@if (hallsToShow == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+} else if (!hallsToShow.Any()){
+    <p>
+        <em>No Halls items exist. Please add some</em>
+    </p>
+    <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/Addhall"))"><button>
+            <i class="oi oi-plus"/>
+        </button>
+    </div>
+}
+else
+{
+    <div class="container" style="background-color: white">
+        <div class="section-separate" style="padding-top:40px">
+            <button style="border-color: transparent; background-color:transparent">
+            <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
+            </button>
+        </div>
+    <h3 style="color:black">BranchList</h3>
+        <p style="color:black">for owners only //or give authentication for edit/remove actions</p>
+        <div class="row">
+            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/Addhall"))"><button>
+                <i class="oi oi-plus"/>
+            </button>
+                </div>
+        </div>
+    <table class="table" style="color:black; border-color: black">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Hall size</th>
+            <th>Branch</th>
+            
+                <th>Remove</th>
+                <th>Edit</th>
+            
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in hallsToShow)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.HallSize</td>
+                <td>@item.Branch.City</td>
+                
+                    <td>
+                        <button @onclick="@(() => RemoveHall(item.Id))">
+                            <i class="oi oi-trash" style="color:red"/>
+                        </button>
+                    </td>
+                    <td>
+                        <button @onclick="@(() => Edit(item.Id))">
+                            <i class="oi oi-pencil" style="color:blue"/>
+                        </button>
+                    </td>
+                
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+}
+@code {
+    private IList<Hall> halls;
+    private IList<Hall> hallsToShow;
+    private IHallService HallService = new HallCloudService();
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        halls = new List<Hall>();
+        if (!halls.Any())
+        {
+            halls = await HallService.GetAllHalls();
+        }
+        hallsToShow = halls;
+    }
+    private Task<bool> RemoveHall(int hallId)
+    {
+        return HallService.DeleteHall(hallId);
+    }
+
+    private void Edit(int id)
+    {
+        NavigationManager.NavigateTo($"EditHall/{id}");
+    }
+
+    
+
+}
