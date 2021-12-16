@@ -3,6 +3,7 @@
 @using ABDOTClient.Model
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager NavigationManager
+@attribute [Authorize(Policy = "MustBeOwner")]
 <h3>AddBranch</h3>
 <div class="container">
     <EditForm Model="@newBranchItem" OnValidSubmit="@AddNewBranch">

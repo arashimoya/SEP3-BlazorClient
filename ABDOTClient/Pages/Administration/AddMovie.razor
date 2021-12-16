@@ -4,6 +4,7 @@
 @using ABDOTClient.Pages.Administration
 @inject NavigationManager NavigationManager
 @namespace AddMovieComponent
+@attribute [Authorize(Policy = "MustBeManager")]
 <style>
     html, body {
         background-color: white;
