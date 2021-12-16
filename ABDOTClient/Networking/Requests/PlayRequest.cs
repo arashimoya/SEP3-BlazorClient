@@ -225,7 +225,11 @@ namespace ABDOTClient.Networking.Requests {
     }
     hall {
       id
-
+    }
+ tickets{
+      id,
+      row,  
+      column
     }
   }
 } ";
@@ -270,7 +274,11 @@ namespace ABDOTClient.Networking.Requests {
     }
     hall {
       id
-
+    }
+ tickets{
+      id,
+      row,  
+      column
     }
   }
 }";
