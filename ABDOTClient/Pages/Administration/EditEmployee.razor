@@ -7,6 +7,8 @@
 @inject NavigationManager NavigationManager
 @inject IEmployeeService EmployeeService
 @namespace EditEmployeeComponent
+@attribute [Authorize(Policy = "MustBeManager")]
+
 <div class="container">
     <h3>Edit employee</h3>
     <EditForm Model="@newEmployeeItem" OnValidSubmit="@EditAnEmployee">
@@ -55,9 +57,9 @@
         <div class="form-group">
             Role:<br/>
             <CustomInputSelect @bind-Value="newEmployeeItem.Role">
-                <option value="1">Owner</option>
+                <option value="3">Owner</option>
                 <option value="2">Manager</option>
-                <option value="3">Operator</option>
+                <option value="1">Operator</option>
             </CustomInputSelect>
         </div>
         

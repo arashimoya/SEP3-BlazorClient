@@ -6,6 +6,8 @@
 @inject NavigationManager NavigationManager
 @inject IBranchService BranchService
 @namespace EditBranchComponent
+@attribute [Authorize(Policy = "MustBeOwner")]
+
 <h3>Edit Branch</h3>
 <EditForm Model="@newBranchItem" OnValidSubmit="@EditABranch">
     <DataAnnotationsValidator/>

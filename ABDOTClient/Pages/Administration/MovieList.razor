@@ -22,14 +22,16 @@
     </p>
 } else if (!moviesToShow.Any()){
     <p>
-        <em style="color:black">No Movie items exist. Please add some</em>
+        <em style="color:black">No Movie items exist. Please add some</em></p>
+    <AuthorizeView Policy="MustBeManager">
         <div class="col-sm-4" @onclick="@(() => NavigationManager.NavigateTo("/addmovie"))">
             <button>
                 <i class="oi oi-plus"/>
             </button>
         </div>
+    </AuthorizeView>
         
-    </p>
+    
 }
 else
 {
@@ -41,12 +43,14 @@ else
         </div>
         <h3 style="color:black">MovieList</h3>
         <p style="color:black">for personel only</p>
-        <div class="row">
-            <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addmovie"))"><button>
-                <i class="oi oi-plus"/>
-            </button>
+        <AuthorizeView Policy="MustBeManager">
+            <div class="row">
+                <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addmovie"))"><button>
+                        <i class="oi oi-plus"/>
+                    </button>
                 </div>
-        </div>
+            </div>
+        </AuthorizeView>
     <table class="table" style="color:black; border-color: black">
         <thead>
         <tr>
