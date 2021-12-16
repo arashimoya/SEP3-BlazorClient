@@ -138,6 +138,8 @@
         if (returnedTicket != null && returnedTicket.GetType() == typeof(Ticket)) {
             confirmationMessage = "New ticket added successfully";
             NavigationManager.NavigateTo($"/ticketlist/{confirmationMessage}");
+        }else {
+            confirmationMessage = "Failed to create ticket";
         }
     }
     private void FilterByBranch() {

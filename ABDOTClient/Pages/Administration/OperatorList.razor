@@ -125,6 +125,8 @@ else
             personelToShow.Remove(toRemove);
             if (await EmployeeService.DeleteEmployee(employeeId)) {
                 confirmationMessage = "Employee deleted successfully";
+            }else {
+                confirmationMessage = "Failed to delete operator";
             }
         }
     }

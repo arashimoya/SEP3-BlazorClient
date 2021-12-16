@@ -106,6 +106,8 @@ else
             hallsToShow.Remove(toRemove);
             if (await HallService.DeleteHall(hallId))
                 confirmationMessage = "Hall removed successfully";
+        }else {
+            confirmationMessage = "Failed to remove hall";
         }
     }
 
