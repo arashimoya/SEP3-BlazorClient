@@ -15,7 +15,6 @@
     <ItemGroup>
       <Folder Include="Persistence" />
       <Folder Include="Shared\Classes" />
-      <Folder Include="wwwroot\images" />
     </ItemGroup>
 
     <ItemGroup>
