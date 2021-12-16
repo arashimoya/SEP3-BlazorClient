@@ -5,6 +5,7 @@
 
 
   html, body {
+    min-height: 100%;
     font-family: 'Be Vietnam Pro', sans-serif;
     background-color: #1e1e1e;
     border-color: #1e1e1e;

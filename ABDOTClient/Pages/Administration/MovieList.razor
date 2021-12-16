@@ -38,8 +38,7 @@ else
                 <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
             </button>
         </div>
-        <h3 style="color:black">MovieList</h3>
-        <p style="color:black">for personel only</p>
+        <h3 style="color:black">Movies</h3>
         <AuthorizeView Policy="MustBeManager">
             <div class="row">
                 <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addmovie"))"><button>

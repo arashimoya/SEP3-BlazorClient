@@ -40,9 +40,9 @@ namespace ABDOTClient{
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("MustBeOwner", builder =>
-                    builder.RequireAuthenticatedUser().RequireClaim(ClaimTypes.Role, "3"));
+                    builder.RequireAuthenticatedUser().RequireClaim(ClaimTypes.Role, "1"));
                 options.AddPolicy("MustBeManager", builder =>
-                    builder.RequireAuthenticatedUser().RequireClaim(ClaimTypes.Role, "3","2"));
+                    builder.RequireAuthenticatedUser().RequireClaim(ClaimTypes.Role, "1","2"));
                 options.AddPolicy("MustBeEmployee", builder =>
                     builder.RequireAuthenticatedUser().RequireClaim(ClaimTypes.Role, "3","2","1"));
             });

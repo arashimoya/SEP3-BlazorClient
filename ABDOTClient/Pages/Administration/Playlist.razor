@@ -36,7 +36,7 @@ else
             <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
             </button>
         </div>
-    <h3 style="color:black">Playlist</h3>
+    <h3 style="color:black">Plays</h3>
         <p style="color:black">for operators</p>
         <div class="row">
             <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addplay"))"><button>
@@ -52,7 +52,6 @@ else
             <th>Date</th>
             <th>Branch</th>
             <th>Hall</th>
-            <th>Edit</th>
             <th>Remove</th>
             
         </tr>
@@ -64,13 +63,8 @@ else
                 <td>@item.Id</td>
                 <td>@item.Movie.Title</td>
                 <td>@item.Date</td>
-                <td>@branches.Single(b=>b.Id == halls.Single(h=>h.Id == item.Hall.Id).Id).City</td>
-                <td>@item.Hall.Id</td>
-                <td>
-                    <button @onclick="@(() => Edit(item.Id))">
-                        <i class="oi oi-pencil" style="color:blue"/>
-                    </button>
-                </td>
+                <td> @if (item.Hall.Branch != null) {@item.Hall.Branch.City}</td>
+                <td> @item.Hall.Id</td>
                 <td>
                     <button @onclick="@(() => RemovePlay(item.Id))">
                         <i class="oi oi-trash" style="color:red"/>
@@ -94,11 +88,26 @@ else
         playsToShow = new List<Play>();
         halls = new List<Hall>();
         branches = new List<Branch>();
-
         halls = await HallService.GetAllHalls();
         branches = await BranchService.GetAllBranches();
+        foreach (Branch printBranch in branches)
+        {
+            Console.WriteLine(printBranch);
+        }
         plays = await PlayService.GetAllAsync();
+        Hall hall = new Hall();
+        Branch branch = new Branch();
+        foreach (Play play in plays)
+        {
+            hall = await HallService.GetHall(play.Hall.Id);
+            Console.WriteLine(hall);
+            branch = await BranchService.GetBranch(hall.Branch.Id);
+            Console.WriteLine(branch);
+            play.Hall.Branch = branch;
+        }
         playsToShow = plays;
+
+        
         if (!confirmationMessage.Contains("success")) {
             confirmationMessage = " ";
         }
@@ -116,13 +125,6 @@ else
                 confirmationMessage = "Failed to delete play";
             }
         }
-    }
-
-    private void Edit(int id)
-    {
-        Console.WriteLine(id);
-        NavigationManager.NavigateTo($"EditPlay/{id}");
-        
     }
     
 
