@@ -47,6 +47,8 @@
         if (returnedHall != null) {
             confirmationMessage = "Hall updated successfully";
             NavigationManager.NavigateTo($"/HallList/{confirmationMessage}");
+        }else {
+            confirmationMessage = "Failed to update hall";
         }
     }
 
