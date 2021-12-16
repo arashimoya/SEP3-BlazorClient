@@ -2,7 +2,7 @@
 @using ABDOTClient.Model
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
-
+@attribute [Authorize(Policy = "MustBeOwner")]
 <style>
     html, body {
         background-color: white;

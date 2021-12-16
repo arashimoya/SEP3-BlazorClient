@@ -67,12 +67,7 @@
             <button class="btn btn-dark" type="submit">Submit</button>
         </p>
     </EditForm>
-    @chosenSeat<br/>
-    C: @(chosenSeat%10)<br/>
-    R: @(chosenSeat/ 10)<br/>
-    @foreach (var ticket in ticketsAll) {
-        @ticket.Row <span>, </span> @ticket.Column<br/>
-    }
+  
 </div>
 
 @code {

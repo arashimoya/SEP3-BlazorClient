@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 @using ABDOTClient.Model
 @using Data
-
+@attribute [Authorize(Policy = "MustBeManager")]
 @inject IMovieService CloudMovieService
 <style>
     html, body {

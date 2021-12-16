@@ -33,15 +33,20 @@
 else
 {
     <div class="container " style="background-color: white">
-        <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addTicket"))"><button>
-                        <i class="oi oi-plus"/>
-                    </button>
-                </div>
+        <div class="section-separate" style="padding-top:40px">
+            <button style="border-color: transparent; background-color:transparent">
+                <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
+            </button>
+        </div>
         <h3 style="color:black">Tickets</h3>
       
         <div class="row">
 
         </div>
+    
+    <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addTicket"))"><button>
+            <i class="oi oi-plus"/>
+        </button>
     </div>
     <table class="table" style="color:black; border-color: black">
         <thead>
@@ -90,7 +95,7 @@ else
         }
         </tbody>
     </table>
-    
+    </div>
 }
 @code {
 
@@ -127,9 +132,19 @@ else
         NavigationManager.NavigateTo($"EditTicket/{id}");
     }
 
-    private void RemoveTicket(int ticketId)
+    private async Task RemoveTicket(int ticketId)
     {
-        TicketService.DeleteTicket(ticketId);
+         Ticket ticketToRemove = ticketsAll.FirstOrDefault(m => m.Id == ticketId);
+        if (ticketToRemove != null) {
+            ticketsAll.Remove(ticketToRemove);
+            ticketsToShow.Remove(ticketToRemove);
+            if(await TicketService.DeleteTicket(ticketId))
+                confirmationMessage = "Ticket deleted successfully";
+        }
+        else {
+            confirmationMessage = "Failed to delete ticket";
+        }
+
     }
 
     
