@@ -101,9 +101,7 @@
                                 <p class="movie-list-date">@play.Movie.Year</p>
                             </div>
                             <div>
-                                @foreach (var _play in playsToShow) {
-                                    <a class="section-label">@_play.Date | </a>
-                                }
+                                @play.Date
                             </div>
                         </div>
                     </div>
@@ -135,7 +133,7 @@
         branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
         plays = await PlayService.GetAllAsync();
-        playsToShow = plays;
+        playsToShow = plays.Distinct().ToList();
         ExecuteFilter();
     }
     private void FilterByDay(DateTime dateTime)
@@ -164,6 +162,5 @@
         NavigationManager.NavigateTo($"movie/{id}");
     }
 
-    
-
 }
+

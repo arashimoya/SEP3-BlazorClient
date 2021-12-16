@@ -6,6 +6,7 @@
 @using System.IO
 @using Microsoft.AspNetCore.Mvc.RazorPages
 @inject IJSRuntime js
+@inject NavigationManager NavigationManager
 <section>
     <div style="margin-left:100px">
         <span>1. Choose Seats > 2. Payment > <text style="font-weight: 700">3. Invoice</text></span>
@@ -20,6 +21,7 @@
 
     private void GeneratePDFFile() {
         invoice.GeneratePDF(js);
+        NavigationManager.NavigateTo("/");
     }
 
     public class Invoice : PageModel{

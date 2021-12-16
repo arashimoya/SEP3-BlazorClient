@@ -45,13 +45,8 @@
                         <a class="nav-link text-light" href="/admin">Administration</a>
                     </li>
                 </AuthorizeView>
-                <AuthorizeView>
-                <li>
-                    <a class="nav-link text-light">you are employee</a>
-                </li>
-                </AuthorizeView>
-                
-                
+
+
             </ul>
             <AuthorizeView>
                 <NotAuthorized>
@@ -62,7 +57,7 @@
                     </div>
                 </NotAuthorized>
                 <Authorized>
-                    @* <LoginBox/> *@
+                    <LoginBox/>
                 </Authorized>
             </AuthorizeView>
             

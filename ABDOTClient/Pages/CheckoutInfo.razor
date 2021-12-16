@@ -56,8 +56,7 @@
     </section>
 <div class="container">
     <h3>CheckoutInfo</h3>
-    <AuthorizeView>
-        <NotAuthorized>
+    
             <div class="section-separate">
                 <div class="form-group">
                     Email:<br/><input type="text" @bind-value="email"/>
@@ -69,9 +68,8 @@
                     Last Name:<br/><input type="text" @bind-value="lastName"/>
                 </div>
             </div>
-        </NotAuthorized>
-    </AuthorizeView>
-    
+      
+    <p style="color:red">@errorMessage</p>
     @foreach (var item in selectedSeats) 
     {
         <div class="seat-select-choice">
@@ -97,6 +95,7 @@
     private string email;
     private Invoice invoice;
     private const string backgroundSrc = "/css/images/ticket-background.gif";
+    private string errorMessage = "";
     
     private IList<Tuple<int, int>> selectedSeats => JsonSerializer.Deserialize<IList<Tuple<int,int>>>(selectedSeatsJson);
 
@@ -110,28 +109,33 @@
 
 
     private async Task GoToInvoice() {
-        invoice.Seats = selectedSeats;
-        invoice.Email = email;
-        invoice.Date = play.Date;
-        invoice.Hall = play.Hall.Id.ToString();
-        invoice.Movie = play.Movie.Title;
-        invoice.FirstName = firstName;
-        invoice.LastName = lastName;
-        foreach (var seat in selectedSeats) {
-            TicketService.AddTicket(
-                new Ticket()
-                {
-                    Column = seat.Item2,
-                    Row = seat.Item2,
-                    Employee = new Employee()
+        if (!string.IsNullOrEmpty(email)|| !string.IsNullOrEmpty(lastName) || !string.IsNullOrEmpty(firstName)) {
+            invoice.Seats = selectedSeats;
+            invoice.Email = email;
+            invoice.Date = play.Date;
+            invoice.Hall = play.Hall.Id.ToString();
+            invoice.Movie = play.Movie.Title;
+            invoice.FirstName = firstName;
+            invoice.LastName = lastName;
+            foreach (var seat in selectedSeats) {
+                TicketService.AddTicket(
+                    new Ticket()
                     {
-                        Id = 0,
-                    },
-                    Play = play,
-                });
+                        Column = seat.Item2,
+                        Row = seat.Item2,
+                        Employee = new Employee()
+                        {
+                            Id = 0,
+                        },
+                        Play = play,
+                    });
+            }
+            string InvoiceJson = JsonSerializer.Serialize(invoice);
+            NavigationManager.NavigateTo($"/InvoiceInfo/{InvoiceJson}");
         }
-        string InvoiceJson = JsonSerializer.Serialize(invoice);
-        NavigationManager.NavigateTo($"/InvoiceInfo/{InvoiceJson}");
+        else {
+            errorMessage = "Please enter your information!";
+        }
     }
 
     private class Invoice {
