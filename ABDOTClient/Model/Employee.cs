@@ -8,11 +8,9 @@ namespace ABDOTClient.Model
     {
         
         [Required] public int Id { get; set; }
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Enter valid email")]
         [Required] public string Email { get; set; }
-        [Range(1,20,ErrorMessage = "Enter valid name")]
         [Required] public string FirstName { get; set; }
-        [Range(1,25,ErrorMessage = "Enter valid name")]
         [Required] public string LastName { get; set; }
         [Required] public string Password { get; set; }
         [Range(1,3,ErrorMessage = "Role should be between 1 and 3")]
