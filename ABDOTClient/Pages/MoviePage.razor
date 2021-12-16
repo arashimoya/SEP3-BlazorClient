@@ -20,17 +20,20 @@
                 <div class="movie-date-select">
                     <h1 class="movie-list-title">@play.Movie.Title</h1>
                     <h3 class="section-label">Choose a day</h3>
-                    @* <select class="selectpicker"> *@
-                    @*     @foreach (var _play in allPlays) *@
-                    @*     { *@
-                    @*         @if (_play.Movie.Id == play.Movie.Id) *@
-                    @*         { *@
-                    @*             <option> *@
-                    @*                 @_play.Date *@
-                    @*             </option> *@
-                    @*         } *@
-                    @*     } *@
-                    @* </select> *@
+                    <select class="selectpicker" value="@newPlayId" @onchange="@ChangePlay">
+                        @if (allPlays != null)
+                        {
+                            @foreach (var eplay in allPlays)
+                            {
+                                @if (eplay.Movie.Id.Equals(play.Movie.Id))
+                                {
+                                    <option value="@eplay.Id">
+                                        @eplay.Date
+                                    </option>
+                                }
+                            }
+                        }
+                    </select> 
                     <button class="btn btn--outline-white" @onclick="@GoToCheckout">Next</button>
                 </div>
             </div>
@@ -69,17 +72,30 @@
 @code {
 
     [Parameter]public int Id { get; set; }
-    private Play play = new Play();
+    private Play play;
+
+    private int newPlayId
+    {
+        get => play.Id;
+        set => play = allPlays.Single(b => b.Id == value);
+    }
 
     private IList<Play> allPlays;
 
     protected override async Task OnInitializedAsync()
     {
+        play = new Play();
         play.Movie = new Movie();
         play = await PlayService.GetAsync(Id);
         play.Movie = await MovieService.GetMovieAsync(play.Movie.Id);
         allPlays = await PlayService.GetAllAsync();
 
+    }
+
+    public async void  ChangePlay()
+    {
+        play = await PlayService.GetAsync(newPlayId);
+        NavigationManager.NavigateTo($"/selectticket/{play.Id}");
     }
 
     public void GoToCheckout()
