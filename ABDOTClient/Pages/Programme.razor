@@ -132,17 +132,24 @@
     
     protected override async Task OnInitializedAsync()
     {
+        selectedDay = today;
         plays = new List<Play>();
         playsToShow = new List<Play>();
         branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
+        selectedBranch = branches.First().City;
         plays = await PlayService.GetAllAsync();
         foreach (Play play in plays)
         {
             Hall hall = await HallService.GetHall(play.Hall.Id);
             Branch branch = await BranchService.GetBranch(hall.Branch.Id);
             play.Hall.Branch = branch;
-            String onlyDate = play.Date.Remove(9);
+            String onlyDate = play.Date;
+            if (play.Date.Length > 10)
+            {
+                onlyDate = play.Date.Remove(10);
+            }
+            Console.WriteLine(onlyDate);
             play.FilterDate = DateTime.Parse(onlyDate);
             Console.WriteLine(play.FilterDate);
         }
@@ -163,11 +170,9 @@
 
     private void ExecuteFilter()
     {
-        
         playsToShow = plays.Where(p =>
-            (selectedBranch.Equals(p.Hall.Branch.City)) &&
-            selectedDay.Equals(p.FilterDate)
-            ).ToList();
+            (selectedBranch.Equals(p.Hall.Branch.City) && p.FilterDate.Date.Equals(selectedDay.Date))
+             ).ToList();
     }
     
 
@@ -175,6 +180,7 @@
     {
         NavigationManager.NavigateTo($"movie/{id}");
     }
+    
 
 }
 
