@@ -10,12 +10,18 @@ namespace ABDOTClient.Model
         public int Id { get; set; }
         
         [Required]
+        [StringLength(20, ErrorMessage = "City is to long.")]
         public string City { get; set; }
-        
+        [Required]
+        [StringLength(5, ErrorMessage = "Enter valid postcode.")]
         public string Postcode { get; set; }
-        
+        [Required]
+        [StringLength(25 , ErrorMessage = "Enter valid street")]
+        [MinLength(3, ErrorMessage = "Enter valid street")]
         public string Street { get; set; }
-        
+        [Required]
+        [StringLength(25 , ErrorMessage = "Enter valid Country")]
+        [MinLength(3, ErrorMessage = "Enter valid Country")]
         public string Country { get; set; }
         
         public IList<Hall> Halls { get; set; }

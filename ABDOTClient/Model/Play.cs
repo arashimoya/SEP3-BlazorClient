@@ -9,6 +9,8 @@ namespace ABDOTClient.Model
         public int Id { get; set; }
         
         [Required]
+        [StringLength(25, ErrorMessage = "Enter valid date")]
+        [MinLength(5, ErrorMessage = "Enter valid date")]
         public string Date { get; set; }
 
         [Required]
@@ -19,6 +21,7 @@ namespace ABDOTClient.Model
         
         [Required]
         public Hall Hall { get; set; }
+        [Required]
         
         public int Price { get; set; }
 
