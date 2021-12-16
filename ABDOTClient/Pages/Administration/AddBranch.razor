@@ -4,8 +4,9 @@
 @using Microsoft.AspNetCore.Components
 @inject NavigationManager NavigationManager
 @attribute [Authorize(Policy = "MustBeOwner")]
-<h3>Add Branch</h3>
+
 <div class="container">
+    <h3>Add Branch</h3>
     <EditForm Model="@newBranchItem" OnValidSubmit="@AddNewBranch">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
@@ -22,12 +23,12 @@
             <InputText @bind-Value="newBranchItem.City"/>
         </div>
         <div class="form-group">
-                Country:<br/>
-                <InputText @bind-Value="newBranchItem.Country"/>
-            </div>
+            Country:<br/>
+            <InputText @bind-Value="newBranchItem.Country"/>
+        </div>
         <p class="actions">
-                <button class="btn btn-dark" type="submit">Submit</button>
-            </p>
+            <button class="btn btn-dark" type="submit">Submit</button>
+        </p>
     </EditForm>
 </div>
 @code {

@@ -28,14 +28,14 @@
     <p>
         <em>No Person items exist. Please add some</em>
     </p>
-    <AuthorizeView Policy="MustBeManager">
+    
         <div class="row">
             <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addpersonel"))"><button>
                     <i class="oi oi-plus"/>
                 </button>
             </div>
         </div>
-    </AuthorizeView>
+    
 }
 else
 {
@@ -47,14 +47,14 @@ else
         </div>
     <h3 style="color:black">Personel</h3>
         
-        <AuthorizeView Policy="MustBeManager">
+        
             <div class="row">
                 <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addpersonel"))"><button>
                         <i class="oi oi-plus"/>
                     </button>
                 </div>
             </div>
-        </AuthorizeView>
+        
     <table class="table" style="color:black; border-color: black">
         <thead>
         <tr>
@@ -65,10 +65,10 @@ else
             <th>Branch</th>
             <th>CPR</th>
             <th>Birthday</th>
-            <AuthorizeView Policy="MustBeManager">
+            
                 <th>Remove</th>
                 <th>Edit</th>
-            </AuthorizeView>
+            
             
         </tr>
         </thead>
@@ -84,7 +84,7 @@ else
                 <td>@item.CPR</td>
                 <td>@item.Birthday</td>
                 
-                <AuthorizeView Policy="MustBeManager">
+                
                     <td>
                         <button @onclick="@(() => RemoveEmployee(item.Id))">
                             <i class="oi oi-trash" style="color:red"/>
@@ -96,7 +96,7 @@ else
                         </button>
                     </td>
                     
-                </AuthorizeView>
+                
                 
             </tr>
         }

@@ -8,35 +8,39 @@
 @inject NavigationManager NavigationManager
 
 
-<AuthorizeView>
-    <NotAuthorized>
-        <h3>Login</h3>
-        <div class="form-group">
-            <p>@confirmationMessage</p>
-            <input type="text" placeholder="e-mail" @bind-value="email"/>
-        </div>
-        <div class="form-group">
-            <input type="password" placeholder="password" @bind-value="password"/>
-        </div>
-        <div style="color:red">@errorMessage</div>
-        <p class="actions">
-            <button class="btn-outline-dark" @onclick="PerformLogin">Login</button>
-            <button class="btn-outline-dark" @onclick="Cancel">Cancel</button>
-        </p>
-    </NotAuthorized>
-    <Authorized>
-        <div>
-          
-        </div>
-        <p class="actions">
-        <button class="btn-outline-dark" @onclick="GoToProfilePage">My Profile</button>
-        </p>
-        <p class="actions">
-            <button class="btn-outline-dark" @onclick="PerformLogout">Log out</button>
-        </p>
-        
-    </Authorized>
-</AuthorizeView>
+<div style="width: 100%; display: flex; justify-content: center; align-items: center">
+    <div>
+        <AuthorizeView>
+            <NotAuthorized>
+                <h3>Login</h3>
+                <div class="form-group">
+                    <p>@confirmationMessage</p>
+                    <input type="text" placeholder="e-mail" @bind-value="email"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="password" @bind-value="password"/>
+                </div>
+                <div style="color:red">@errorMessage</div>
+                <p class="actions" style="display: flex; align-content: space-between; justify-content: space-between">
+                    <button class="btn-outline-dark" @onclick="PerformLogin">Login</button>
+                    <button class="btn-outline-dark" @onclick="Cancel">Cancel</button>
+                </p>
+            </NotAuthorized>
+            <Authorized>
+                <div>
+                  
+                </div>
+                <p class="actions">
+                <button class="btn-outline-dark" @onclick="GoToProfilePage">My Profile</button>
+                </p>
+                <p class="actions">
+                    <button class="btn-outline-dark" @onclick="PerformLogout">Log out</button>
+                </p>
+                
+            </Authorized>
+        </AuthorizeView>
+    </div>
+</div>
 
 @code {
     private string email;

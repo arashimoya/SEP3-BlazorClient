@@ -6,12 +6,23 @@
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
 @inject IEmployeeService EmployeeService
+@inject IBranchService BranchService
 @namespace EditEmployeeComponent
 @attribute [Authorize(Policy = "MustBeManager")]
 
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
 <div class="container">
     <h3>Edit employee</h3>
-    <EditForm Model="@newEmployeeItem" OnValidSubmit="@EditAnEmployee">
+    @if (branches == null || !branches.Any()) {
+        <p>No branches exist. Please add some, it is a required attribute of an employee</p>
+    }
+    else {
+        <EditForm Model="@newEmployeeItem" OnValidSubmit="@EditAnEmployee">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
     <div class="form-group">
@@ -57,24 +68,42 @@
         <div class="form-group">
             Role:<br/>
             <CustomInputSelect @bind-Value="newEmployeeItem.Role">
-                <option value="3">Owner</option>
-                <option value="2">Manager</option>
-                <option value="1">Operator</option>
+                
+                
+               <option value="2">Manager</option>
+                <option value="3">Operator</option>
             </CustomInputSelect>
         </div>
+        <div class="form-group">
+            Branch:<br/>
+            <InputSelect @bind-Value="@selectedBranchId">
+                @if (branches.Any()) {
+                    @foreach (var branch in branches) {
+                        <option value="@branch.Id">@branch.City</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+        
         
         <p class="actions">
                 <button class="btn btn-dark" type="submit">Submit</button>
             </p>
     </EditForm>
+    }
 </div>
 @code {
     
     [Parameter] public int Id { get; set; }
     private Employee newEmployeeItem = new Employee();
     private DateTime date = DateTime.Today;
+    private IList<Branch> branches = new List<Branch>();
    
     private string confirmationMessage = "";
+    private int selectedBranchId {
+        get => newEmployeeItem.Branch.Id;
+        set => newEmployeeItem.Branch = branches.Single(b => b.Id == value);
+    }
 
     private async Task EditAnEmployee() {
         newEmployeeItem.Birthday = date.Year + "-" + date.Month + "-" + date.Day;
@@ -89,7 +118,11 @@
      
     }
     protected override async Task OnInitializedAsync() {
+        newEmployeeItem.Branch = new Branch();
         newEmployeeItem = await EmployeeService.GetEmployee(Id);
+        
+        branches = await BranchService.GetAllBranches();
+        newEmployeeItem.Branch = branches[0];
     }
 
 }
