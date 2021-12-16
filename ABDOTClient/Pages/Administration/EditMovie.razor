@@ -5,6 +5,8 @@
 @inject IMovieService MovieService 
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Policy = "MustBeManager")]
+
 <h3>EditMovie</h3>
 <style>
     html, body {
