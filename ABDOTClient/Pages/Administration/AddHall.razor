@@ -43,6 +43,8 @@
         if (returnedHall != null) {
             confirmationMessage = "Hall created successfully";
             NavigationManager.NavigateTo($"/HallList/{confirmationMessage}");
+        }else {
+            confirmationMessage = "Failed to create hall";
         }
     }
 

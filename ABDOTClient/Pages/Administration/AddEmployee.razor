@@ -94,6 +94,8 @@
         {
             confirmationMessage = "Employee created successfully";
             NavigationManager.NavigateTo($"/personel/{confirmationMessage}");
+        } else {
+            confirmationMessage = "Failed to create employee";
         }
      
     }

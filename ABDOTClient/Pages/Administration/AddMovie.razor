@@ -63,6 +63,8 @@
         {
             confirmationMessage = "Movie added successfully";
             NavigationManager.NavigateTo($"/movielist/{confirmationMessage}");
+        }else {
+            confirmationMessage = "Failed to create movie";
         }
     }
     protected override Task OnInitializedAsync()

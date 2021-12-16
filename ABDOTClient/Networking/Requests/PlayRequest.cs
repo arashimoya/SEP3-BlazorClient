@@ -105,12 +105,6 @@ namespace ABDOTClient.Networking.Requests {
 
         public async Task<Play> EditPlay(Play play)
         {
-            Console.WriteLine(play.Price);
-            Console.WriteLine(play.TimeInMinutes);
-            Console.WriteLine(play.Date);
-            Console.WriteLine(play.Hall.Id);
-            Console.WriteLine(play.Movie.Id);
-            Console.WriteLine(play.Id);
             string query = @"
                         mutation ($id : Int!, $date : String!, $timeInMinutes : Int!, $movieId : Int!, $hallId : Int!, $price : Int!) {
   editPlay (play: {id : $id, date : $date, timeInMinutes : $timeInMinutes, movieId : $movieId, hallId: $hallId, price: $price} ){
@@ -245,7 +239,6 @@ namespace ABDOTClient.Networking.Requests {
             //Send request
             var graphQLResponse = await graphQlClient.SendQueryAsync<PlayRoot>(graphQLRequest);
             //Return
-            Console.WriteLine(graphQLResponse.Data.Play.ToString());
             return graphQLResponse.Data.Play;
             
         }

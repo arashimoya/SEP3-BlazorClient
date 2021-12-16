@@ -45,6 +45,7 @@
         public string Date { get; set; }
         public string Movie { get; set; }
         public string Hall { get; set; }
+        public int Price { get; set; }
 
         public void GeneratePDF(IJSRuntime js) {
             Console.WriteLine("printing pdf");
@@ -144,6 +145,12 @@
             _pdfCell.BackgroundColor = BaseColor.Gray;
             _pdfTable.AddCell(_pdfCell);
             
+            _pdfCell = new PdfPCell(new Phrase("Price: ", _fontStyle));
+            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfTable.AddCell(_pdfCell);
+            
             _pdfTable.CompleteRow();
             
             #endregion
@@ -152,13 +159,19 @@
             _pdfCell = new PdfPCell(new Phrase(_invoice.FirstName + " " + _invoice.LastName, _fontStyle));
             _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
             _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell.BackgroundColor = BaseColor.White;
             _pdfTable.AddCell(_pdfCell);
             
             _pdfCell = new PdfPCell(new Phrase(_invoice.Email, fontStyle));
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
+            _pdfCell.BackgroundColor = BaseColor.White;
+            _pdfTable.AddCell(_pdfCell);
+            
+            _pdfCell = new PdfPCell(new Phrase(_invoice.Price.ToString(), fontStyle));
+            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            _pdfCell.BackgroundColor = BaseColor.White;
             _pdfTable.AddCell(_pdfCell);
             
             _pdfTable.CompleteRow();

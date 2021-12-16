@@ -113,6 +113,8 @@ else
             branches.Remove(toRemove);
             if (await BranchService.DeleteBranch(branchId))
                 confirmationMessage = "Branch deleted successfully";
+        }else {
+            confirmationMessage = "Failed to delete branch";
         }
 
     }

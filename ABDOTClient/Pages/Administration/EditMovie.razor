@@ -70,6 +70,8 @@
         if (await MovieService.UpdateMovieAsync(movieToEdit) != null) {
             confirmationMessage = "Movie edited successfully";
             NavigationManager.NavigateTo($"/movielist/{confirmationMessage}");
+        }else {
+            confirmationMessage = "Failed to edit movie";
         }
     }
 }

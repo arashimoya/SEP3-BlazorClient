@@ -17,7 +17,7 @@
   }
   
   .seat.selected {
-    background-color: #6feaf6;
+    background-color: #f66f6f;
   }
   
   .seat.occupied {
@@ -82,7 +82,7 @@
 <ul class="showcase">
     <li>
         <div class="seat"></div>
-        <small>N/A</small>
+        <small>Available</small>
     </li>
     <li>
         <div class="seat selected"></div>
@@ -100,67 +100,34 @@
 
     <div class="seat-container">
         <div class="row-container:DDD">
-            @if (selectColor != null) {
-                <div class="row">
-                    <div class="seat @selectColor[0]"  @onclick="() => SelectSeat(0 )"></div>
-                    <div class="seat @selectColor[1]"  @onclick="() => SelectSeat(1 )"></div>
-                    <div class="seat @selectColor[2]"  @onclick="() => SelectSeat(2 )"></div>
-                    <div class="seat @selectColor[3]"  @onclick="() => SelectSeat(3 )"></div>
-                    <div class="seat @selectColor[4]"  @onclick="() => SelectSeat(4 )"></div>
-                    <div class="seat @selectColor[5]"  @onclick="() => SelectSeat(5 )"></div>
-                    <div class="seat @selectColor[6]"  @onclick="() => SelectSeat(6 )"></div>
-                    <div class="seat @selectColor[7]"  @onclick="() => SelectSeat(7 )"></div>
-                  </div>
-                  <div class="row">
-                    <div class="seat @selectColor[8]"  @onclick="() => SelectSeat(8 )"></div>
-                    <div class="seat @selectColor[9]"  @onclick="() => SelectSeat(9 )"></div>
-                    <div class="seat @selectColor[10]"  @onclick="() => SelectSeat(10)"></div>
-                    <div class="seat @selectColor[11]"  @onclick="() => SelectSeat(11)"></div>
-                    <div class="seat @selectColor[12]"  @onclick="() => SelectSeat(12)"></div>
-                    <div class="seat @selectColor[13]"  @onclick="() => SelectSeat(13)"></div>
-                    <div class="seat @selectColor[14]"  @onclick="() => SelectSeat(14)"></div>
-                    <div class="seat @selectColor[15]"  @onclick="() => SelectSeat(15)"></div>
-                  </div>
-                  <div class="row">
-                    <div class="seat @selectColor[16]"  @onclick="() => SelectSeat(16)"></div>
-                    <div class="seat @selectColor[17]"  @onclick="() => SelectSeat(17)"></div>
-                    <div class="seat @selectColor[18]"  @onclick="() => SelectSeat(18)"></div>
-                    <div class="seat @selectColor[19]"  @onclick="() => SelectSeat(19)"></div>
-                    <div class="seat @selectColor[20]"  @onclick="() => SelectSeat(20)"></div>
-                    <div class="seat @selectColor[21]"  @onclick="() => SelectSeat(21)"></div>
-                    <div class="seat @selectColor[22]"  @onclick="() => SelectSeat(22)"></div>
-                    <div class="seat @selectColor[23]"  @onclick="() => SelectSeat(23)"></div>
-                  </div>
-                  <div class="row">
-                    <div class="seat @selectColor[24]"  @onclick="() => SelectSeat(24)"></div>
-                    <div class="seat @selectColor[25]"  @onclick="() => SelectSeat(25)"></div>
-                    <div class="seat @selectColor[26]"  @onclick="() => SelectSeat(26)"></div>
-                    <div class="seat @selectColor[27]"  @onclick="() => SelectSeat(27)"></div>
-                    <div class="seat @selectColor[28]"  @onclick="() => SelectSeat(28)"></div>
-                    <div class="seat @selectColor[29]"  @onclick="() => SelectSeat(29)"></div>
-                    <div class="seat @selectColor[30]"  @onclick="() => SelectSeat(30)"></div>
-                    <div class="seat @selectColor[31]"  @onclick="() => SelectSeat(31)"></div>
-                  </div>
-                  <div class="row">
-                    <div class="seat @selectColor[32]"  @onclick="() => SelectSeat(32)"></div>
-                    <div class="seat @selectColor[33]"  @onclick="() => SelectSeat(33)"></div>
-                    <div class="seat @selectColor[34]"  @onclick="() => SelectSeat(34)"></div>
-                    <div class="seat @selectColor[35]"  @onclick="() => SelectSeat(35)"></div>
-                    <div class="seat @selectColor[36]"  @onclick="() => SelectSeat(36)"></div>
-                    <div class="seat @selectColor[37]"  @onclick="() => SelectSeat(37)"></div>
-                    <div class="seat @selectColor[38]"  @onclick="() => SelectSeat(38)"></div>
-                    <div class="seat @selectColor[39]"  @onclick="() => SelectSeat(39)"></div>
-                  </div>
-                  <div class="row">
-                    <div class="seat @selectColor[40]"  @onclick="() => SelectSeat(40)"></div>
-                    <div class="seat @selectColor[41]"  @onclick="() => SelectSeat(41)"></div>
-                    <div class="seat @selectColor[42]"  @onclick="() => SelectSeat(42)"></div>
-                    <div class="seat @selectColor[43]"  @onclick="() => SelectSeat(43)"></div>
-                    <div class="seat @selectColor[44]"  @onclick="() => SelectSeat(44)"></div>
-                    <div class="seat @selectColor[45]"  @onclick="() => SelectSeat(45)"></div>
-                      <div class="seat @selectColor[46]"  @onclick="() => SelectSeat(46)"></div>
-                      <div class="seat @selectColor[47]" @onclick="() => SelectSeat(47)"></div>
-                  </div>
+            @if (occupied != null) {
+                @for (int i = 1; i <= 6; i++)
+                {
+                    Console.WriteLine("i" + i);
+                    int tempI = i;
+                    <div class="row">
+                        @for (int j = 1; j <= 8; j++)
+                        {
+                            Console.WriteLine("j" + j);
+                            int tempJ = j;
+                            Tuple<int, int> thisSeat = new Tuple<int, int>(tempI, tempJ);
+
+                            if (occupied.Contains(thisSeat))
+                            {
+                                <div class="seat occupied"  @onclick="() => SelectSeat(thisSeat)"></div> 
+                            }
+                            else if (selected.Contains(thisSeat))
+                            {
+                                <div class="seat selected"  @onclick="() => SelectSeat(thisSeat)"></div>  
+                            }
+                            else
+                            {
+                                <div class="seat"  @onclick="() => SelectSeat(thisSeat)"></div>
+                            }
+                        }
+                    </div>
+  
+                }
             }
         </div>
     </div>
@@ -182,69 +149,36 @@
     int rows { get; set; }
     int columns { get; set; }
     private bool IsSelected { get; set; } = false;
-    private IList<string> selectColor;
+    private IList<Tuple<int, int>> occupied;
+    private IList<Tuple<int, int>> selected;
     
+    protected override async Task OnInitializedAsync()
+    {
 
-    
-    
-    protected override async Task OnInitializedAsync() {
-        selectColor = new List<string>();
-        columns = 6;
-        rows = 8;
-        for (int i = 0; i < columns * rows; i++) {
-            selectColor.Add("");
-        }
-        ticketsAll = new List<Ticket>();
-        ticketsOfThisPlay = ticketsAll;
+        play = new Play();
         play = await PlayService.GetAsync(playId);
-        Console.WriteLine(play.Id);
-        for (int i = 0; i <= rows; i++) {
-            for (int j = 0; j <= columns+1; j++) {
-                Tuple<int, int> seat = new Tuple<int, int>(i+1,j+1);
-                play.Hall.Seats.Add(seat);
-            }
-        }
-        // ticketsAll = await TicketService.GetAllTickets();
-        // ticketsOfThisPlay = ticketsAll.Where(t => t.Play.Id == playId).ToList();
+        hall = new Hall();
+        hall = await HallService.GetHall(play.Hall.Id);
+        hall.Seats = new List<Tuple<int, int>>();
+        hall.LoadSeats();
+        occupied = new List<Tuple<int,int>>();
+        selected = new List<Tuple<int,int>>();
+        ticketsOfThisPlay = new List<Ticket>();
         ticketsOfThisPlay = play.Tickets;
-        Console.WriteLine(play.Tickets.Count);
-        foreach (var VARIABLE in ticketsOfThisPlay) {
-            Console.WriteLine(VARIABLE.Id );
+        Console.WriteLine(ticketsOfThisPlay);
+        foreach (Ticket ticket in ticketsOfThisPlay) {
+            occupied.Add(new Tuple<int, int>(ticket.Row,ticket.Column));
         }
-        Seed();
     }
-
-
-    private void Seed() {
-        
-        foreach (var ticket in ticketsOfThisPlay) {
-            selectColor[ticket.Column * ticket.Row] = "occupied";
-        }
-        
-        
-    }
-
-    private void ChangeColor(int index)
+    private void ChangeColor(Tuple<int, int> seat)
     {
-        switch (selectColor[index]) {
-            case "":
-                selectColor[index] = "selected";
-                break;
-            case "selected":
-                selectColor[index] = "";
-                break;
-            case "occupied":
-                break;
-            default:
-                break;
-                
-            
-        }
+        
     }
-    void SelectSeat(int index)
+    void SelectSeat(Tuple<int, int> seat)
     {
-        OnClick.InvokeAsync(play.Hall.Seats[index]);
-        ChangeColor(index);
+        selected.Add(seat);
+        OnClick.InvokeAsync(seat);
+        ChangeColor(seat);
     }
 
 

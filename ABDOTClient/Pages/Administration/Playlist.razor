@@ -112,6 +112,8 @@ else
             playsToShow.Remove(toRemove);
             if (await PlayService.RemovePlayAsync(Id)) {
                 confirmationMessage = "Play deleted successfully";
+            }else {
+                confirmationMessage = "Failed to delete play";
             }
         }
     }
