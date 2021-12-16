@@ -25,8 +25,8 @@
             Branch: <br/>
                     
             <InputSelect @bind-Value="@SelectedBranchId" @onchange="FilterByBranch">
-                @foreach (var branch in branches)
-                {
+                <option> </option>
+                @foreach (var branch in branches) {
                     <option value="@branch.Id">@branch.City</option>
                 }
             </InputSelect>
@@ -35,31 +35,41 @@
         <div class="form-group">
             Play: <br/>
             
-            <InputSelect @bind-Value="@SelectedPlayId">
-                @foreach (var play in playsToShow)
-                {
+            <InputSelect @bind-Value="@SelectedPlayId" @onchange="ExecuteTicketFilter">
+                <option> </option>
+                @foreach (var play in playsToShow) {
                     <option value="@play.Id">@play.Movie.Title @play.Date</option>
                 }
             </InputSelect>
         </div>
         <div class="form-group">
-            Row: <br/>
-            <InputSelect @bind-Value="@newTicketItem.Row">
-                @foreach(var seat in SeatsAvailable) {
-                    @foreach (var ticket in ticketsAll) {
-                        @if (!(ticket.Row == seat.Item1 && ticket.Column == seat.Item2)) {
-                            <option>R: @seat.Item1; C: @seat.Item2;</option>
-                        }    
+            Seat: <br/>
+            <select value="@chosenSeat" @onchange="GetChosenSeat">
+                
+                @foreach (var seat in SeatsAvailable) {
+                    if (ticketsAll.Any()) {
+                        @foreach (var ticket in ticketsAll) {
+                            @if (ticket.Row == seat.Item1 && ticket.Column == seat.Item2) {
+                                continue;
+                            }
+                            <option value="@(seat.Item1 * 10 + seat.Item2)">R: @seat.Item1; C: @seat.Item2;</option>
+                        }
                     }
-                    
+                    else {
+                        <option>R: @seat.Item1; C: @seat.Item2;</option>
+                    }
                 }
-            </InputSelect>
+
+                }
+            </select>
         </div>
         <p class="actions">
             <button class="btn btn-dark" type="submit">Submit</button>
         </p>
     </EditForm>
-    
+    @chosenSeat<br/>
+    C: @(chosenSeat%10)<br/>
+    R: @(chosenSeat/ 10)<br/>
     @foreach (var ticket in ticketsAll) {
         @ticket.Row <span>, </span> @ticket.Column<br/>
     }
@@ -73,7 +83,9 @@
     private IList<Branch> branches = new List<Branch>();
     private IList<Play> playsToShow = new List<Play>();
     private IList<Ticket> ticketsAll = new List<Ticket>();
+    private IList<Ticket> ticketsTaken = new List<Ticket>();
     private IList<Tuple<int,int>> SeatsAvailable = new List<Tuple<int,int>>();
+    private int chosenSeat { get; set; }
 
     private IList<Tuple<int, int>>  selectedSeats;
     private int SelectedBranchId {
@@ -113,11 +125,15 @@
         playsToShow = plays;
         
         ExecutePlayFilter();
+        ExecuteTicketFilterr();
     }
 
     private async Task AddNewTicket() {
         newTicketItem.Employee.Id = 1;
-        
+        int column = chosenSeat % 10;
+        int row = chosenSeat / 10;
+        newTicketItem.Column = column;
+        newTicketItem.Row = row;
         Ticket returnedTicket = await TicketService.AddTicket(newTicketItem);
         if (returnedTicket != null && returnedTicket.GetType() == typeof(Ticket)) {
             confirmationMessage = "New ticket added successfully";
@@ -134,9 +150,21 @@
         ).ToList();
     }
 
-    private void ExecuteTicketFilter() {
-        IList<Ticket> ticketsTaken = ticketsAll.Where(t =>
+    private void GetChosenSeat(ChangeEventArgs args) {
+        chosenSeat = int.Parse(args.Value.ToString());
+    }
+
+    private void ExecuteTicketFilter(ChangeEventArgs args) {
+        SelectedPlayId = int.Parse(args.Value.ToString());
+         ticketsTaken = ticketsAll.Where(t =>
             (t.Play.Id == SelectedPlayId)).ToList();
+        ticketsAll = ticketsAll.Except(ticketsTaken).ToList();
+
+    }
+    private void ExecuteTicketFilterr() {
+        ticketsTaken = ticketsAll.Where(t =>
+            (t.Play.Id == SelectedPlayId)).ToList();
+        ticketsAll = ticketsAll.Except(ticketsTaken).ToList();
 
     }
     
