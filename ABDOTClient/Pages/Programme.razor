@@ -4,6 +4,7 @@
 @namespace Programme
 @inject IBranchService BranchService
 @inject IPlayService PlayService
+@inject IHallService HallService
 @inject NavigationManager NavigationManager
 @using HCarouselComponent
 
@@ -126,13 +127,25 @@
     private IList<Branch> branches;
     private IList<Play> plays;
     private IList<Play> playsToShow;
+    private IList<Hall> halls;
     
-    protected override async Task OnInitializedAsync() {
+    
+    protected override async Task OnInitializedAsync()
+    {
         plays = new List<Play>();
         playsToShow = new List<Play>();
         branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
         plays = await PlayService.GetAllAsync();
+        foreach (Play play in plays)
+        {
+            Hall hall = await HallService.GetHall(play.Hall.Id);
+            Branch branch = await BranchService.GetBranch(hall.Branch.Id);
+            play.Hall.Branch = branch;
+            String onlyDate = play.Date.Remove(9);
+            play.FilterDate = DateTime.Parse(onlyDate);
+            Console.WriteLine(play.FilterDate);
+        }
         playsToShow = plays.Distinct().ToList();
         ExecuteFilter();
     }
@@ -150,10 +163,11 @@
 
     private void ExecuteFilter()
     {
-        // playsToShow = plays.Where(p =>
-        //     (selectedBranch.Equals(p.Hall.Branch.City)) &&
-        //     selectedDay.Equals(p.Date)
-        //     ).ToList();
+        
+        playsToShow = plays.Where(p =>
+            (selectedBranch.Equals(p.Hall.Branch.City)) &&
+            selectedDay.Equals(p.FilterDate)
+            ).ToList();
     }
     
 

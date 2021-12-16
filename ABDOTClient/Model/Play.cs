@@ -12,6 +12,8 @@ namespace ABDOTClient.Model
         [StringLength(25, ErrorMessage = "Enter valid date")]
         [MinLength(5, ErrorMessage = "Enter valid date")]
         public string Date { get; set; }
+        
+        public DateTime FilterDate { get; set; }
 
         [Required]
         public int TimeInMinutes { get; set; }
