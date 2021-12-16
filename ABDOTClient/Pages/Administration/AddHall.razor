@@ -5,6 +5,8 @@
 @inject NavigationManager NavigationManager
 @inject IHallService HallService
 @inject IBranchService BranchService;
+
+@attribute [Authorize(Policy = "MustBeOwner")]
 <div class="container">
 <h3>AddHall</h3>
     <EditForm Model="@newHallItem" OnValidSubmit="@AddNewHall">

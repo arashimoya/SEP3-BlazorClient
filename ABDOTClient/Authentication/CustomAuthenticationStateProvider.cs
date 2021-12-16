@@ -68,7 +68,7 @@ namespace ABDOTClient.Authentication{
         private ClaimsIdentity SetupClaimsForUser(Employee user){
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, user.Email));
-            claims.Add(new Claim("Role", user.Role.ToString()));
+            claims.Add(new Claim(ClaimTypes.Role, user.Role.ToString()));
             ClaimsIdentity identity = new ClaimsIdentity(claims, "apiauth_type");
             return identity;
         }

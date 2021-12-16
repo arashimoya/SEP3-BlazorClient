@@ -4,6 +4,8 @@
 @using ABDOTClient.Data
 @inject IHallService HallService
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Policy = "MustBeOwner")]
 <style>
     html, body {
         background-color: white;

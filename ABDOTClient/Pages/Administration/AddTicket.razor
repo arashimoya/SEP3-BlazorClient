@@ -45,25 +45,24 @@
         <div class="form-group">
             Row: <br/>
             <InputSelect @bind-Value="@newTicketItem.Row">
-                @for (int i = 1; i <= 6; i++) {
-                    <option>@i</option>
+                @foreach(var seat in SeatsAvailable) {
+                    @foreach (var ticket in ticketsAll) {
+                        @if (!(ticket.Row == seat.Item1 && ticket.Column == seat.Item2)) {
+                            <option>R: @seat.Item1; C: @seat.Item2;</option>
+                        }    
+                    }
+                    
                 }
             </InputSelect>
         </div>
-        <div class="form-group">
-                    Column: <br/>
-                    <InputSelect @bind-Value="@newTicketItem.Column">
-                        @for (int i = 1; i <= 8; i++) {
-                            <option>@i</option>
-                        }
-                    </InputSelect>
-                </div>
         <p class="actions">
             <button class="btn btn-dark" type="submit">Submit</button>
         </p>
     </EditForm>
-    @SelectedBranchId<br/>
-    @SelectedPlayId
+    
+    @foreach (var ticket in ticketsAll) {
+        @ticket.Row <span>, </span> @ticket.Column<br/>
+    }
 </div>
 
 @code {
@@ -74,7 +73,7 @@
     private IList<Branch> branches = new List<Branch>();
     private IList<Play> playsToShow = new List<Play>();
     private IList<Ticket> ticketsAll = new List<Ticket>();
-    private IList<Ticket> ticketsAvailable = new List<Ticket>();
+    private IList<Tuple<int,int>> SeatsAvailable = new List<Tuple<int,int>>();
 
     private IList<Tuple<int, int>>  selectedSeats;
     private int SelectedBranchId {
@@ -101,6 +100,11 @@
         plays = await PlayService.GetAllAsync();
 
         ticketsAll = await TicketService.GetAllTickets();
+        for (int i = 1; i <= 6; i++) {
+            for (int j = 1; j <= 8; j++) {
+                SeatsAvailable.Add(new Tuple<int, int>(i,j));
+            }
+        }
         
         foreach (var play in plays) {
             play.Hall = await HallService.GetHall(play.Hall.Id);
@@ -113,6 +117,7 @@
 
     private async Task AddNewTicket() {
         newTicketItem.Employee.Id = 1;
+        
         Ticket returnedTicket = await TicketService.AddTicket(newTicketItem);
         if (returnedTicket != null && returnedTicket.GetType() == typeof(Ticket)) {
             confirmationMessage = "New ticket added successfully";
