@@ -15,6 +15,7 @@
     }
 </style>
 <div class="container">
+    
     <EditForm Model="@movieToEdit" OnValidSubmit="@EditAMovie">
         <DataAnnotationsValidator/>
         <ValidationSummary/>
@@ -54,7 +55,6 @@
             <button  class="btn btn-dark" type="submit">Submit</button>
         </p>
     </EditForm>
-    @movieToEdit.ToString()
 </div>
 
 @code {
@@ -74,4 +74,5 @@
             confirmationMessage = "Failed to edit movie";
         }
     }
+
 }

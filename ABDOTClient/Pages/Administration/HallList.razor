@@ -37,8 +37,8 @@ else
                 <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
             </button>
         </div>
-        <h3 style="color:black">HallList</h3>
-        <p style="color:black">for personel only</p>
+        <h3 style="color:black">Halls</h3>
+        
         <div class="row">
             <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addHall"))"><button>
                 <i class="oi oi-plus"/>
@@ -79,7 +79,6 @@ else
             }
             </tbody>
         </table>
-        <p style="color:black">@BranchId</p>
     </div>
 }
 
@@ -93,9 +92,9 @@ else
         allHalls = new List<Hall>();
         allHalls = await HallService.GetAllHalls();
         hallsToShow = allHalls;
-        // if (!confirmationMessage.Contains("success")) {
-        //     confirmationMessage = " ";
-        // }
+        if (!confirmationMessage.Contains("success")) {
+            confirmationMessage = " ";
+        }
         ExecuteFilter();
     }
 

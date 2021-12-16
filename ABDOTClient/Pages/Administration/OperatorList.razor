@@ -6,6 +6,8 @@
 @using Data
 @using ABDOTClient.Factories
 
+@attribute [Authorize(Policy = "MustBeManager")]
+
 <style>
     html, body {
         background-color: white;
@@ -43,7 +45,7 @@ else
             </button>
         </div>
     <h3 style="color:black">Personel</h3>
-        <p style="color:black">for managers only</p>
+        
         <AuthorizeView Policy="MustBeManager">
             <div class="row">
                 <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addpersonel"))"><button>
@@ -58,14 +60,13 @@ else
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Password</th>
             <th>Role</th>
             <th>Branch</th>
             <th>CPR</th>
             <th>Birthday</th>
             <AuthorizeView Policy="MustBeManager">
-                <th>Edit</th>
                 <th>Remove</th>
+                <th>Edit</th>
             </AuthorizeView>
             
         </tr>
@@ -77,7 +78,6 @@ else
                 <td>@item.Id</td>
                 <td>@item.FirstName<span> </span> @item.LastName</td>
                 <td>@item.Email</td>
-                <td><span class="password">@item.Password</span></td>
                 <td>@item.Role</td>
                 <td>@item.Branch.City</td>
                 <td>@item.CPR</td>

@@ -2,6 +2,7 @@
 @using ABDOTClient.Model
 @using ABDOTClient.Data
 @using ABDOTClient.Authentication
+@using System.Diagnostics
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 @inject IEmployeeService EmployeeService
@@ -65,10 +66,7 @@
             <div class="profile-name">
                 <text>@userEmployee.FirstName @userEmployee.LastName</text>
             </div>
-            <button @onclick="@(() => Edit(userEmployee.Id))">
-                <i class="oi oi-pencil" style="color:white"/>
-            </button>
-            
+
         </div>
         <div class="col-lg-9 col-md-12 profile-body">
             <div class="row">
@@ -79,7 +77,7 @@
                     Email
                 </div>
                 <div class="col-6 profile-title">
-                    Password
+                    Birthday
                 </div>
             </div>
             <div class="row">
@@ -87,9 +85,26 @@
                     @userEmployee.Email
                 </div>
                 <div class="col-6 profile-info">
-                    <span class="password"> @userEmployee.Password</span>
+                    @userEmployee.Birthday
                 </div>
             </div>
+           <div class="row">
+                <div class="col-6 profile-info">
+                    CPR
+                </div>
+                <div class="col-6 profile-info">
+                    Role
+                </div>
+            </div>
+           <div class="row">
+                <div class="col-6 profile-info">
+                    @userEmployee.CPR
+                </div>
+                <div class="col-6 profile-info">
+                    @stringRole
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="col-12 separator profile-section">
                     Address
@@ -103,10 +118,10 @@
             </div>
             <div class="row">
                 <div class="col-6 profile-info">
-                    @* @user.Street *@
+                    @userEmployee.Street
                 </div>
                 <div class="col-6 profile-info">
-                    @* @user.Settlement *@
+                    @userEmployee.City
                 </div>
             </div>
             <div class="row">
@@ -119,32 +134,42 @@
             </div>
             <div class="row">
                 <div class="col-6 profile-info">
-                    @* @user.Postcode *@
+                    @userEmployee.Postcode
                 </div>
                 <div class="col-6 profile-info">
-                    @* @user.Country *@
+                    @userEmployee.Country
                 </div>
             </div>
             
         </div>
     </div>
-    <div class="row shadow-container" style="width: 100%; height: 361px;">
-        ideas?
-    </div>
-    <div class="row shadow-container" style="width: 100%; height: 361px;">
-            
-    </div>
+
     
 </div>
 
 
 @code {
+    private string stringRole;
     private Employee userEmployee = new Employee();
     [Parameter] public int Id { get; set; }
 
     protected override async Task OnInitializedAsync() {
         userEmployee = await EmployeeService.GetEmployee(Id);
+        switch (userEmployee.Role)
+        {
+            case 1:
+                stringRole = "Owner";
+                break;
+            case 2:
+                stringRole = "Manager";
+                break;
+            case 3:
+                stringRole = "Employee";
+                break;
+        }
     }
+    
+    
 
     private void Edit(int id)
     {

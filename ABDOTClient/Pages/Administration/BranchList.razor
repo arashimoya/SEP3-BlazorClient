@@ -2,7 +2,7 @@
 @using ABDOTClient.Model
 @using ABDOTClient.Data
 @inject NavigationManager NavigationManager
-
+@attribute [Authorize(Policy = "MustBeOwner")]
 <style>
     html, body {
         background-color: white;
@@ -37,8 +37,8 @@ else
             <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
             </button>
         </div>
-    <h3 style="color:black">BranchList</h3>
-        <p style="color:black">for owners only //or give authentication for edit/remove actions</p>
+    <h3 style="color:black">Branches</h3>
+        
         <AuthorizeView Policy="MustBeOwner">
             <div class="row">
                 <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addbranch"))"><button>

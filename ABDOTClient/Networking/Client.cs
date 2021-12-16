@@ -34,7 +34,7 @@ namespace ABDOTClient.Networking {
             branchRequest = new BranchRequest();
             test = new Test();
             
-            test.Tests();
+            // test.Tests();
         }
 
 
