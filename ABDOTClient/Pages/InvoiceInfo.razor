@@ -7,21 +7,34 @@
 @using Microsoft.AspNetCore.Mvc.RazorPages
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
-<section>
-    <div style="margin-left:100px">
+<style>
+    .center-middle{
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center; 
+    }
+</style>
+<div style="margin-left:100px">
         <span>1. Choose Seats > 2. Payment > <text style="font-weight: 700">3. Invoice</text></span>
     </div>
-    <button @onclick="GeneratePDFFile">Generate</button>
+<section style=" height: 1000px">
+    
+    <div class="container row" style="justify-content: center;
+                                              align-content: center;
+                                              align-items: center; ">
+        <div class="col-12 center-middle"><h2> Thanks for shopping with us, @invoice.FirstName</h2></div>
+        <div class="col-12 center-middle"><button @onclick="GeneratePDFFile" class="btn btn--black btn--outline-white btn--small  btn--hover">Download Ticket</button></div>
+    </div>
 </section>
 
-@invoice.ToString()
+
 @code {
     [Parameter] public string InvoiceJson { get; set; }
     private Invoice invoice => JsonSerializer.Deserialize<Invoice>(InvoiceJson);
 
     private void GeneratePDFFile() {
         invoice.GeneratePDF(js);
-        NavigationManager.NavigateTo("/");
     }
 
     public class Invoice : PageModel{
