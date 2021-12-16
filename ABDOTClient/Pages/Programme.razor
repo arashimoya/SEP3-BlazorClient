@@ -135,7 +135,7 @@
         playsToShow = new List<Play>();
         branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
-        selectedBranch = branches.First().City;
+        if(branches!= null &&branches.Any()) selectedBranch = branches.First().City;
         plays = await PlayService.GetAllAsync();
         foreach (Play play in plays)
         {

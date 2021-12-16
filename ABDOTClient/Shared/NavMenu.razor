@@ -18,6 +18,10 @@
         background-size: 13px;
         color: white;
     }
+    .text-light{
+        font-size: 1.25rem!important;
+    }
+   
 </style>
 <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark navbar-custom  box-shadow mb-3 fixed-top" >
     <div class="container" style="color:#1e1e1e!important;">
@@ -47,17 +51,20 @@
 
 
             </ul>
-            <AuthorizeView>
-                <NotAuthorized>
-                    <div class="login-box">
-                        <a class="nav-link text-light" href="/login" style="color:orange">Login</a>
-                    </div>
-                </NotAuthorized>
-                <Authorized>
-                    <LoginBox/>
-                </Authorized>
-            </AuthorizeView>
-            
+            <div style="padding-bottom: 1rem; display: flex;">
+                <AuthorizeView>
+                    <NotAuthorized>
+                        <div class="login-box">
+                            <a class="nav-link text-light" href="/login" style="color:orange; padding-left: 0;">Login</a>
+                        </div>
+                    </NotAuthorized>
+                    <Authorized>
+                        <LoginBox/>
+                    </Authorized>
+                </AuthorizeView>
+                
+            </div>
+
         </div>
         
     </div>

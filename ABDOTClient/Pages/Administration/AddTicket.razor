@@ -17,56 +17,61 @@
 </style>
 <div class="container">
 <h3>Sell Ticket</h3>
-    <EditForm Model="@newTicketItem" OnValidSubmit="@AddNewTicket">
-        <DataAnnotationsValidator/>
-        <ValidationSummary/>
+   @if (!(plays.Any() && branches.Any())) {
+       <p> No play or branch items exist. Please add some, it is a required attribute of a ticket</p>
+   }
+   else {
+       <EditForm Model="@newTicketItem" OnValidSubmit="@AddNewTicket">
+           <DataAnnotationsValidator/>
+           <ValidationSummary/>
         
-        <div class="form-group">
-            Branch: <br/>
+           <div class="form-group">
+               Branch: <br/>
                     
-            <InputSelect @bind-Value="@SelectedBranchId" @onchange="FilterByBranch">
-                <option> </option>
-                @foreach (var branch in branches) {
-                    <option value="@branch.Id">@branch.City</option>
-                }
-            </InputSelect>
-        </div>
+               <InputSelect @bind-Value="@SelectedBranchId" @onchange="FilterByBranch">
+                   <option> </option>
+                   @foreach (var branch in branches) {
+                       <option value="@branch.Id">@branch.City</option>
+                   }
+               </InputSelect>
+           </div>
         
-        <div class="form-group">
-            Play: <br/>
+           <div class="form-group">
+               Play: <br/>
             
-            <InputSelect @bind-Value="@SelectedPlayId" @onchange="ExecuteTicketFilter">
-                <option> </option>
-                @foreach (var play in playsToShow) {
-                    <option value="@play.Id">@play.Movie.Title @play.Date</option>
-                }
-            </InputSelect>
-        </div>
-        <div class="form-group">
-            Seat: <br/>
-            <select value="@chosenSeat" @onchange="GetChosenSeat">
+               <InputSelect @bind-Value="@SelectedPlayId" @onchange="ExecuteTicketFilter">
+                   <option> </option>
+                   @foreach (var play in playsToShow) {
+                       <option value="@play.Id">@play.Movie.Title @play.Date</option>
+                   }
+               </InputSelect>
+           </div>
+           <div class="form-group">
+               Seat: <br/>
+               <select value="@chosenSeat" @onchange="GetChosenSeat">
                 
-                @foreach (var seat in SeatsAvailable) {
-                    if (ticketsAll.Any()) {
-                        @foreach (var ticket in ticketsAll) {
-                            @if (ticket.Row == seat.Item1 && ticket.Column == seat.Item2) {
-                                continue;
-                            }
-                            <option value="@(seat.Item1 * 10 + seat.Item2)">R: @seat.Item1; C: @seat.Item2;</option>
-                        }
-                    }
-                    else {
-                        <option>R: @seat.Item1; C: @seat.Item2;</option>
-                    }
-                }
+                   @foreach (var seat in SeatsAvailable) {
+                       if (ticketsAll.Any()) {
+                           @foreach (var ticket in ticketsAll) {
+                               @if (ticket.Row == seat.Item1 && ticket.Column == seat.Item2) {
+                                   continue;
+                               }
+                               <option value="@(seat.Item1 * 10 + seat.Item2)">R: @seat.Item1; C: @seat.Item2;</option>
+                           }
+                       }
+                       else {
+                           <option>R: @seat.Item1; C: @seat.Item2;</option>
+                       }
+                   }
 
-                }
-            </select>
-        </div>
-        <p class="actions">
-            <button class="btn btn-dark" type="submit">Submit</button>
-        </p>
-    </EditForm>
+                   }
+               </select>
+           </div>
+           <p class="actions">
+               <button class="btn btn-dark" type="submit">Submit</button>
+           </p>
+       </EditForm>
+   }
   
 </div>
 

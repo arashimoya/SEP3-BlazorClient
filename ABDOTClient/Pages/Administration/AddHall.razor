@@ -7,12 +7,22 @@
 @inject IBranchService BranchService;
 
 @attribute [Authorize(Policy = "MustBeOwner")]
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
 <div class="container">
 <h3>AddHall</h3>
-    <EditForm Model="@newHallItem" OnValidSubmit="@AddNewHall">
-        <DataAnnotationsValidator/>
-        <ValidationSummary/>
-        <div class="form-group">
+    @if (branches == null || !branches.Any()) {
+        <p>No branches exist. Please add some, it is a required attribute of a hall</p>
+    }
+    else {
+        <EditForm Model="@newHallItem" OnValidSubmit="@AddNewHall">
+            <DataAnnotationsValidator/>
+            <ValidationSummary/>
+            <div class="form-group">
                 Branch:<br/>
                 <InputSelect @bind-Value="@selectedBranchId">
                     @foreach (var branch in branches) {
@@ -21,10 +31,11 @@
                 </InputSelect>
             </div>
 
-        <p class="actions">
+            <p class="actions">
                 <button class="btn btn-dark" type="submit">Submit</button>
             </p>
-    </EditForm>
+        </EditForm>
+    }
 </div>
 
 @code {

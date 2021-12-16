@@ -11,46 +11,48 @@
         color: black;
     }
 </style>
-<h3>Add Movie</h3>
-<EditForm Model="@newMovieItem" OnValidSubmit="@AddNewMovie">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
-<div class="form-group">
-    Title:<br/>
-    <InputText @bind-Value="newMovieItem.Title"/>
-</div>
-<div class="form-group">
-    Director:<br/>
-    <InputText @bind-Value="newMovieItem.Director"/>
-</div>
-<div class="form-group">
-    Description:<br/>
-    <InputTextArea @bind-Value="newMovieItem.Description"/>
-</div>
-<div class="form-group">
-    Genre:<br/>
-    <InputText @bind-Value="newMovieItem.Genre"/>
-</div>
+<div class="container">
+    <h3>Add Movie</h3>
+    <EditForm Model="@newMovieItem" OnValidSubmit="@AddNewMovie">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
     <div class="form-group">
-        Language:<br/>
-        <InputText @bind-Value="newMovieItem.Language"/>
+        Title:<br/>
+        <InputText @bind-Value="newMovieItem.Title"/>
     </div>
     <div class="form-group">
-        SubtitleLanguage:<br/>
-        <InputText @bind-Value="newMovieItem.SubtitleLanguage"/>
+        Director:<br/>
+        <InputText @bind-Value="newMovieItem.Director"/>
     </div>
-<div class="form-group">
-    Year of release:<br/>
-    <InputNumber @bind-Value="newMovieItem.Year"/>
+    <div class="form-group">
+        Description:<br/>
+        <InputTextArea @bind-Value="newMovieItem.Description"/>
+    </div>
+    <div class="form-group">
+        Genre:<br/>
+        <InputText @bind-Value="newMovieItem.Genre"/>
+    </div>
+        <div class="form-group">
+            Language:<br/>
+            <InputText @bind-Value="newMovieItem.Language"/>
+        </div>
+        <div class="form-group">
+            SubtitleLanguage:<br/>
+            <InputText @bind-Value="newMovieItem.SubtitleLanguage"/>
+        </div>
+    <div class="form-group">
+        Year of release:<br/>
+        <InputNumber @bind-Value="newMovieItem.Year"/>
+    </div>
+    <div class="form-group">
+        Length:<br/>
+        <InputNumber @bind-Value="newMovieItem.LengthInMinutes"/>
+    </div>
+        <p class="actions">
+                <button  class="btn btn-dark" type="submit">Submit</button>
+            </p>
+    </EditForm>
 </div>
-<div class="form-group">
-    Length:<br/>
-    <InputNumber @bind-Value="newMovieItem.LengthInMinutes"/>
-</div>
-    <p class="actions">
-            <button  class="btn btn-dark" type="submit">Submit</button>
-        </p>
-</EditForm>
 @code {
     private Movie newMovieItem = new Movie();
     private IMovieService CloudMovieService = new CloudMovieService();
