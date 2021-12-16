@@ -121,6 +121,8 @@
             confirmationMessage = "Play edited successfully";
             NavigationManager.NavigateTo($"/playlist/{confirmationMessage}");
             
+        }else {
+            confirmationMessage = "Failed to edit play";
         }
     }
 

@@ -39,6 +39,8 @@
             confirmationMessage = "Branch edited successfully";
             NavigationManager.NavigateTo($"/branches/{confirmationMessage}");
             
+        }else {
+            confirmationMessage = "Failed to edit branch";
         }
      
     }

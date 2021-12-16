@@ -42,7 +42,9 @@
         {
             confirmationMessage = "Branch created successfully";
             NavigationManager.NavigateTo($"/branches/{confirmationMessage}");
-            
+        }
+        else {
+            confirmationMessage = "Failed to create branch";
         }
      
     }

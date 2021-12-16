@@ -122,6 +122,8 @@
             confirmationMessage = "New play added successfully";
             NavigationManager.NavigateTo($"/playlist/{confirmationMessage}");
             
+        }else {
+            confirmationMessage = "Failed to create play";
         }
     }
 

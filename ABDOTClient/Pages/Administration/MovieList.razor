@@ -118,6 +118,9 @@ else
             if(await CloudMovieService.RemoveMovieAsync(movieId))
                 confirmationMessage = "Movie deleted successfully";
         }
+        else {
+            confirmationMessage = "Failed to delete movie";
+        }
     }
 
     private void Edit(int id)
