@@ -35,6 +35,7 @@
                         }
                     </select> 
                     <button class="btn btn--outline-white" @onclick="@GoToCheckout">Next</button>
+                    @play.Id.ToString()
                 </div>
             </div>
         </div>
@@ -92,10 +93,16 @@
 
     }
 
-    public async void  ChangePlay()
-    {
+    private async void  ChangePlay(ChangeEventArgs args) {
+        try {
+            newPlayId = int.Parse(args.Value.ToString());
+        }
+        catch (Exception e) {
+            Console.WriteLine(e);
+            throw;
+        }
         play = await PlayService.GetAsync(newPlayId);
-        NavigationManager.NavigateTo($"/selectticket/{play.Id}");
+        
     }
 
     public void GoToCheckout()
