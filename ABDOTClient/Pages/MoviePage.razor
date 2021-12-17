@@ -9,7 +9,7 @@
 @namespace MoviePage
 
 @* This page is directed to the movie page, although it is redirected upon play.Id, but it has the chosen branch and movie *@
-@play.Id
+
 <div class="container">
     <div class="movie">
         <div class="movie-top">
@@ -35,7 +35,7 @@
                         }
                     </select> 
                     <button class="btn btn--outline-white" @onclick="@GoToCheckout">Next</button>
-                    @play.Id.ToString()
+                 
                 </div>
             </div>
         </div>
