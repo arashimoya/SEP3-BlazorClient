@@ -19,7 +19,7 @@
     @if (branches == null || movies == null || halls == null) {
         <p>Loading...</p>
     }
-    else if (!branches.Any() || movies.Any() || halls.Any()) {
+    else if (!movies.Any() || !halls.Any()) {
     <p>Missing key components of play</p>
     }
     else {
