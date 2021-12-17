@@ -27,12 +27,12 @@
             </div>
             <div class="form-group">
                 Time: <br/>
-                <select @onchange="@((arg)=>GetTime(arg))">
+                <InputSelect @bind-Value="time">
                     @for (int i = 0; i < 96; i++)
                     {
                         <option>@(i/4)<text>:</text>@(i * 15 % 60)</option>
                     }
-                </select>
+                </InputSelect>
 
             </div>
             <div class="form-group">
@@ -61,11 +61,6 @@
                 <button class="btn btn-dark" type="submit">Submit</button>
             </p>
         </EditForm>
-        @foreach (var movie in movies) {
-            @movie.ToString()
-        }
-        
-    
 </div>
 @code {
     [Parameter] public int Id { get; set; }
@@ -76,14 +71,17 @@
     private IList<Branch> branches = new List<Branch>();
     private IList<Hall> halls = new List<Hall>();
     private Branch chosenBranch;
-    private string time = "00:00";
+    private string time;
+    
     private DateTime today = DateTime.Today;
     
-    protected override async Task OnInitializedAsync() {
-        
+    protected override async Task OnInitializedAsync()
+    {
         newPlayItem.Hall = new Hall();
         newPlayItem.Movie = new Movie();
         newPlayItem = await PlayService.GetAsync(Id);
+        time = newPlayItem.Date.Split(" ")[1];
+        Console.WriteLine(time);
         
         
         branches = await BranchService.GetAllBranches();
@@ -94,7 +92,6 @@
 
     private void GetTime(ChangeEventArgs args)
     {
-        time = "";
         time = args.Value.ToString();
     }
 

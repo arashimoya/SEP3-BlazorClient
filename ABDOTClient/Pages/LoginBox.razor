@@ -38,7 +38,6 @@
     }
     public async Task PerformLogout()
     {
-        
         try
         {
             await ((CustomAuthenticationStateProvider) AuthenticationStateProvider).Logout();

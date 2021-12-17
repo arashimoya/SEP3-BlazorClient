@@ -176,7 +176,14 @@
     }
     void SelectSeat(Tuple<int, int> seat)
     {
-        selected.Add(seat);
+        if (selected.Contains(seat))
+        {
+            selected.Remove(seat);
+        }
+        else
+        {
+            selected.Add(seat);
+        }
         OnClick.InvokeAsync(seat);
         ChangeColor(seat);
     }

@@ -1,0 +1,83 @@
+﻿@page "/editTicket/{Id:int}"
+@using ABDOTClient.Model
+@using ABDOTClient.Data
+
+@inject NavigationManager NavigationManager
+@inject ITicketService TicketService
+
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
+
+<div class="container">
+    <h3>Edit Movie</h3>
+    <EditForm Model="@ticketToEdit" OnValidSubmit="@editTicket">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+        <div class="form-group">
+            Play Id:<br/>
+            <InputNumber @bind-Value="ticketToEdit.Play.Id"/>
+        </div>
+        <div class="form-group">
+            Movie:<br/>
+            <InputText @bind-Value="ticketToEdit.Play.Movie.Title"/>
+        </div>
+        <div class="form-group">
+            Time:<br/>
+            <InputDate @bind-Value="today" @bind-Value:format="yyyy-MM-dd"/>
+        </div>
+        <div class="form-group">
+            Branch:<br/>
+            <InputText @bind-Value="ticketToEdit.Play.Hall.Branch.City"/>
+        </div>
+        <div class="form-group">
+            Hall:<br/>
+            <InputNumber @bind-Value="ticketToEdit.Play.Hall.Id"/>
+        </div>
+        <div class="form-group">
+            Column:
+            <InputText @bind-Value="Column"/>
+        </div>
+        <div class="form-group">
+            Row:
+            <InputText @bind-Value="Row"/>
+        </div>
+        <p class="actions">
+            <button class="btn btn-dark" type="submit">Submit</button>
+        </p>
+    </EditForm>
+    @ticketToEdit.ToString()
+</div>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private Ticket ticketToEdit = new();
+    private Play newPlayItem = new();
+    private DateTime today = DateTime.Today;
+    private string confirmationMessage = "";
+
+    private string Column;
+    private string Row;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ticketToEdit = await TicketService.GetTicket(Id);
+        Column = ticketToEdit.Column.ToString();
+        Row = ticketToEdit.Row.ToString();
+    }
+
+    private async Task editTicket()
+    {
+        if (await TicketService.EditTicket(ticketToEdit) != null)
+        {
+            confirmationMessage = "Ticket edited successfully";
+            NavigationManager.NavigateTo($"/ticketlist/{confirmationMessage}");
+        }
+    }
+}

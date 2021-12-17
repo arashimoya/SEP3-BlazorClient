@@ -9,6 +9,9 @@
 @namespace MoviePage
 
 @* This page is directed to the movie page, although it is redirected upon play.Id, but it has the chosen branch and movie *@
+
+
+
 <div class="container">
     <div class="movie">
         <div class="movie-top">
@@ -26,15 +29,17 @@
                             {
                                 @if (eplay.Movie.Id.Equals(play.Movie.Id))
                                 {
-                                    <option value="@eplay.Id">
+                                    <option value="@play.Id">
                                         @eplay.Date
                                     </option>
                                 }
                             }
                         }
                     </select> 
+
                     <button class="btn btn--outline-white" style = "margin-top: 20px;" @onclick="@GoToCheckout">Next</button>
                     
+
                 </div>
             </div>
         </div>

@@ -7,6 +7,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using LoginBoxComponent
 @page "/navbar"
+
 <style>
     .header-selectpicker{
         border: none;
@@ -43,7 +44,7 @@
                 <li class="nav-item">
                     <a class="nav-link text-light" href="/premieres">Premieres</a>
                 </li>
-                <AuthorizeView>
+                <AuthorizeView Policy="MustBeEmployee">
                     <li class="nav-item">
                         <a class="nav-link text-light" href="/admin">Administration</a>
                     </li>
