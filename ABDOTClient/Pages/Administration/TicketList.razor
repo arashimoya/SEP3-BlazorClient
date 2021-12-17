@@ -56,8 +56,8 @@ else
             <th>Play ID</th>
             <th>Movie</th>
             <th>Time</th>
-            <th>Branch</th>
-            <th>Hall</th>
+            @* <th>Branch</th> *@
+            @* <th>Hall</th> *@
             <th>Seat</th>
             @* <th>Customer's name</th> *@
             <th>Remove</th>
@@ -74,8 +74,8 @@ else
                 <td>@item.Play.Movie.Title</td>
                 <td>@plays.Single(p=>p.Id == item.Play.Id).Date</td>
                 @* <td>@item.Play.Hall.Branch.City</td> *@
-                <td>@branches.Single(b=>b.Id == plays.Single(p=>p.Id == item.Play.Id).Hall.Id).City</td>
-                <td>@plays.Single(p=>p.Id == item.Play.Id).Hall.Id</td>
+                @* <td>@if (item.Play.Hall.Branch != null) {@item.Play.Hall.Branch.City}</td> *@
+                @* <td>@plays.Single(p=>p.Id == item.Play.Id).Hall.Id</td> *@
 
                 <td>R: @item.Row, C: @item.Column</td>
    
@@ -122,10 +122,22 @@ else
         plays = new List<Play>();
         branches = new List<Branch>();
         ticketsAll = await TicketService.GetAllTickets();
-        ticketsToShow = ticketsAll;
         halls = await HallService.GetAllHalls();
         plays = await PlayService.GetAllAsync();
         branches = await BranchService.GetAllBranches();
+        // Play play = new Play();
+        // Hall hall = new Hall();
+        // Branch branch = new Branch();
+        
+        // foreach (Ticket ticket in ticketsAll)
+        // {
+        //     play = await PlayService.GetAsync(ticket.Play.Id);
+        //     hall = await HallService.GetHall(play.Hall.Id);
+        //     branch = await BranchService.GetBranch(hall.Branch.Id);
+        //     ticket.Play.Hall.Branch = branch;
+        // }
+        ticketsToShow = ticketsAll;
+        
     }
 
     private void Edit(int id)
