@@ -1,6 +1,10 @@
 ﻿@page "/carousel"
 @namespace HCarouselComponent
-
+<style>
+    .carousel-img{
+    aspect-ratio: 3.39/1;
+    }
+</style>
 <BlazorStrap.BSCarousel NumberOfItems="@items.Count" class="carousel-slide-custom">
     <div class="carousel-inner">
         @foreach (var item in items)

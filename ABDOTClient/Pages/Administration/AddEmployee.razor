@@ -8,71 +8,85 @@
 @namespace AddEmployeeComponent
 @attribute [Authorize(Policy = "MustBeManager")]
 
-<h3>Add new employee</h3>
-<EditForm Model="@newEmployeeItem" OnValidSubmit="@AddNewEmployee">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
-<div class="form-group">
-    First name:<br/>
-    <InputText @bind-Value="newEmployeeItem.FirstName"/>
-</div>
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
+<div class="container">
+    <h3>Add new employee</h3>
+    @if (branches == null || !branches.Any()) {
+        <p>No branches exist. Please add some, it is a required attribute of an employee</p>
+    }
+    else {
+        <EditForm Model="@newEmployeeItem" OnValidSubmit="@AddNewEmployee">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
     <div class="form-group">
-        Last name:<br/>
-        <InputText @bind-Value="newEmployeeItem.LastName"/>
+        First name:<br/>
+        <InputText @bind-Value="newEmployeeItem.FirstName"/>
+    </div>
+        <div class="form-group">
+            Last name:<br/>
+            <InputText @bind-Value="newEmployeeItem.LastName"/>
+        </div>
+        <div class="form-group">
+                Birthdate:<br/>
+                <InputDate @bind-Value="today" @bind-Value:format="yyyy-MM-dd"/>
+        </div>
+    <div class="form-group">
+        Password:<br/>
+        <InputText @bind-Value="newEmployeeItem.Password"/>
     </div>
     <div class="form-group">
-            Birthdate:<br/>
-            <InputDate @bind-Value="today" @bind-Value:format="yyyy-MM-dd"/>
-    </div>
-<div class="form-group">
-    Password:<br/>
-    <InputText @bind-Value="newEmployeeItem.Password"/>
-</div>
-<div class="form-group">
-    Email:<br/>
-    <InputText @bind-Value="newEmployeeItem.Email"/>
-</div>
-<div class="form-group">
-    Street:<br/>
-    <InputText @bind-Value="newEmployeeItem.Street"/>
-</div>
-<div class="form-group">
-    Postcode:<br/>
-    <InputText @bind-Value="newEmployeeItem.Postcode"/>
-</div>
-    <div class="form-group">
-        City:<br/>
-        <InputText @bind-Value="newEmployeeItem.City"/>
+        Email:<br/>
+        <InputText @bind-Value="newEmployeeItem.Email"/>
     </div>
     <div class="form-group">
-        Country:<br/>
-        <InputText @bind-Value="newEmployeeItem.Country"/>
+        Street:<br/>
+        <InputText @bind-Value="newEmployeeItem.Street"/>
     </div>
     <div class="form-group">
-        CPR Number:<br/>
-        <InputText @bind-Value="newEmployeeItem.CPR"/>
+        Postcode:<br/>
+        <InputText @bind-Value="newEmployeeItem.Postcode"/>
     </div>
-    <div class="form-group">
-        Role:<br/>
-        <CustomInputSelect @bind-Value="newEmployeeItem.Role">
-            <option value="3">Owner</option>
-            <option value="2">Manager</option>
-            <option value="1">Operator</option>
-        </CustomInputSelect>
-    </div>
-    <div class="form-group">
-        Branch:<br/>
-        <InputSelect @bind-Value="@selectedBranchId">
-            @foreach (var branch in branches) {
-                <option value="@branch.Id">@branch.City</option>
-            }
-        </InputSelect>
-    </div>
+        <div class="form-group">
+            City:<br/>
+            <InputText @bind-Value="newEmployeeItem.City"/>
+        </div>
+        <div class="form-group">
+            Country:<br/>
+            <InputText @bind-Value="newEmployeeItem.Country"/>
+        </div>
+        <div class="form-group">
+            CPR Number:<br/>
+            <InputText @bind-Value="newEmployeeItem.CPR"/>
+        </div>
+        <div class="form-group">
+            Role:<br/>
+            <CustomInputSelect @bind-Value="newEmployeeItem.Role">
+                
+                <option value="2">Manager</option>
+                <option value="3">Operator</option>
+            </CustomInputSelect>
+        </div>
+        <div class="form-group">
+            Branch:<br/>
+            <InputSelect @bind-Value="@selectedBranchId">
+                @foreach (var branch in branches) {
+                    <option value="@branch.Id">@branch.City</option>
+                }
+            </InputSelect>
+        </div>
+        
+        <p class="actions">
+                <button class="btn btn-dark" type="submit">Submit</button>
+            </p>
+    </EditForm>
+    }
     
-    <p class="actions">
-            <button class="btn btn-dark" type="submit">Submit</button>
-        </p>
-</EditForm>
+</div>
 @code {
     private Employee newEmployeeItem = new Employee();
     private IEmployeeService employeeService = new EmployeeCloudService();

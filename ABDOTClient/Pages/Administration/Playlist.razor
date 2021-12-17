@@ -40,7 +40,6 @@ else
             </button>
         </div>
     <h3 style="color:black">Plays</h3>
-        <p style="color:black">for operators</p>
         <div class="row">
             <div class="col-sm-4" @onclick="@(()=> NavigationManager.NavigateTo("/addplay"))"><button>
                 <i class="oi oi-plus"/>
@@ -56,6 +55,7 @@ else
             <th>Branch</th>
             <th>Hall</th>
             <th>Remove</th>
+            <th>Edit</th>
             
         </tr>
         </thead>
@@ -71,6 +71,12 @@ else
                 <td>
                     <button @onclick="@(() => RemovePlay(item.Id))">
                         <i class="oi oi-trash" style="color:red"/>
+                    </button>
+                </td>
+                
+                <td>
+                    <button @onclick="@(() => EditPlay(item.Id))">
+                        <i class="oi oi-pencil" style="color:blue"/>
                     </button>
                 </td>
             </tr>
@@ -129,6 +135,11 @@ else
                 confirmationMessage = "Failed to delete play";
             }
         }
+    }
+
+    private void EditPlay(int Id)
+    {
+        NavigationManager.NavigateTo($"/editplay/{Id}");
     }
     
 

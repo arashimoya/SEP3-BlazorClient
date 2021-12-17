@@ -8,19 +8,38 @@
 @namespace EditBranchComponent
 @attribute [Authorize(Policy = "MustBeOwner")]
 
-<h3>Edit Branch</h3>
-<EditForm Model="@newBranchItem" OnValidSubmit="@EditABranch">
-    <DataAnnotationsValidator/>
-    <ValidationSummary/>
-<div class="form-group">
-    Name of the city:<br/>
-    <InputText @bind-Value="newBranchItem.City"/>
+<style>
+    html, body {
+        background-color: white;
+        color: black;
+    }
+</style>
+<div class="container">
+    <h3>Edit Branch</h3>
+    <EditForm Model="@newBranchItem" OnValidSubmit="@EditABranch">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
+    <div class="form-group">
+                Street:<br/>
+                <InputText @bind-Value="newBranchItem.Street"/>
+            </div>
+            <div class="form-group">
+                Postcode:<br/>
+                <InputText @bind-Value="newBranchItem.Postcode"/>
+            </div>
+            <div class="form-group">
+                City:<br/>
+                <InputText @bind-Value="newBranchItem.City"/>
+            </div>
+            <div class="form-group">
+                Country:<br/>
+                <InputText @bind-Value="newBranchItem.Country"/>
+            </div>
+            <p class="actions">
+                <button class="btn btn-dark" type="submit">Submit</button>
+            </p>
+    </EditForm>
 </div>
-
-    <p class="actions">
-            <button class="btn btn-dark" type="submit">Submit</button>
-        </p>
-</EditForm>
 @code {
     [Parameter] public int Id { get; set; }
     private Branch newBranchItem = new Branch();
