@@ -3,6 +3,7 @@
 @using ABDOTClient.Data
 @namespace PremieresComponent
 @inject IMovieService MovieService
+@inject NavigationManager NavigationManager
 
 <style>
     .movie-list-item{
@@ -28,7 +29,7 @@
             <span class="list--group row">
                 @foreach (var movie in movies) {
                     @if (movie.Year == year) {
-                        <div class=" col-md-4 col-lg-3 col-sm-6 col-xl-3 movie-list-item">
+                        <div class=" col-md-4 col-lg-3 col-sm-6 col-xl-3 movie-list-item" @onclick="@(() => GoToMovie(movie.Id))">
                             <div class="movie-list">
                                 <div class="movie-list-poster movie-list-upcoming " style="background-image: url(@movie.PosterSrc)">
                                     <div class="movie-list-poster-title">@movie.Title</div>
@@ -78,8 +79,11 @@
             Console.WriteLine(year);
         }
 
-
+        
 
     }
-
+    private void GoToMovie(int id)
+    {
+        NavigationManager.NavigateTo($"movie/{id}");
+    }
 }

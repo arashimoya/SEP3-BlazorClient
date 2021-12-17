@@ -97,13 +97,14 @@ else
         playsToShow = new List<Play>();
         halls = new List<Hall>();
         branches = new List<Branch>();
+        plays = await PlayService.GetAllAsync();
         halls = await HallService.GetAllHalls();
         branches = await BranchService.GetAllBranches();
         foreach (Branch printBranch in branches)
         {
             Console.WriteLine(printBranch);
         }
-        plays = await PlayService.GetAllAsync();
+        
         Hall hall = new Hall();
         Branch branch = new Branch();
         foreach (Play play in plays)

@@ -84,16 +84,20 @@ else
                 <td>@item.CPR</td>
                 <td>@item.Birthday</td>
                 
-                
+               
                     <td>
-                        <button @onclick="@(() => RemoveEmployee(item.Id))">
-                            <i class="oi oi-trash" style="color:red"/>
-                        </button>
+                        @if (item.Role != 1) {
+                            <button @onclick="@(() => RemoveEmployee(item.Id))">
+                                <i class="oi oi-trash" style="color:red"/>
+                            </button>
+                        }
                     </td>
                     <td>
-                        <button @onclick="@(() => Edit(item.Id))">
-                            <i class="oi oi-pencil" style="color:blue"/>
-                        </button>
+                        @if (item.Role != 1) {
+                            <button @onclick="@(() => Edit(item.Id))">
+                                <i class="oi oi-pencil" style="color:blue"/>
+                            </button>
+                        }
                     </td>
                     
                 

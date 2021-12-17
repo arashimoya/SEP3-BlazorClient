@@ -16,10 +16,12 @@
     }
 </style>
 <div class="container">
-    @if (branches == null || movies == null || halls == null) {
+    @if (movies == null || halls == null) {
         <p>Loading...</p>
     }
+
     else if (!movies.Any() || !halls.Any()) {
+
     <p>Missing key components of play</p>
     }
     else {
