@@ -135,23 +135,30 @@
         playsToShow = new List<Play>();
         branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
-        if(branches!= null &&branches.Any()) selectedBranch = branches.First().City;
-        plays = await PlayService.GetAllAsync();
-        foreach (Play play in plays)
+        if (branches != null && branches.Any())
         {
-            Hall hall = await HallService.GetHall(play.Hall.Id);
-            Branch branch = await BranchService.GetBranch(hall.Branch.Id);
-            play.Hall.Branch = branch;
-            String onlyDate = play.Date;
-            if (play.Date.Length > 10)
-            {
-                onlyDate = play.Date.Remove(10);
-            }
-            Console.WriteLine(onlyDate);
-            play.FilterDate = DateTime.Parse(onlyDate);
-            Console.WriteLine(play.FilterDate);
+            selectedBranch = branches.First().City;
         }
-        playsToShow = plays.Distinct().ToList();
+        plays = await PlayService.GetAllAsync();
+        if (plays != null && plays.Any())
+        {
+            foreach (Play play in plays)
+            {
+                Hall hall = await HallService.GetHall(play.Hall.Id);
+                Branch branch = await BranchService.GetBranch(hall.Branch.Id);
+                play.Hall.Branch = branch;
+                String onlyDate = play.Date;
+                if (play.Date.Length > 10)
+                {
+                    onlyDate = play.Date.Remove(10);
+                }
+                Console.WriteLine(onlyDate);
+                play.FilterDate = DateTime.Parse(onlyDate);
+                Console.WriteLine(play.FilterDate);
+            }
+
+            playsToShow = plays.Distinct().ToList();
+        }
         ExecuteFilter();
     }
     private void FilterByDay(DateTime dateTime)

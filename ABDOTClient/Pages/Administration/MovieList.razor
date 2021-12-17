@@ -6,6 +6,9 @@
 @using GraphQL.Client.Abstractions.Utilities
 @attribute [Authorize(Policy = "MustBeManager")]
 @inject IMovieService CloudMovieService
+
+@attribute [Authorize(Roles = "1, 2")]
+
 <style>
     html, body {
         background-color: white;
