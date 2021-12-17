@@ -61,7 +61,7 @@ else
             <th>Seat</th>
             @* <th>Customer's name</th> *@
             <th>Remove</th>
-                <th>Edit</th>
+                @* <th>Edit</th> *@
             
         </tr>
         </thead>
@@ -73,9 +73,7 @@ else
                 <td>@item.Play.Id</td>
                 <td>@item.Play.Movie.Title</td>
                 <td>@plays.Single(p=>p.Id == item.Play.Id).Date</td>
-                @* <td>@item.Play.Hall.Branch.City</td> *@
-                @* <td>@if (item.Play.Hall.Branch != null) {@item.Play.Hall.Branch.City}</td> *@
-                @* <td>@plays.Single(p=>p.Id == item.Play.Id).Hall.Id</td> *@
+   
 
                 <td>R: @item.Row, C: @item.Column</td>
    
@@ -86,11 +84,7 @@ else
                             <i class="oi oi-trash" style="color:red"/>
                         </button>
                     </td>
-                    <td>
-                        <button @onclick="@(() => Edit(item.Id))">
-                            <i class="oi oi-pencil" style="color:blue"/>
-                        </button>
-                    </td>
+  
                 
             </tr>
         }
