@@ -15,8 +15,8 @@ namespace ABDOTClient.Model
         [Required] public string Password { get; set; }
         [Range(1,3,ErrorMessage = "Role should be between 1 and 3")]
         [Required]  public int Role { get; set; }
-        [StringLength(10, ErrorMessage = "Enter valid CPR")]
-        [MinLength(10, ErrorMessage = "Enter valid CPR")]
+        [StringLength(10, ErrorMessage = "Enter valid CPR containing exactly 10 characters")]
+        [MinLength(10, ErrorMessage = "Enter valid CPR containing exactly 10 characters")]
         [Required] public string CPR { get; set; }
         [StringLength(25, ErrorMessage = "Enter valid street")]
         [MinLength(5, ErrorMessage = "Enter valid street")]
