@@ -33,7 +33,7 @@
 else
 {
     <div class="container" style="background-color: white">
-    <p style="color: green;">@confirmationMessage</p>
+    <p style="color: black;">@confirmationMessage</p>
         <div class="section-separate" style="padding-top:40px">
             <button style="border-color: transparent; background-color:transparent">
             <i class="oi oi-arrow-left" @onclick="@(()=>NavigationManager.NavigateTo("/admin"))"/>
@@ -118,9 +118,9 @@ else
         playsToShow = plays;
 
         
-        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
-            confirmationMessage = " ";
-        }
+        // if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
+        //     confirmationMessage = " ";
+        // }
     }
     
     private async Task RemovePlay(int Id)

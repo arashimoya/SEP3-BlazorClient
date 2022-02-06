@@ -107,9 +107,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
-            confirmationMessage = " ";
-        }
+        // if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
+        //     confirmationMessage = " ";
+        // }
         ticketsAll = new List<Ticket>();
         ticketsToShow = new List<Ticket>();
         halls = new List<Hall>();

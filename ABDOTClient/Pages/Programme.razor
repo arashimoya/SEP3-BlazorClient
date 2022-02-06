@@ -7,6 +7,8 @@
 @inject IHallService HallService
 @inject NavigationManager NavigationManager
 @using HCarouselComponent
+@using SendGrid
+@using SendGrid.Helpers.Mail
 
 
 <style>
@@ -65,14 +67,19 @@
             <div class="col-sm-3">
                 <div>
                     <h3 style="text-align: right">Choose city:</h3>
-                    @if (branches.Any()) {
-                        <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch">
+                    @if (branches != null)
+                    {
+                        @if (branches.Any())
+                        {
+                            <select class="header-selectpicker" value="@selectedBranch" @onchange="@FilterByBranch">
 
-                            @foreach (var branch in branches) {
-                                <option>@branch.City</option>
-                            }
+                                @foreach (var branch in branches)
+                                {
+                                    <option>@branch.City</option>
+                                }
 
-                        </select>
+                            </select>
+                        }
                     }
                 </div>
             </div>
@@ -130,6 +137,13 @@
     
     protected override async Task OnInitializedAsync()
     {
+    
+        
+    
+        
+    
+
+
         selectedDay = today;
         plays = new List<Play>();
         playsToShow = new List<Play>();
@@ -185,6 +199,8 @@
     {
         NavigationManager.NavigateTo($"movie/{id}");
     }
+    
+   
     
 
 }

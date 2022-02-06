@@ -15,10 +15,13 @@
         color: black;
     }
     .confirmation-message{
-        color: greenyellow;
+        color: black;
     }
 </style>
-<p class="confirmation-message">@confirmationMessage</p>
+@if (confirmationMessage != null)
+{
+    <p class="confirmation-message">@confirmationMessage</p>
+}
 @if (personelToShow == null)
 {
     <p>
@@ -119,9 +122,9 @@ else
         personel = new List<Employee>();
         personel = await EmployeeService.GetAllEmployees();
         personelToShow = personel;
-        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
-            confirmationMessage = " ";
-        }
+        // if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
+        //     confirmationMessage = " ";
+        // }
     }
     private async Task RemoveEmployee(int employeeId) {
         Employee toRemove = personel.FirstOrDefault(e => e.Id == employeeId);

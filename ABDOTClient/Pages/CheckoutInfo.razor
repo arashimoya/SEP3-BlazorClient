@@ -5,9 +5,14 @@
 @using ABDOTClient.Model
 @inject IPlayService PlayService
 @inject ITicketService TicketService
+@inject IBranchService branchService
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using LoginComponent
+@using SendGrid
+@using SendGrid.Helpers.Mail
+@using System.ComponentModel.DataAnnotations
+@using System.Globalization
 
 <style>
     .c--background {
@@ -55,19 +60,46 @@
         </div>
     </section>
 <div class="container">
-    <h3>CheckoutInfo</h3>
+    <h3>Checkout</h3>
     
-            <div class="section-separate">
-                <div class="form-group">
-                    Email:<br/><input type="text" @bind-value="email"/>
-                </div>
-                <div class="form-group">
-                    First Name:<br/><input type="text" @bind-value="firstName"/>
-                </div>
-                <div class="form-group">
-                    Last Name:<br/><input type="text" @bind-value="lastName"/>
-                </div>
+    <div class="section-separate">
+        <div class="form-group">
+            Email:<br/><input type="text" @bind-value="email"/>
+        </div>
+        <div class="form-group">
+            First Name:<br/><input type="text" @bind-value="firstName"/>
+        </div>
+        <div class="form-group">
+            Last Name:<br/><input type="text" @bind-value="lastName"/>
+        </div>
+    </div>
+    
+    <div class="section-separate">
+        <div class="form-group">
+            Card Number<br/><input type="text" @bind-value="cardNumber"/>
+        </div>
+        <div class="form-group">
+            Security Number:<br/><input type="text" @bind-value="securityNumber"/>
+        </div>
+        <div class="form-group">
+            Expiration Date:<br/><input type="date" @bind-value="expirationDate"/>
+        </div>
+    </div>
+    
+        <div class="section-separate">
+            <div class="form-group">
+                Street<br/><input type="text" @bind-value="street"/>
             </div>
+            <div class="form-group">
+                City:<br/><input type="text" @bind-value="city"/>
+            </div>
+            <div class="form-group">
+                Postcode:<br/><input type="text" @bind-value="postcode"/>
+            </div>
+            <div class="form-group">
+                Country:<br/><input type="text" @bind-value="country"/>
+            </div>
+        </div>
       
     <p style="color:red">@errorMessage</p>
     @foreach (var item in selectedSeats) 
@@ -81,35 +113,100 @@
             </div>
         </div>
     }
-    
+
+    <button class="btn btn--outline-white" @onclick="@GoToInvoice">Next</button>
 </div>
-<button class="btn btn--outline-white" @onclick="@GoToInvoice">Next</button>
+
 
 @code {
+    [Required]
+    [CreditCard]
+    private string cardNumber;
+    [Required]
+    [RegularExpression("^[0-9]+$")]
+    [MaxLength(3)]
+    [MinLength(3)]
+    private string securityNumber;
+    [Required]
+    private DateTime expirationDate;
+    [Required]
+    private string street;
+    [Required]
+    private string city;
+    [Required]
+    [RegularExpression("^[0-9]+$")]
+    [MaxLength(4)]
+    [MinLength(4)]
+    private string postcode;
+    [Required]
+    private string country;
+    [Required]
+    private string firstName;
+    [Required]
+    private string lastName;
+    [Required]
+    [EmailAddress]
+    private string email;
+
     [Parameter] public string selectedSeatsJson { get; set; }
     [Parameter] public int Id { get; set; }
     public IList<Ticket> tickets;
     private Play play = new Play();
-    private string firstName;
-    private string lastName;
-    private string email;
+
     private Invoice invoice;
     private const string backgroundSrc = "/css/images/ticket-background.gif";
     private string errorMessage = "";
-    
+    private string apiKey;
+    private IList<Branch> branches;
+    private Branch branch;
+    private string invoiceCity;
+
     private IList<Tuple<int, int>> selectedSeats => JsonSerializer.Deserialize<IList<Tuple<int,int>>>(selectedSeatsJson);
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
+        branches = new List<Branch>();
+        apiKey = Environment.GetEnvironmentVariable("EMAIL_API_KEY");
+        if (apiKey == null)
+        {
+            Environment.SetEnvironmentVariable("EMAIL_API_KEY",
+                "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");
+            apiKey = Environment.GetEnvironmentVariable("EMAIL_API_KEY");
+        }
         invoice = new Invoice();
         tickets = new List<Ticket>();
         play.Movie = new Movie();
         play.Hall = new Hall();
         play = await PlayService.GetAsync(Id);
+        
+        Branch branch = new Branch();
+        branch.Halls = new List<Hall>();
+        branches = await branchService.GetAllBranches();
+        foreach (Branch targetBranch in branches)
+        {
+            foreach (Hall hall in targetBranch.Halls)
+            {
+                if (hall.Id == play.Hall.Id)
+                {
+                    branch = targetBranch;
+                }
+            }
+        }
+        Console.WriteLine(branch);
+        invoiceCity = branch.City;
+        Console.WriteLine(invoiceCity);
     }
 
 
     private async Task GoToInvoice() {
-        if (!string.IsNullOrEmpty(email)|| !string.IsNullOrEmpty(lastName) || !string.IsNullOrEmpty(firstName)) {
+        if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(lastName) && !string.IsNullOrEmpty(firstName)
+        &&  !string.IsNullOrEmpty(street)
+        && !string.IsNullOrEmpty(country) && !string.IsNullOrEmpty(postcode) && !string.IsNullOrEmpty(city))
+        {
+            invoice.Postcode = postcode;
+            invoice.City = city;
+            invoice.Street = street;
+            invoice.Country = country;
             invoice.Seats = selectedSeats;
             invoice.Email = email;
             invoice.Date = play.Date;
@@ -117,6 +214,7 @@
             invoice.Movie = play.Movie.Title;
             invoice.FirstName = firstName;
             invoice.LastName = lastName;
+            invoice.Branch = invoiceCity;
             invoice.Price = selectedSeats.Count * play.Price;
             foreach (var seat in selectedSeats) {
                 TicketService.AddTicket(
@@ -132,6 +230,23 @@
                     });
             }
             string InvoiceJson = JsonSerializer.Serialize(invoice);
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("horizonxxcinema@gmail.com", "HorizonXXCinema");
+            var subject = "Order";
+            var to = new EmailAddress(invoice.Email, invoice.FirstName + " " + invoice.LastName);
+            var plainTextContent = "";
+            var htmlContent = $" <h2><b>Thank you for your purchase, {invoice.FirstName}! </h2> </b> " +
+                              $"You have purchased tickets for {invoice.Movie} in the HorizonXX {invoice.Branch} Cinema. <br><br>" +
+                              "Below you will find your order confirmation and your tickets.<br><br>" +
+                              "We are looking forward to having you. If you have any more questions you are welcome to reply to this email and ask.<br><br>" +
+                              $"<b>Email</b>: {invoice.Email} <br> <b>Name</b>: {invoice.FirstName + " " + invoice.LastName} <br> <b>Cinema</b>: {invoice.Branch} <br> <b>Hall</b>: {invoice.Hall} <br> <b>Price</b>: {invoice.Price} <br> <b>Date</b>: {invoice.Date} <br> " +
+                              $"<b>Street</b>: {invoice.Street} <br> <b>City</b>: {invoiceCity} <br> <b>Postcode</b>:{postcode}<br> <b>Country</b>:{country}<br>" +
+                              $"<b>Tickets</b>: {generateTicketTable(invoice.Seats)} <br><br><br>" +
+                              "Best regards <br>" +
+                              "<b>HorizonXXCinema</b> <br>";
+            
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
             NavigationManager.NavigateTo($"/InvoiceInfo/{InvoiceJson}");
         }
         else {
@@ -151,5 +266,45 @@
         public string Date { get; set; }
         public string Movie { get; set; }
         public string Hall { get; set; }
+        public string Branch { get; set; }
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string Postcode { get; set; }
+    }
+
+    private string generateTicketTable(IList<Tuple<int,int>> purchasedSeats)
+    {
+        string returnTable1 = "<table>" +
+                              "<tr>" +
+                              "<th>SL" +
+                              "</th>" +
+                              "<th>Row" +
+                              "</th>" +
+                              "<th>Column" +
+                              "</th>" +
+                              "</tr>";
+        
+        string returnTable2 = "";
+        if (purchasedSeats != null && purchasedSeats.Any())
+        {
+            
+            int i = 1;
+            foreach (Tuple<int, int> seat in purchasedSeats)
+            {
+                returnTable2 += "<tr>" +
+                                $"<td>{i}" +
+                                "</td>" +
+                                $"<td>{seat.Item1}" +
+                                "</td>" +
+                                $"<td>{seat.Item2}" +
+                                "</td>" +
+                                "</tr>";
+                i++;
+            }
+        }
+        string returnTable3 = "</table";
+        string returnTableFinal = returnTable1 + returnTable2 + returnTable3;
+        return returnTableFinal;
     }
 }

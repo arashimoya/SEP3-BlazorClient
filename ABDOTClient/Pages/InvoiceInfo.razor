@@ -23,7 +23,8 @@
     <div class="container row" style="justify-content: center;
                                               align-content: center;
                                               align-items: center; ">
-        <div class="col-12 center-middle"><h2> Thanks for shopping with us, @invoice.FirstName</h2></div>
+        <div class="col-12 center-middle"><h2> Thanks for shopping with us, @invoice.FirstName! You can download your tickets below.</h2></div>
+        <div class="col-12 center-middle"><h2> We have sent you a full copy of your order confirmation and invoice to your email</h2></div>
         <div class="col-12 center-middle"><button @onclick="GeneratePDFFile" class="btn btn--black btn--outline-white btn--small  btn--hover">Download Ticket</button></div>
     </div>
 </section>
@@ -45,6 +46,11 @@
         public string Date { get; set; }
         public string Movie { get; set; }
         public string Hall { get; set; }
+        public string Branch { get; set; }
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
+        public string Postcode { get; set; }
         public int Price { get; set; }
 
         public void GeneratePDF(IJSRuntime js) {
@@ -118,7 +124,7 @@
             _pdfTable.AddCell(_pdfCell);
             _pdfTable.CompleteRow();
             
-            _pdfCell = new PdfPCell(new Phrase("Ticket info", _fontStyle));
+            _pdfCell = new PdfPCell(new Phrase("Tickets", _fontStyle));
             _pdfCell.Colspan = maxColumn;
             _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             _pdfCell.Border = 0;
@@ -130,97 +136,97 @@
         private void ReportBody() {
             _fontStyle = FontFactory.GetFont("Tahoma", 9f, 1);
             var fontStyle = FontFactory.GetFont("Tahoma", 9f, 0);
-
+    
             #region CustomerInfo
             
-            _pdfCell = new PdfPCell(new Phrase("Name: ", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase("Email: ", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase("Price: ", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfTable.CompleteRow();
+            // _pdfCell = new PdfPCell(new Phrase("Name: ", _fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.Gray;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase("Email: ", _fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.Gray;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase("Price: ", _fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.Gray;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfTable.CompleteRow();
             
             #endregion
     #region CustomerInfoBody
-            
-            _pdfCell = new PdfPCell(new Phrase(_invoice.FirstName + " " + _invoice.LastName, _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.White;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase(_invoice.Email, fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.White;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase(_invoice.Price.ToString(), fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.White;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfTable.CompleteRow();
+            //
+            // _pdfCell = new PdfPCell(new Phrase(_invoice.FirstName + " " + _invoice.LastName, _fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.White;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase(_invoice.Email, fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.White;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase(_invoice.Price.ToString(), fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.White;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfTable.CompleteRow();
             
     #endregion
     #region PlayInfoHeader
             
-            _pdfCell = new PdfPCell(new Phrase("Date: ", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase("Movie: ", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase("Hall: ", _fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.Gray;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfTable.CompleteRow();
+            // _pdfCell = new PdfPCell(new Phrase("Date: ", _fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.Gray;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase("Movie: ", _fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.Gray;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase("Hall: ", _fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.Gray;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfTable.CompleteRow();
             
     #endregion
     #region PlayInfoBody
             
-            _pdfCell = new PdfPCell(new Phrase(_invoice.Date, fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.White;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase(_invoice.Movie, fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.White;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfCell = new PdfPCell(new Phrase(_invoice.Hall, fontStyle));
-            _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            _pdfCell.BackgroundColor = BaseColor.White;
-            _pdfTable.AddCell(_pdfCell);
-            
-            _pdfTable.CompleteRow();
+            // _pdfCell = new PdfPCell(new Phrase(_invoice.Date, fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.White;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase(_invoice.Movie, fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.White;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfCell = new PdfPCell(new Phrase(_invoice.Hall, fontStyle));
+            // _pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            // _pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            // _pdfCell.BackgroundColor = BaseColor.White;
+            // _pdfTable.AddCell(_pdfCell);
+            //
+            // _pdfTable.CompleteRow();
             
     #endregion
             #region Table Header

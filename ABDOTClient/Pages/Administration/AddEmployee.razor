@@ -3,6 +3,8 @@
 @using ABDOTClient.Data
 @using ABDOTClient.Pages.Administration
 @using Microsoft.AspNetCore.Components
+@using SendGrid
+@using SendGrid.Helpers.Mail
 @inject NavigationManager NavigationManager
 @inject IBranchService BranchService
 @namespace AddEmployeeComponent
@@ -93,6 +95,8 @@
     private IList<Branch> branches = new List<Branch>();
     private string confirmationMessage = "";
     private DateTime today = DateTime.Today;
+    private IList<Employee> employees;
+    private string apiKey;
 
     private int selectedBranchId {
         get => newEmployeeItem.Branch.Id;
@@ -102,18 +106,69 @@
     
     
     private async Task AddNewEmployee() {
+        Console.WriteLine("We are in add new employee");
         newEmployeeItem.Birthday = today.Year + "-" + today.Month + "-" + today.Day;
-        Employee returnedEmployee = await employeeService.CreateEmployee(newEmployeeItem);
-        if (returnedEmployee != null && returnedEmployee.GetType() == typeof(Employee)) 
+        bool emailAlreadyExists = false;
+        if (employees != null)
         {
-            confirmationMessage = "Employee created successfully";
-            NavigationManager.NavigateTo($"/personel/{confirmationMessage}");
-        } else {
-            confirmationMessage = "Failed to create employee";
+            if (employees.Any())
+            {
+                foreach (Employee employee in employees)
+                {
+                    if (employee.Email.Equals(newEmployeeItem.Email))
+                    {
+                        emailAlreadyExists = true;
+                    }
+                }
+            }
         }
+        if (!emailAlreadyExists)
+            {
+                Employee returnedEmployee = await employeeService.CreateEmployee(newEmployeeItem);
+                if (returnedEmployee != null && returnedEmployee.GetType() == typeof(Employee)) 
+                {
+                    var client = new SendGridClient(apiKey);
+                    var from = new EmailAddress("horizonxxcinema@gmail.com", "HorizonXXCinema");
+                    var subject = "Employment";
+                    var to = new EmailAddress(returnedEmployee.Email, returnedEmployee.FirstName + " " + returnedEmployee.LastName);
+                    var plainTextContent = "";
+                    var htmlContent = $" <h2><b>Congratulations {returnedEmployee.FirstName}! </h2> </b> " +
+                                      $"You have just been registered as an employee of HorizonXXCinema. <br><br>" +
+                                      "Thank you for your cooperation and we are looking forward to working with you. If you have any more questions you are welcome to reply to this email and ask.<br><br>" +
+                                      "Best regards <br><br>" +
+                                      "<b>Oliver Sperlik</b> <br>" +
+                                      "<b>Human Resources Manager - HorizonXXCinema<b>";
+                    var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                    var response = await client.SendEmailAsync(msg);
+                    confirmationMessage = "Employee created successfully";
+                    NavigationManager.NavigateTo($"/personel/{confirmationMessage}");
+                } else {
+                    confirmationMessage = "Failed to create employee";
+                }
+            }
+            else
+        {
+            
+                confirmationMessage = "Employee with this email already exists, fail";
+                NavigationManager.NavigateTo($"/personel/{confirmationMessage}");
+        }
+        
+
      
     }
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
+        
+        apiKey = Environment.GetEnvironmentVariable("EMAIL_API_KEY");
+        if (apiKey == null)
+        {
+            Environment.SetEnvironmentVariable("EMAIL_API_KEY",
+                "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");
+            apiKey = Environment.GetEnvironmentVariable("EMAIL_API_KEY");
+        }
+        
+        employees = new List<Employee>();
+        employees = await employeeService.GetAllEmployees();
         newEmployeeItem.Branch = new Branch();
         branches = await BranchService.GetAllBranches();
         newEmployeeItem.Branch = branches[0];

@@ -16,7 +16,7 @@
     }
 </style>
 
-<p style="color: green;">@confirmationMessage</p>
+<p style="color: black;">@confirmationMessage</p>
 @if (moviesToShow == null)
 {
     <p>
@@ -108,9 +108,9 @@ else
         movies = new List<Movie>();
         movies = await CloudMovieService.GetAllAsync();
         moviesToShow = movies;
-        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
-            confirmationMessage = " ";
-        }
+        // if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
+        //     confirmationMessage = " ";
+        // }
     }
 
 

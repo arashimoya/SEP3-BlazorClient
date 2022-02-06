@@ -10,7 +10,7 @@
         color: black;
     }
     .confirmation-message{
-        color: greenyellow;
+        color: black;
     }
 </style>
 <p class="confirmation-message">@confirmationMessage</p>
@@ -102,9 +102,9 @@ else
         branches = new List<Branch>();
         branches = await BranchService.GetAllBranches();
         branchesToShow = branches;
-        if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
-            confirmationMessage = " ";
-        }
+        // if (!confirmationMessage.ToLowerCase().Contains("success") || !confirmationMessage.ToLowerCase().Contains("fail")) {
+        //     confirmationMessage = " ";
+        // }
     }
 
     private async Task RemoveBranch(long branchId) {

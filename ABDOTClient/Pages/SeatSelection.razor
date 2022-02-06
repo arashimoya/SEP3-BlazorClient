@@ -179,12 +179,21 @@
         if (selected.Contains(seat))
         {
             selected.Remove(seat);
+            OnClick.InvokeAsync(seat);
         }
         else
         {
-            selected.Add(seat);
+            foreach (Tuple<int,int> seatInOccupied in occupied)
+            {
+                Console.WriteLine(seatInOccupied);
+            }
+            Console.WriteLine("Selected seat: " + seat);
+            if (!occupied.Contains(seat))
+            {
+                selected.Add(seat);
+                OnClick.InvokeAsync(seat);
+            }
         }
-        OnClick.InvokeAsync(seat);
         ChangeColor(seat);
     }
 

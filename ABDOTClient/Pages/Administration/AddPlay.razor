@@ -88,12 +88,18 @@
         newPlayItem.Movie = new Movie();
         newPlayItem.Hall = new Hall();
         movies = await MovieService.GetAllAsync();
-        newPlayItem.Movie = movies[0];
+        if (movies != null && movies.Any())
+        {
+            newPlayItem.Movie = movies[0];
+        }
 
-        
+
         halls = await HallService.GetAllHalls();
-        newPlayItem.Hall = halls[0];
-        
+        if (halls != null && halls.Any())
+        {
+            newPlayItem.Hall = halls[0];
+        }
+
 
         newPlayItem.Date = today.Year + "-" + today.Month + "-" + today.Day + "," + time;
 

@@ -11,6 +11,8 @@ using ABDOTClient.Data;
 using ABDOTClient.Model;
 using ABDOTClient.Networking.Requests;
 using ABDOTClient.Networking.Requests.Interfaces;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace ABDOTClient.Networking {
     public class Client
@@ -26,6 +28,7 @@ namespace ABDOTClient.Networking {
 
         public Client()
         {
+ 
             movieRequest = new MovieRequest();
             playRequest = new PlayRequest();
             ticketRequest = new TicketRequest();
@@ -36,6 +39,7 @@ namespace ABDOTClient.Networking {
             
             // test.Tests();
         }
+
 
 
         //please make the methods in order of the classes
