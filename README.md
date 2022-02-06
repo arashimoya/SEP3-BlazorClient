@@ -8,7 +8,10 @@ The presentation layer consists of a .NET Blazor web application, the business l
 
 This is a group project created using the Scrum Development Methodology
 
-See all repositories
+See all repositories 
+
 https://github.com/sperlik-oliver/abdot-client
+
 https://github.com/sperlik-oliver/abdot-business
+
 https://github.com/sperlik-oliver/abdot-data
