@@ -7,3 +7,6 @@
   <li>Managed the developer environment including the GitHub repositories and deploying the second and third layer's web services to Heroku using Docker containers</li>
   <li>Elected as the Product Owner for this project, taking on a leading role, overseeing the development throughout all stages, evaluating progress, communicating a clear overview to all members and optimising the product backlog</li>
 </ul>
+<a href="https://github.com/sperlik-oliver/semester-project-3-cinema-system-presentation-layer">Presentation Layer</a> <br>
+<a href="https://github.com/sperlik-oliver/semester-project-3-cinema-system-business-layer">Business Layer</a> <br>
+<a href="https://github.com/sperlik-oliver/semester-project-3-cinema-system-data-layer">Data Layer</a> <br>
